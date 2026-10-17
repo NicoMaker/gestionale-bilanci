@@ -383,6 +383,82 @@
   };
 
   /* ───────── input numerico a cella ───────── */
+  const group = (digits) => digits.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  // numero → testo modificabile con separatori (1234.5 → "1.234,5")
+  const editText = (n) => {
+    if (n === null || n === undefined || !isFinite(n)) return "";
+    const neg = n < 0;
+    const [i, d] = String(Math.abs(n)).split(".");
+    return (neg ? "-" : "") + group(i) + (d ? "," + d : "");
+  };
+  // classe colore in base al testo: "pos" | "neg" | ""
+  const signOf = (txt) => {
+    const t = String(txt || "").replace(/[\s\u00a0€%]/g, "");
+    if (!/^[-−(]?\d[\d.]*(,\d+)?\)?$/.test(t) || !/[1-9]/.test(t)) return "";
+    return /^[-−(]/.test(t) ? "neg" : "pos";
+  };
+  GB.signOf = signOf;
+  const paintInput = (el) => {
+    const c = signOf(el.value);
+    el.classList.toggle("neg", c === "neg");
+    el.classList.toggle("pos", c === "pos");
+  };
+
+  /* Mentre si scrive: punti delle migliaia automatici (1.234.567,89).
+     Il "." digitato a mano vale come virgola decimale; la virgola resta il decimale.
+     Il cursore resta sulla stessa cifra anche dopo la riformattazione. */
+  function liveFormat(el, ev) {
+    const raw = el.value;
+    let caret = el.selectionStart == null ? raw.length : el.selectionStart;
+    const neg = /^\s*[-−(]/.test(raw);
+    let txt = raw,
+      before = raw.slice(0, caret);
+    const typedDot = ev && ev.inputType === "insertText" && ev.data === ".";
+    if (typedDot) {
+      // il punto appena digitato è un decimale (se non c'è già una virgola), altrimenti si scarta
+      const hasComma = raw.indexOf(",") !== -1;
+      const rep = hasComma ? "" : ",";
+      txt = raw.slice(0, caret - 1) + rep + raw.slice(caret);
+      before = raw.slice(0, caret - 1) + rep;
+    } else if (ev && /^insertFrom/.test(ev.inputType || "") && raw.indexOf(",") === -1 && !/^\s*[-−(]?\d{1,3}(\.\d{3})+\s*\)?$/.test(raw) && (raw.match(/\./g) || []).length === 1) {
+      // testo incollato tipo "1234.56": il punto singolo è decimale
+      txt = raw.replace(".", ",");
+      before = before.replace(".", ",");
+    }
+    const clean = (x) => x.replace(/[^\d,]/g, "");
+    let t = clean(txt);
+    const ci = t.indexOf(",");
+    if (ci !== -1) t = t.slice(0, ci + 1) + t.slice(ci + 1).replace(/,/g, "");
+    let sig = clean(before).length;
+    if (ci !== -1) {
+      // una seconda virgola prima del cursore non conta
+      const b = clean(before);
+      const first = b.indexOf(",");
+      sig = first === -1 ? b.length : first + 1 + b.slice(first + 1).replace(/,/g, "").length;
+    }
+    const hasDec = t.indexOf(",") !== -1;
+    let [ip, dp] = t.split(",");
+    ip = ip.replace(/^0+(?=\d)/, "");
+    let out = (neg ? "-" : "") + group(ip) + (hasDec ? "," + (dp || "") : "");
+    if (out === "-" && !ip) out = "-";
+    if (out !== raw) {
+      el.value = out;
+      let i = 0,
+        c = 0;
+      while (i < out.length && c < sig) {
+        if (/[\d,]/.test(out[i])) c++;
+        i++;
+      }
+      if (sig === 0) i = neg ? 1 : 0;
+      try {
+        el.setSelectionRange(i, i);
+      } catch (e) {
+        /* ignore */
+      }
+    }
+  }
+  GB.liveFormat = liveFormat;
+
   // numInput(valore, {onCommit(v|null), dec, readonly, cls})
   GB.numInput = function (value, opts = {}) {
     const dec = opts.dec ?? 2;
@@ -399,7 +475,7 @@
         current === null || (current === 0 && opts.hideZero)
           ? ""
           : fmt.num(current, dec);
-      el.classList.toggle("neg", current !== null && current < 0);
+      paintInput(el);
     };
     show();
     if (opts.readonly) {
@@ -407,8 +483,12 @@
       return el;
     }
     el.addEventListener("focus", () => {
-      el.value = current === null ? "" : String(current).replace(".", ",");
+      el.value = editText(current);
       el.select();
+    });
+    el.addEventListener("input", (e) => {
+      liveFormat(el, e);
+      paintInput(el);
     });
     const commit = () => {
       const v = parseNum(el.value);
@@ -481,6 +561,42 @@
   // helper: imposta testo + classe neg
   GB.setNum = (el, v, dec = 2) => {
     el.textContent = fmt.num(v, dec);
-    el.classList.toggle("neg", v !== null && v < 0);
+    const nz = v !== null && v !== undefined && isFinite(v) && Math.abs(v) >= 0.5 * Math.pow(10, -dec);
+    el.classList.toggle("neg", nz && v < 0);
+    el.classList.toggle("pos", nz && v > 0);
   };
+
+  /* ───────── colori automatici: positivo verde / negativo rosso ─────────
+     Vale per ogni cella importo (td.n), per le percentuali (solo negativo rosso)
+     e per i KPI in euro. Si riapplica da solo quando le pagine ricalcolano i valori. */
+  (function autoSign() {
+    const paint = () => {
+      document.querySelectorAll("td.n, td.pc, .kpi .v").forEach((el) => {
+        if (el.querySelector("input,select")) return;
+        const txt = el.textContent;
+        let c = GB.signOf(txt);
+        if (el.classList.contains("v") && txt.indexOf("€") === -1) c = "";
+        if (el.classList.contains("pc") && c === "pos") c = "";
+        const neg = c === "neg",
+          pos = c === "pos";
+        if (el.classList.contains("neg") !== neg) el.classList.toggle("neg", neg);
+        if (el.classList.contains("pos") !== pos) el.classList.toggle("pos", pos);
+      });
+    };
+    let queued = false;
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        paint();
+      });
+    };
+    new MutationObserver(schedule).observe(document.body, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
+    schedule();
+  })();
 })();

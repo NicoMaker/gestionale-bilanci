@@ -79,7 +79,8 @@ table.fin tr.sub td { font-weight: 700; background: var(--s1); border-top: 1px s
 table.fin tr.big td { font-weight: 700; background: var(--accent-d); border-top: 1px solid var(--accent-b); border-bottom: 1px solid var(--accent-b); }
 table.fin tr.grand td { font-weight: 800; background: var(--accent); color: #fff; font-size: 13.5px; }
 [data-theme="dark"] table.fin tr.grand td { color: #1a1408; }
-table.fin tr.grand td.pc { color: inherit; opacity: 0.85; }
+table.fin tr.grand td.pc { color: rgba(255, 255, 255, 0.92); opacity: 1; background: transparent; }
+[data-theme="dark"] table.fin tr.grand td.pc { color: rgba(26, 20, 8, 0.88); }
 table.fin tr.add td { border-bottom: none; padding: 0 8px 4px; }
 table.fin tr.line:hover td { background: var(--accent-d); }
 table.fin tr.chk.ok td { background: var(--green-d); color: var(--green); font-weight: 700; }
@@ -201,3 +202,48 @@ table.fin.multi td.cur-col { background: var(--accent-d); }
 table.fin.multi tr.sub td.stk0, table.fin.multi tr.sec td.stk0 { background-color: var(--s1); }
 table.fin.multi tr.big td.cur-col { background: var(--accent-b); }
 table.fin.multi tr.line:hover td.cur-col { background: var(--accent-b); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FIX LEGGIBILITÀ + COLORI IMPORTI
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Riga TOTALE (grand) nella colonna dell'anno selezionato (cur-col):
+   prima lo sfondo chiaro della colonna copriva quello blu e il testo
+   restava bianco su chiaro. Ora la cella resta blu (un filo più chiara)
+   con testo bianco; in tema scuro oro con testo scuro. */
+table.fin.multi tr.grand td.cur-col,
+table.fin.multi tr.grand:hover td.cur-col {
+  background: linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)), var(--accent);
+  color: #fff;
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.35);
+}
+[data-theme="dark"] table.fin.multi tr.grand td.cur-col,
+[data-theme="dark"] table.fin.multi tr.grand:hover td.cur-col {
+  background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), var(--accent);
+  color: #1a1408;
+  box-shadow: inset 0 -2px 0 rgba(26, 20, 8, 0.35);
+}
+/* intestazione colonna selezionata: testo sempre contrastato */
+table.fin.multi thead th.cur-col { background: var(--accent-b); color: var(--accent); }
+
+/* Importi: positivi verdi, negativi rossi (lo zero resta neutro).
+   Le classi .pos / .neg vengono messe in automatico da ui.js. */
+table.fin td.pos, .kpi .v.pos, .ci.pos { color: var(--green); }
+table.fin td.neg, .kpi .v.neg, .ci.neg { color: var(--red); }
+.ci.pos:focus, .ci.neg:focus { color: var(--t0); }
+.pos { color: var(--green); }
+
+/* nelle righe con sfondo pieno (blu / oro) servono tinte con contrasto */
+table.fin tr.grand td.pos, table.fin tr.title td.pos { color: #9df2c3; }
+table.fin tr.grand td.neg, table.fin tr.title td.neg { color: #ffb4ac; }
+[data-theme="dark"] table.fin tr.grand td.pos, [data-theme="dark"] table.fin tr.title td.pos { color: #0a5a2d; }
+[data-theme="dark"] table.fin tr.grand td.neg, [data-theme="dark"] table.fin tr.title td.neg { color: #7a120c; }
+table.fin tr.grand td.cur-col.pos { color: #9df2c3; }
+table.fin tr.grand td.cur-col.neg { color: #ffb4ac; }
+[data-theme="dark"] table.fin tr.grand td.cur-col.pos { color: #0a5a2d; }
+[data-theme="dark"] table.fin tr.grand td.cur-col.neg { color: #7a120c; }
+
+/* anteprima numeri nei campi: anche da cliccati restano leggibili */
+.ci.num { font-variant-numeric: tabular-nums; }
+.ci:focus { background: var(--s0); color: var(--t0); }
