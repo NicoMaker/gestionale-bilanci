@@ -1,0 +1,18 @@
+{
+  "name": "gestionale-bilanci",
+  "version": "1.0.0",
+  "description": "Gestionale Bilanci — analisi di bilancio per cliente (Node.js, Express, SQLite)",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "demo": "node backend/src/seed-demo.js",
+    "test": "node backend/test/run-tests.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.14",
+    "sql.js": "^1.13.0"
+  }
+}

@@ -1,0 +1,26 @@
+@page { size: A4 landscape; margin: 9mm; }
+@media print {
+  html, body { height: auto !important; overflow: visible !important; background: #fff !important; display: block; font-size: 10px; color: #000; }
+  :root, [data-theme="dark"] { --bg: #fff; --s0: #fff; --s1: #f3f3f3; --s2: #e8e8e8; --b0: #ccc; --b1: #aaa; --t0: #000; --t1: #222; --t2: #444; --t3: #666; --accent: #1e3a5f; --accent-d: #e8eef5; --accent-b: #b9c8da; --green: #1f7a4d; --red: #b3261e; }
+  .sidebar, .topbar, .no-print, .xbtn, .addbtn, #toasts, .menu-btn { display: none !important; }
+  .main, .content, .page { display: block !important; overflow: visible !important; height: auto !important; max-width: none !important; padding: 0 !important; background: #fff !important; }
+  .print-head { display: flex !important; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--accent); padding-bottom: 5px; margin-bottom: 10px; }
+  .print-head .t { font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--accent); }
+  .print-head .s { font-size: 10px; color: #444; text-align: right; }
+  .print-only { display: block !important; }
+  .tbl-wrap { max-height: none !important; overflow: visible !important; border: 1px solid #bbb; border-radius: 0; box-shadow: none; }
+  table.fin { font-size: 9px; }
+  table.fin th, table.fin td { padding: 1px 4px; }
+  table.fin thead { display: table-header-group; }
+  table.fin thead th { position: static; }
+  table.fin tr { break-inside: avoid; page-break-inside: avoid; }
+  table.fin tr.title td, table.fin tr.grand td { background: var(--accent) !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  table.fin tr.sec td, table.fin tr.sub td, table.fin tr.big td, table.fin thead th, .kpi, .pill, .rating, table.fin tr.chk td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ci { border: none !important; background: transparent !important; box-shadow: none !important; padding: 0 !important; color: #000 !important; -webkit-appearance: none; appearance: none; opacity: 1 !important; font-size: inherit !important; }
+  select.ci { background-image: none; width: auto; }
+  .card { box-shadow: none; break-inside: avoid; border-color: #bbb; }
+  .grid2 { grid-template-columns: 1fr 1fr; }
+  .report-sec { break-before: page; page-break-before: always; }
+  .report-sec:first-child { break-before: auto; page-break-before: auto; }
+  .toolbar-hide { display: none !important; }
+}
