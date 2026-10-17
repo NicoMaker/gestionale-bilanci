@@ -5,6 +5,8 @@
   const S = GB.store;
 
   const NAV_CLIENT = ["sp", "ce", "rating", "indicatori", "vendite", "budget", "bep", "investimenti", "cashflow"];
+  // Bilancio, CE, Rating e Indicatori mostrano tutti gli anni in colonna. Il selettore dell'anno di riferimento serve solo dove i calcoli dipendono da un anno (budget = anno + 1, ecc.)
+  const REF_YEAR_PAGES = ["dashboard", "vendite", "budget", "bep", "investimenti", "cashflow", "report"];
   let current = null; // { key, inst }
 
   GB.setConn = (ok) => { const d = document.getElementById("conn"); if (d) d.classList.toggle("off", !ok); const t = document.getElementById("conn-t"); if (t) t.textContent = ok ? "Database connesso" : "Server non raggiungibile"; };
@@ -30,9 +32,8 @@
   }
 
   /* ── eliminazione anno con verifica dei dati ── */
-  async function eliminaAnno() {
+  async function eliminaAnno(anno = S.anno) {
     if (S.anni.length <= 1) { GB.toast("Il cliente deve avere almeno un anno", "err"); return; }
-    const anno = S.anno;
     let d;
     try { d = await GB.api.get(`/clienti/${S.clienteId}/anni/${anno}/dati`); } catch (e) { GB.toast(e.message, "err"); return; }
     if (!d.ha_dati) {
@@ -44,6 +45,7 @@
     const r = await GB.modal({ title: `Elimina l'anno ${anno}`, body, buttons: [{ label: "Annulla", value: false }, { label: "Elimina con i dati", kind: "danger", value: true }] });
     if (r) S.deleteAnno(anno, true).catch(() => {});
   }
+  GB.eliminaAnno = eliminaAnno; // usata anche dalle intestazioni delle colonne anno (SP / CE)
 
   /* ── topbar ── */
   function buildTopbar() {
@@ -52,14 +54,19 @@
     document.getElementById("page-title").textContent = page ? (S.cliente && !page.noClient ? page.title : page.title) : "";
     const ctl = document.getElementById("ctl");
     const parts = [];
-    const selC = h("select", { onchange: async (e) => { await S.select(Number(e.target.value) || null); } },
-      h("option", { value: "" }, "— cliente —"), S.clienti.map((c) => h("option", { value: c.id, selected: c.id === S.clienteId || null }, c.ragione_sociale)));
+    const selC = GB.searchSelect({
+      items: S.clienti.map((c) => ({ value: c.id, label: c.ragione_sociale, sub: c.partita_iva || "" })),
+      value: S.clienteId, emptyLabel: "— nessun cliente —", placeholder: "Cerca cliente…",
+      onChange: async (v) => { await S.select(v || null); },
+    });
     parts.push(h("div", { class: "topbar-ctl" }, h("label", null, "Cliente"), selC));
     if (S.clienteId) {
-      const selY = h("select", { onchange: (e) => S.setYear(e.target.value) }, S.anni.map((a) => h("option", { value: a, selected: a === S.anno || null }, String(a))));
-      parts.push(h("div", { class: "topbar-ctl", title: "Esercizio di riferimento: si vedono i 3 anni fino a questo e il budget dell'anno successivo" }, h("label", null, "Anno"), selY,
-        h("button", { class: "btn sm icon", title: "Aggiungi l'anno successivo", onclick: async () => { try { const a = await S.addAnno(); GB.toast("Anno " + a + " aggiunto"); } catch (e) { /* toast già mostrato */ } } }, "＋"),
-        h("button", { class: "btn sm icon danger", title: "Elimina l'anno selezionato", onclick: eliminaAnno }, "🗑")));
+      if (REF_YEAR_PAGES.includes(key)) {
+        const selY = h("select", { onchange: (e) => S.setYear(e.target.value) }, S.anni.map((a) => h("option", { value: a, selected: a === S.anno || null }, String(a))));
+        parts.push(h("div", { class: "topbar-ctl", title: "Esercizio di riferimento: il budget, il punto di pareggio, gli investimenti e il cash flow sono calcolati per l'anno successivo; le vendite usano questo e i 2 anni precedenti" }, h("label", null, "Anno rif."), selY,
+          h("button", { class: "btn sm icon", title: "Aggiungi l'anno successivo", onclick: async () => { try { const a = await S.addAnno(); GB.toast("Anno " + a + " aggiunto"); } catch (e) { /* toast già mostrato */ } } }, "＋"),
+          h("button", { class: "btn sm icon danger", title: "Elimina l'anno selezionato", onclick: () => eliminaAnno() }, "🗑")));
+      }
       parts.push(h("button", { class: "btn primary", onclick: () => window.print() }, "🖨️ Stampa"));
     }
     ctl.replaceChildren(...parts);
@@ -74,7 +81,8 @@
     if (!page.noClient && !S.clienteId) key = "clienti";
     const content = document.getElementById("content");
     const keepTop = content.scrollTop;
-    const inner = [...content.querySelectorAll(".tbl-wrap")].map((e) => [e.scrollTop, e.scrollLeft]);
+    // la posizione di scorrimento delle tabelle si conserva solo se si ridisegna la stessa pagina (non quando si cambia pagina)
+    const inner = current && current.key === key ? [...content.querySelectorAll(".tbl-wrap")].map((e) => [e.scrollTop, e.scrollLeft]) : [];
     const box = h("div", { class: "page", id: "page" });
     content.replaceChildren(box);
     buildNav(); buildTopbar();

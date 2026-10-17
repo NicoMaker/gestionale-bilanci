@@ -8,7 +8,8 @@
     icon: "🏛️",
     render(container, ro) {
       const S = GB.store;
-      const years = S.R.years;
+      const years = S.R.tutti; // tutti gli esercizi in colonna (si scorre in orizzontale)
+      container.classList.add("fit");
       const sec = (id) => { const d = T.SEZIONI.SP.find((s) => s.id === id); return { t: "sec", id, label: d.label, totLabel: d.tot, side: d.lato }; };
       const row = (label, key, cls, side) => ({ t: "row", label, key, cls, side });
       const layout = [
@@ -46,8 +47,9 @@
       };
       container.append(
         GB.printHead("Stato Patrimoniale riclassificato", "Esercizi " + years.join(" · ")),
-        h("div", { class: "note no-print" }, "Inserisci gli importi per ciascun esercizio. I fondi ammortamento vanno inseriti con segno negativo. I totali, le percentuali e il Check = 0 si aggiornano automaticamente."),
-        ro ? null : h("div", { class: "no-print", style: { marginBottom: "12px" } }, h("button", { class: "btn sm", onclick: allinea }, "↤ Allinea “Risultato d'esercizio” all'utile del C.E.")),
+        h("div", { class: "note no-print" }, "Inserisci gli importi per ciascun esercizio: scorri a destra per vedere tutti gli anni (codice e descrizione restano fissi). I fondi ammortamento vanno inseriti con segno negativo. I totali, le percentuali e il Check = 0 si aggiornano automaticamente."),
+        ro ? "" : h("div", { class: "no-print", style: { marginBottom: "12px", display: "flex", gap: "8px", flexWrap: "wrap" } },
+          h("button", { class: "btn sm", onclick: allinea }, "↤ Allinea “Risultato d'esercizio” all'utile del C.E."), GB.addAnnoBtn()),
         tbl.el
       );
       return { update: tbl.update };

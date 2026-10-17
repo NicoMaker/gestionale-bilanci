@@ -8,7 +8,8 @@
     icon: "📈",
     render(container, ro) {
       const S = GB.store;
-      const years = S.R.years;
+      const years = S.R.tutti; // tutti gli esercizi in colonna (si scorre in orizzontale)
+      container.classList.add("fit");
       const sec = (id, extra) => { const d = T.SEZIONI.CE.find((s) => s.id === id); return Object.assign({ t: "sec", id, label: d.label, totLabel: d.tot, single: d.single }, extra); };
       const row = (label, key, cls, extra) => Object.assign({ t: "row", label, key, cls }, extra);
       const layout = [
@@ -48,7 +49,8 @@
         GB.printHead("Conto Economico riclassificato", "Esercizi " + years.join(" · ")),
         h("div", { class: "note no-print" },
           h("b", null, "Tipo riga: "), "IP inflazione + produttività · I inflazione · P produttività · O come anno precedente · Z azzerato · V spesa variabile · F spesa fissa. ",
-          "Il tipo guida il Budget e il calcolo del punto di pareggio (spese fisse = tipo F, spese variabili = tipo V)."),
+          "Il tipo guida il Budget e il calcolo del punto di pareggio (spese fisse = tipo F, spese variabili = tipo V). Scorri a destra per vedere tutti gli anni: codice e descrizione restano fissi."),
+        ro ? "" : h("div", { class: "no-print", style: { marginBottom: "12px" } }, GB.addAnnoBtn()),
         tbl.el
       );
       return { update: tbl.update };

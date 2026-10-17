@@ -1,0 +1,71 @@
+---
+title: Gestionale Bilanci — database SQLite (backend/db/gestionale.db)
+---
+%% Diagramma Mermaid dello schema definito in backend/src/db.js
+%% Si apre con l'anteprima Markdown/Mermaid di VS Code, su https://mermaid.live oppure su GitHub.
+erDiagram
+    clienti ||--o{ parametri_anno : "ha parametri per anno"
+    clienti ||--o{ voci : "ha righe di conto"
+    clienti ||--o{ vendite : "ha vendite mensili"
+    voci ||--o{ valori : "importo per anno"
+    voci ||--o{ budget_var : "variazione budget per anno"
+    voci ||--o{ cashflow : "importo per anno e mese"
+
+    clienti {
+        INTEGER id PK "AUTOINCREMENT"
+        TEXT ragione_sociale "NOT NULL"
+        TEXT partita_iva
+        TEXT note
+        INTEGER anno_base "NOT NULL - ultimo esercizio chiuso"
+        TEXT created_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+
+    parametri_anno {
+        INTEGER cliente_id PK, FK "ON DELETE CASCADE"
+        INTEGER anno PK
+        REAL peso_vendite "DEFAULT 1"
+        REAL inflazione "DEFAULT 0"
+        REAL produttivita "DEFAULT 0"
+        REAL imposte_budget "DEFAULT 0"
+        REAL investimento "DEFAULT 0"
+        REAL aumento_utile "DEFAULT 0"
+        REAL saldo_iniziale_cf "DEFAULT 0"
+    }
+
+    voci {
+        INTEGER id PK "AUTOINCREMENT"
+        INTEGER cliente_id FK "ON DELETE CASCADE"
+        TEXT ambito "SP | CE | CF"
+        TEXT sezione
+        TEXT codice
+        TEXT descrizione
+        TEXT tipo "solo CE: IP I P O Z V F"
+        INTEGER ordine "DEFAULT 0"
+        INTEGER fissa "1 = riga non eliminabile"
+    }
+
+    valori {
+        INTEGER voce_id PK, FK "ON DELETE CASCADE"
+        INTEGER anno PK
+        REAL importo
+    }
+
+    budget_var {
+        INTEGER voce_id PK, FK "ON DELETE CASCADE"
+        INTEGER anno PK "anno di riferimento: il budget e anno + 1"
+        REAL valore
+    }
+
+    vendite {
+        INTEGER cliente_id PK, FK "ON DELETE CASCADE"
+        INTEGER anno PK
+        INTEGER mese PK "1..12"
+        REAL importo
+    }
+
+    cashflow {
+        INTEGER voce_id PK, FK "ON DELETE CASCADE"
+        INTEGER anno PK "anno di riferimento: il cash flow e dell'anno + 1"
+        INTEGER mese PK "1..12"
+        REAL importo
+    }

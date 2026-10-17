@@ -49,6 +49,12 @@ const near = (a, b, eps = 0.005) => assert.ok(Math.abs(a - b) <= eps, `${a} ≠ 
     assert.deepEqual(Calc.anni(ds), [2022, 2023, 2024, 2025]);
     const R = Calc.compute(ds, 2025);                                  // budget 2026 + cash flow 2026 calcolati dall'anno 2025
     assert.ok(R.bud.H.ricavi > 2500000 && R.cf.liq[11] > 0 && R.bep.rows.length === 13);
+    // tutti gli esercizi in colonna: quelli con dati + la finestra di 3 anni, ciascuno già calcolato
+    assert.deepEqual(R.tutti, [2022, 2023, 2024, 2025]);
+    assert.deepEqual(R.years, [2023, 2024, 2025]);
+    assert.ok(R.tutti.every((a) => R.anni[a] && R.anni[a].sp && R.anni[a].ce));
+    const R22 = Calc.compute(ds, 2022);                                // anno di riferimento più vecchio: gli anni successivi restano visibili
+    assert.deepEqual(R22.tutti, [2020, 2021, 2022, 2023, 2024, 2025]);
   });
   await t("budget: fattori per tipo e variazioni manuali (regola Excel)", async () => {
     const ds = Calc.buildDs(await raw());

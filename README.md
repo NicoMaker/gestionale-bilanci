@@ -15,13 +15,15 @@ Applicazione web per l'**analisi di bilancio per cliente**, costruita sul modell
 Requisiti: **Node.js 18 o superiore** (https://nodejs.org).
 
 ```bash
+cd backend
 npm install
 npm start
 ```
 
-Apri **http://localhost:3000**.
+Apri **http://localhost:3000**. All'avvio il terminale mostra anche l'IP pubblico, l'IP locale e l'indirizzo localhost.
+`package.json` e le dipendenze stanno nella cartella `backend/` (la radice del progetto contiene solo pochi file): vedi anche **[backend/GUIDA.md](backend/GUIDA.md)**.
 
-In alternativa: doppio clic su `avvia.bat` (Windows) oppure `./avvia.sh` (macOS/Linux).
+Esegui i comandi dalla cartella `backend/`:
 
 | Comando         | Cosa fa                                                         |
 |-----------------|-----------------------------------------------------------------|
@@ -40,12 +42,15 @@ In alternativa: doppio clic su `avvia.bat` (Windows) oppure `./avvia.sh` (macOS/
 
 1. **Clienti → ＋ Nuovo cliente**: inserisci ragione sociale, P.IVA e l'**anno impostato** (l'ultimo esercizio chiuso, es. 2025).
    Per il cliente vengono create automaticamente tutte le sezioni del bilancio, le voci predefinite del file Excel e la struttura del cash flow.
-2. Dal menu in alto scegli **Cliente** e **Anno**. Ogni pagina mostra i **3 esercizi** fino all'anno scelto (anno‑2, anno‑1, anno) e,
-   dove serve, il **budget dell'anno successivo**.
+2. Dal menu in alto scegli il **Cliente**: la select ha un campo di **ricerca** (digita parte della ragione sociale o della P.IVA; ↑ ↓ e Invio per scegliere).
+   *Stato Patrimoniale*, *Conto Economico*, *Rating* e *Indicatori* mostrano **tutti gli anni affiancati**: scorri la pagina in orizzontale (la barra è in fondo alla finestra)
+   mentre codice e descrizione restano fissi a sinistra. Nelle pagine che dipendono da un anno (Riepilogo, Vendite, Budget, Punto di pareggio, Investimenti, Cash Flow, Report)
+   in alto compare **Anno rif.**, l'esercizio da cui si calcola il **budget dell'anno successivo** (di norma l'ultimo).
 3. Compila le pagine: ogni cella è modificabile direttamente (come in Excel). Salvataggio automatico, totali e percentuali ricalcolati al volo.
    - `Invio` / `↓` → cella sotto · `↑` → cella sopra · `Tab` → cella successiva
    - Formati accettati: `1234,56` · `1.234,56` · `1234.56` · `-500` · `(500)`
-4. **＋ accanto all'anno** aggiunge l'esercizio successivo (la nuova annata si compila nelle stesse pagine); **🗑** elimina l'anno selezionato.
+4. **＋ Aggiungi anno** (in *Stato Patrimoniale* e *Conto Economico*, oppure ＋ accanto a *Anno rif.*) aggiunge l'esercizio successivo: la nuova annata appare come nuova colonna.
+   Per eliminare un anno usa la **✕ nell'intestazione della colonna** (o 🗑 accanto a *Anno rif.*).
 5. **Riepilogo cliente** mostra tutti gli anni affiancati (ricavi, EBITDA, utile, rating, quadratura S.P.) con grafici: clic su una riga per aprire quell'esercizio.
 6. **🖨️ Stampa** (in alto) stampa la pagina corrente in A4 orizzontale pronta per l'archivio/PDF.
    **Report completo** compone tutte le pagine del cliente in un unico documento, una pagina per foglio, con frontespizio.
@@ -62,7 +67,7 @@ In alternativa: doppio clic su `avvia.bat` (Windows) oppure `./avvia.sh` (macOS/
 
 | Foglio Excel          | Pagina app                | Cosa fa                                                                                       |
 |-----------------------|---------------------------|-----------------------------------------------------------------------------------------------|
-| Stato Patrimoniale    | **Stato Patrimoniale**    | Attivo/Passivo riclassificato su 3 anni, % sul totale, totali di sezione, **Check = 0**       |
+| Stato Patrimoniale    | **Stato Patrimoniale**    | Attivo/Passivo riclassificato su tutti gli anni, % sul totale, totali di sezione, **Check = 0**       |
 | Conto Economico       | **Conto Economico**       | Ricavi→Costo venduto→Margini→EBITDA→EBIT→Utile, colonna **Tipo**, spese fisse/variabili, BEP |
 | Rating                | **Rating**                | Sintesi S.P./C.E., 4 indicatori con scoring 1‑3, punteggio e classe AAA…CCC                  |
 | Indicatori            | **Indicatori**            | EBITDA‑MOL, ROE, ROI, ROS, margine di tesoreria, current ratio, rotazione magazzino          |
@@ -113,14 +118,15 @@ Rating: punteggio = somma di 4 scoring (max 12) → 12 AAA, 11 AA, 10 A, 9 BBB, 
 ## 🗂️ Struttura del progetto
 
 ```
-gestionale-bilanci/
-├── package.json
-├── README.md
-├── avvia.bat / avvia.sh          avvio rapido
+gestionale-bilanci/               radice con pochi file
+├── README.md  LICENSE.txt  .gitignore
 ├── shared/                       codice condiviso server + browser
 │   ├── template.js               struttura del bilancio (sezioni, voci predefinite, cash flow)
 │   └── calc.js                   motore di calcolo (formule dell'Excel)
 ├── backend/
+│   ├── package.json  package-lock.json   dipendenze e comandi (npm si usa da qui)
+│   ├── GUIDA.md                  guida rapida all'uso e all'avvio
+│   ├── database.mmd              diagramma Mermaid del database
 │   ├── server.js                 Express: API + file statici
 │   ├── db/                       gestionale.db (creato al primo avvio)
 │   ├── src/
@@ -141,6 +147,7 @@ gestionale-bilanci/
 Tabelle: `clienti`, `parametri_anno`, `voci`, `valori`, `budget_var`, `vendite`, `cashflow`.
 Le righe di conto (`voci`) sono per cliente; i valori sono per voce e per anno, quindi ogni anno si aggiunge senza duplicare la struttura.
 Il file si trova in `backend/db/gestionale.db` (cambia percorso con le variabili `DB_PATH` / `DB_DIR`).
+Il diagramma delle tabelle è in [`backend/database.mmd`](backend/database.mmd) (Mermaid: si visualizza su GitHub, in VS Code o su mermaid.live).
 
 > **Nota tecnica:** il driver è **sql.js** (SQLite compilato in WebAssembly), come nel progetto di riferimento: nessuna compilazione nativa,
 > funziona identico su Windows/macOS/Linux e produce un file SQLite3 standard apribile con *DB Browser for SQLite* o `sqlite3`.
@@ -179,7 +186,7 @@ Dal dialogo di stampa del browser puoi scegliere «Salva come PDF».
 
 ## ⚠️ Note
 
-- Applicazione pensata per uso **locale / singolo studio**: non include login. Se la esponi in rete, mettila dietro autenticazione.
+- Applicazione pensata per uso **locale / singolo studio**: non include login. Il server ascolta su `0.0.0.0`, quindi è raggiungibile anche dagli altri dispositivi della rete (IP locale mostrato all'avvio): se la esponi in rete o su internet, mettila dietro autenticazione.
 - Fai periodicamente un backup con **Scarica database**.
 - I font (Plus Jakarta Sans, Fraunces, JetBrains Mono) sono caricati da Google Fonts; offline si usano i font di sistema.
 

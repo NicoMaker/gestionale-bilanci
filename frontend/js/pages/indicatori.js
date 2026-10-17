@@ -17,13 +17,14 @@
     icon: "📐",
     render(container) {
       const S = GB.store;
-      const years = S.R.years;
+      const years = S.R.tutti; // tutti gli esercizi in colonna (si scorre in orizzontale)
       const live = GB.live();
       const table = h("table", { class: "fin" });
-      table.append(h("thead", null, h("tr", null, h("th", { class: "l" }, "Indicatore"), h("th", { class: "l" }, "Formula"), years.map((a) => h("th", null, String(a))))));
+      GB.printFit(table, 480, 70, years.length);
+      table.append(h("thead", null, h("tr", null, h("th", { class: "l stk0" }, "Indicatore"), h("th", { class: "l" }, "Formula"), years.map((a) => h("th", null, String(a))))));
       const tb = h("tbody"); table.append(tb);
       DEFS.forEach((d) => {
-        const tr = h("tr", { class: "line" }, h("td", { class: "l", style: { fontWeight: 700 } }, d.l), h("td", { class: "l muted small" }, d.f));
+        const tr = h("tr", { class: "line" }, h("td", { class: "l stk0", style: { fontWeight: 700 } }, d.l), h("td", { class: "l muted small" }, d.f));
         years.forEach((a) => {
           const c = h("td", { class: "n", style: { fontSize: "13.5px" } });
           tr.append(c);

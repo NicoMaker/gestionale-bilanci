@@ -15,7 +15,7 @@
           h("div", { class: "small muted" }, "ANALISI DI BILANCIO"),
           h("div", { style: { fontFamily: "var(--serif)", fontSize: "34px", fontWeight: 600, margin: "8px 0" } }, S.cliente.ragione_sociale),
           S.cliente.partita_iva ? h("div", null, "P.IVA " + S.cliente.partita_iva) : null,
-          h("div", { style: { marginTop: "10px" } }, `Esercizi ${S.R.years.join(" · ")} — Budget ${S.anno + 1}`),
+          h("div", { style: { marginTop: "10px" } }, `Esercizi ${S.R.tutti.join(" · ")} — Budget ${S.anno + 1}`),
           h("div", { class: "small muted", style: { marginTop: "6px" } }, "Stampato il " + new Date().toLocaleDateString("it-IT")))));
       ORDER.forEach((k) => {
         const p = GB.pages[k];

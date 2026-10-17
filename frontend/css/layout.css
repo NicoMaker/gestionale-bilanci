@@ -65,6 +65,9 @@ button { font-family: inherit; }
 .topbar-ctl label { font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: 10.5px; }
 .content { flex: 1; overflow: auto; padding: 24px; background-image: var(--ledger-rule); background-attachment: local; background-size: 100% 28px; background-color: var(--bg); }
 .page { max-width: 1500px; margin: 0 auto; }
+/* pagine con una tabella a tutti gli anni: la tabella occupa l'altezza disponibile, così la barra di scorrimento orizzontale sta sempre in fondo alla finestra */
+.page.fit { min-height: 100%; display: flex; flex-direction: column; }
+.page.fit > .tbl-wrap { flex: 1 0 340px; max-height: none; margin-bottom: 0; }
 
 @media (max-width: 900px) {
   .sidebar { position: fixed; inset: 0 auto 0 0; transform: translateX(-100%); }

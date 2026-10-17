@@ -7,23 +7,25 @@
     icon: "🎯",
     render(container, ro) {
       const S = GB.store;
-      const years = S.R.years;
+      const years = S.R.tutti; // tutti gli esercizi in colonna (si scorre in orizzontale)
+      container.classList.add("fit");
       const live = GB.live();
       const R = (a) => S.R.anni[a].rating;
       const table = h("table", { class: "fin" });
-      const head = h("tr", null, h("th", { class: "l" }, "Indicatori creditizi"));
+      GB.printFit(table, 220, 150, years.length);
+      const head = h("tr", null, h("th", { class: "l stk0" }, "Indicatori creditizi"));
       years.forEach((a) => head.append(h("th", { class: "gap" }), h("th", null, String(a)), h("th", null, "%")));
       table.append(h("thead", null, head));
       const tb = h("tbody"); table.append(tb);
       const span = 1 + years.length * 3;
 
       const title = (t, c1, c2) => {
-        const tr = h("tr", { class: "title" }, h("td", null, t));
+        const tr = h("tr", { class: "title" }, h("td", { class: "stk0" }, t));
         years.forEach(() => tr.append(h("td"), h("td", { style: { textAlign: "right" } }, c1 || ""), h("td", { style: { textAlign: "right" } }, c2 || "")));
         tb.append(tr);
       };
       const line = (label, valFn, pctFn, cls) => {
-        const tr = h("tr", { class: cls || "line" }, h("td", { class: "l" }, label));
+        const tr = h("tr", { class: cls || "line" }, h("td", { class: "l stk0" }, label));
         years.forEach((a) => {
           const v = h("td", { class: "n" }), p = h("td", { class: "pc" });
           tr.append(h("td", { class: "gap" }), v, p);
@@ -33,7 +35,7 @@
         tb.append(tr);
       };
       const ind = (label, key, sKey, f) => {
-        const tr = h("tr", { class: "line" }, h("td", { class: "l" }, label));
+        const tr = h("tr", { class: "line" }, h("td", { class: "l stk0" }, label));
         years.forEach((a) => {
           const v = h("td", { class: "n" }), s = h("td", { class: "n", style: { fontWeight: 700 } });
           tr.append(h("td", { class: "gap" }), v, s);
@@ -64,10 +66,10 @@
       ind("Mezzi propri / Totale Passivo   (≥ 5%)", "i2", "s2", (x) => fmt.pct(x));
       ind("Oneri Finanziari / Fatturato   (≤ 5%)", "i3", "s3", (x) => fmt.pct(x));
       ind("Cash Flow / Totale Attivo   (≥ 4%)", "i4", "s4", (x) => fmt.pct(x));
-      const tot = h("tr", { class: "sub" }, h("td", { class: "l" }, "Punteggio totale (max 12)"));
+      const tot = h("tr", { class: "sub" }, h("td", { class: "l stk0" }, "Punteggio totale (max 12)"));
       years.forEach((a) => { const c = h("td", { class: "n", colspan: 2 }); tot.append(h("td", { class: "gap" }), c); live.add(c, (e) => { e.textContent = R(a).punteggio; }); });
       tb.append(tot);
-      const sc = h("tr", { class: "big" }, h("td", { class: "l" }, "SCORING COMPLESSIVO"));
+      const sc = h("tr", { class: "big" }, h("td", { class: "l stk0" }, "SCORING COMPLESSIVO"));
       years.forEach((a) => {
         const c = h("td", { colspan: 2, style: { textAlign: "center", padding: "6px" } });
         sc.append(h("td", { class: "gap" }), c);
@@ -79,11 +81,13 @@
       });
       tb.append(sc);
 
-      const legend = h("div", { class: "card" }, h("div", { class: "card-h" }, h("h3", null, "Legenda rating")),
-        h("div", { class: "card-b legend-box" }, Object.entries(window.Calc.RATING_LABEL).map(([k, v]) => h("div", null, h("b", null, k), " — " + v))));
+      // legenda in una riga sopra la tabella: così la tabella occupa il resto della finestra e la barra orizzontale resta in fondo
+      const legend = h("div", { class: "legend-line" }, h("span", { class: "muted" }, "Legenda rating: "),
+        Object.entries(window.Calc.RATING_LABEL).map(([k, v]) => h("span", { class: "lg" }, h("b", null, k), " " + String(v).replace(/^Rischio /, "").toLowerCase())));
       container.append(
         GB.printHead("Rating — indicatori creditizi", "Esercizi " + years.join(" · ")),
-        h("div", { class: "tbl-wrap free" }, table), legend);
+        legend,
+        h("div", { class: "tbl-wrap free" }, table));
       return { update: () => live.update() };
     },
   };

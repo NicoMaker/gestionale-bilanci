@@ -13,6 +13,10 @@
   table.fin th, table.fin td { padding: 1px 4px; }
   table.fin thead { display: table-header-group; }
   table.fin thead th { position: static; }
+  table.fin { zoom: var(--pz, 1); }
+  table.fin .stk0, table.fin .stk1, table.fin .stk2, table.fin .stk-label { position: static !important; }
+  table.fin .stk0 { min-width: 200px; } table.fin .stk1 { width: 60px; min-width: 60px; max-width: 60px; } table.fin .stk2 { min-width: 170px; }
+  .ci.cod { width: 52px; } .ci.desc { min-width: 150px; } .ci.num.w-yr { width: 74px; }
   table.fin tr { break-inside: avoid; page-break-inside: avoid; }
   table.fin tr.title td, table.fin tr.grand td { background: var(--accent) !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   table.fin tr.sec td, table.fin tr.sub td, table.fin tr.big td, table.fin thead th, .kpi, .pill, .rating, table.fin tr.chk td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }

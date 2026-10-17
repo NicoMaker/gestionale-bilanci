@@ -7,6 +7,18 @@
   GB.ctx = () => GB.store;
   GB.yearHeads = (years) => years.map((a) => String(a));
 
+  /* In stampa (A4 orizzontale) una tabella con molti anni non entra: si riduce con zoom in proporzione.
+     fixed = larghezza stimata delle colonne fisse (px), perYear = larghezza stimata di ogni anno. */
+  GB.printFit = (table, fixed, perYear, n) => {
+    const scale = Math.min(1, 1020 / (fixed + perYear * n));
+    table.style.setProperty("--pz", scale.toFixed(3));
+  };
+
+  // pulsante "aggiungi anno" dentro le pagine con tutti gli esercizi in colonna
+  GB.addAnnoBtn = () => h("button", { class: "btn sm", title: "Aggiunge l'anno successivo all'ultimo esercizio", onclick: async () => {
+    try { const a = await GB.store.addAnno(); GB.toast("Anno " + a + " aggiunto"); } catch (e) { /* toast già mostrato */ }
+  } }, "＋ Aggiungi anno");
+
   GB.printHead = (title, sub) => {
     const S = GB.store;
     return h("div", { class: "print-head" },
@@ -39,15 +51,21 @@
       wrap.append(table);
       const colsPerYear = 2;
 
-      // intestazione
-      const hr = h("tr", null, h("th", { class: "l", style: { minWidth: "70px" } }, "Cod."), h("th", { class: "l" }, cfg.titleCol || "Descrizione"));
+      // intestazione: Cod. e Descrizione restano fissi a sinistra mentre si scorrono gli anni
+      const hr = h("tr", null, h("th", { class: "l stk1" }, "Cod."), h("th", { class: "l stk2" }, cfg.titleCol || "Descrizione"));
       if (ce) hr.append(h("th", null, "Tipo"));
-      years.forEach((a) => { hr.append(h("th", { class: "gap" }), h("th", null, String(a)), h("th", null, "%")); });
+      years.forEach((a) => {
+        const canDel = !ro && S.anni.length > 1 && S.anni.includes(a);
+        hr.append(h("th", { class: "gap" }),
+          h("th", { class: "yr" }, String(a), canDel ? h("button", { class: "xbtn no-ro", title: `Elimina l'anno ${a}`, onclick: () => GB.eliminaAnno(a) }, "✕") : null),
+          h("th", null, "%"));
+      });
       hr.append(h("th", { class: "no-ro" }, ""));
       table.append(h("thead", null, hr));
       const tb = h("tbody");
       table.append(tb);
       const span = 2 + (ce ? 1 : 0) + years.length * 3 + 1;
+      GB.printFit(table, 250 + (ce ? 40 : 0), 122, years.length);
 
       const calcOf = (a) => cfg.getY(a);
       const denOf = (a, item) => cfg.den(a, item);
@@ -58,17 +76,17 @@
 
       for (const item of cfg.layout) {
         if (item.t === "title") {
-          tb.append(h("tr", { class: "title" }, h("td", { colspan: span }, item.label)));
+          tb.append(h("tr", { class: "title" }, h("td", { colspan: span }, h("span", { class: "stk-label" }, item.label))));
         } else if (item.t === "spacer") {
           tb.append(h("tr", { class: "spacer" }, h("td", { colspan: span })));
         } else if (item.t === "sec") {
           const voci = S.ds.voci.filter((v) => v.sezione === item.id);
-          if (!item.noHeader) tb.append(h("tr", { class: "sec" }, h("td", { colspan: span }, item.label)));
+          if (!item.noHeader) tb.append(h("tr", { class: "sec" }, h("td", { colspan: span }, h("span", { class: "stk-label" }, item.label))));
           voci.forEach((v) => {
             const tr = h("tr", { class: "line" });
-            tr.append(h("td", { class: "l" }, h("input", { class: "ci cod", "data-col": "cod", value: v.codice || "", placeholder: "cod.", readonly: ro || null,
+            tr.append(h("td", { class: "l stk1" }, h("input", { class: "ci cod", "data-col": "cod", value: v.codice || "", placeholder: "cod.", readonly: ro || null,
               onchange: (e) => S.updateVoce(v.id, { codice: e.target.value }) })));
-            tr.append(h("td", { class: "l" }, h("input", { class: "ci desc", "data-col": "desc", "data-voce": v.id, value: v.descrizione || "", placeholder: "descrizione…", readonly: ro || null,
+            tr.append(h("td", { class: "l stk2" }, h("input", { class: "ci desc", "data-col": "desc", "data-voce": v.id, value: v.descrizione || "", placeholder: "descrizione…", readonly: ro || null,
               onchange: (e) => S.updateVoce(v.id, { descrizione: e.target.value }) })));
             if (ce) {
               if (item.id === "C_IMPOSTE") tr.append(h("td"));
@@ -91,7 +109,7 @@
             tb.append(tr);
           });
           if (!item.single && !ro) {
-            tb.append(h("tr", { class: "add no-ro" }, h("td", { colspan: span }, h("button", { class: "addbtn", onclick: () => S.addVoce(cfg.ambito, item.id) }, "+ aggiungi riga"))));
+            tb.append(h("tr", { class: "add no-ro" }, h("td", { colspan: span }, h("span", { class: "stk-label" }, h("button", { class: "addbtn", onclick: () => S.addVoce(cfg.ambito, item.id) }, "+ aggiungi riga")))));
           }
           if (!item.noTotal) {
             tb.append(this.totalRow(item.totLabel || "Totale " + item.label, item.id, "sub", cfg, live, years, ce, Object.assign({}, item, { sez: true })));
@@ -99,7 +117,7 @@
         } else if (item.t === "row") {
           tb.append(this.totalRow(item.label, item.key, item.cls || "big", cfg, live, years, ce, item));
         } else if (item.t === "check") {
-          const tr = h("tr", { class: "chk" }, h("td"), h("td", { class: "l" }, item.label));
+          const tr = h("tr", { class: "chk" }, h("td", { class: "stk1" }), h("td", { class: "l stk2" }, item.label));
           if (ce) tr.append(h("td"));
           years.forEach((a) => {
             const c = h("td", { class: "n" });
@@ -116,7 +134,7 @@
     },
 
     totalRow(label, key, cls, cfg, live, years, ce, item) {
-      const tr = h("tr", { class: cls }, h("td"), h("td", { class: "l" }, label));
+      const tr = h("tr", { class: cls }, h("td", { class: "stk1" }), h("td", { class: "l stk2" }, label));
       if (ce) tr.append(h("td"));
       years.forEach((a) => {
         const c = h("td", { class: "n" });

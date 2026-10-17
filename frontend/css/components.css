@@ -25,6 +25,27 @@ input, select, textarea { font-family: inherit; font-size: 13.5px; color: var(--
 .field .hint { font-size: 12px; color: var(--t3); }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
+/* ─── SELECT CON RICERCA ─── */
+.ss { position: relative; width: 260px; max-width: 100%; }
+.ss-input {
+  width: 100%; background: var(--s0); border: 1px solid var(--b1); border-radius: var(--r-sm); padding: 7px 28px 7px 10px; outline: none; cursor: pointer;
+  text-overflow: ellipsis; transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.ss-input:focus, .ss.open .ss-input { border-color: var(--accent); box-shadow: var(--shadow-glow); cursor: text; }
+.ss-caret { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--t3); pointer-events: none; transition: transform var(--duration-fast); }
+.ss.open .ss-caret { transform: translateY(-50%) rotate(180deg); }
+.ss-list {
+  display: none; position: absolute; z-index: 300; top: calc(100% + 4px); left: 0; min-width: 100%; max-height: 320px; overflow-y: auto; list-style: none;
+  background: var(--s0); border: 1px solid var(--b1); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 4px;
+}
+.ss.open .ss-list { display: block; }
+.ss-item { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 7px 10px; border-radius: var(--r-sm); font-size: 13px; color: var(--t0); cursor: pointer; white-space: nowrap; }
+.ss-item .ss-l { overflow: hidden; text-overflow: ellipsis; }
+.ss-item .sub { font-family: var(--mono); font-size: 11px; color: var(--t3); flex-shrink: 0; }
+.ss-item.active { background: var(--accent-d); }
+.ss-item.sel { color: var(--accent); font-weight: 700; }
+.ss-item.none { color: var(--t2); cursor: default; font-style: italic; }
+
 /* ─── CARD ─── */
 .card { background: var(--s0); border: 1px solid var(--b0); border-radius: var(--r-lg); box-shadow: var(--shadow-xs); margin-bottom: 18px; }
 .card-h { padding: 14px 18px; border-bottom: 1px solid var(--b0); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -65,6 +86,30 @@ table.fin tr.chk.ok td { background: var(--green-d); color: var(--green); font-w
 table.fin tr.chk.ko td { background: var(--red-d); color: var(--red); font-weight: 700; }
 table.fin tr.spacer td { padding: 0; height: 6px; border: none; background: transparent; }
 td.neg, .neg { color: var(--red); }
+
+/* colonne fisse a sinistra (codice / nome) mentre si scorrono gli anni in orizzontale:
+   stk0 = una sola colonna nome · stk1 + stk2 = codice + descrizione */
+table.fin .stk0, table.fin .stk1, table.fin .stk2 { position: sticky; z-index: 3; background-color: var(--s0); }
+table.fin .stk0 { left: 0; min-width: 200px; border-right: 1px solid var(--b1); }
+table.fin .stk1 { left: 0; width: 100px; min-width: 100px; max-width: 100px; }
+table.fin .stk2 { left: 100px; min-width: 260px; border-right: 1px solid var(--b1); }
+table.fin thead th.stk0, table.fin thead th.stk1, table.fin thead th.stk2 { z-index: 7; background-color: var(--s2); }
+/* righe con sfondo trasparente: sotto la colonna fissa si deve vedere uno sfondo pieno, altrimenti i numeri scorrono "attraverso" */
+table.fin tr.big td.stk0, table.fin tr.big td.stk1, table.fin tr.big td.stk2,
+table.fin tr.line:hover td.stk0, table.fin tr.line:hover td.stk1, table.fin tr.line:hover td.stk2 { background: linear-gradient(var(--accent-d), var(--accent-d)), var(--s0); }
+table.fin tr.chk.ok td.stk1, table.fin tr.chk.ok td.stk2 { background: linear-gradient(var(--green-d), var(--green-d)), var(--s0); }
+table.fin tr.chk.ko td.stk1, table.fin tr.chk.ko td.stk2 { background: linear-gradient(var(--red-d), var(--red-d)), var(--s0); }
+/* titoli di sezione a tutta riga: il testo resta visibile anche scorrendo a destra */
+table.fin .stk-label { position: sticky; left: 10px; display: inline-block; }
+table.fin th.yr .xbtn { margin-left: 6px; font-size: 11px; vertical-align: middle; opacity: 0.45; }
+table.fin th.yr:hover .xbtn { opacity: 1; }
+/* schermi stretti: resta fissa solo la descrizione (il codice scorre via), così rimane spazio per i numeri */
+@media (max-width: 900px) {
+  table.fin .stk1 { left: auto; width: 56px; min-width: 56px; max-width: 56px; }
+  table.fin .stk2 { left: 0; min-width: 150px; }
+  table.fin .stk0 { min-width: 120px; max-width: 150px; white-space: normal; }
+  .ci.cod { width: 40px; } .ci.desc { min-width: 130px; }
+}
 
 /* input a cella (stile foglio di calcolo) */
 .ci { background: transparent; border: 1px solid transparent; border-radius: 3px; padding: 3px 6px; width: 100%; min-width: 0; outline: none; color: inherit; font-size: 13px; }
@@ -119,5 +164,7 @@ select.ci { cursor: pointer; padding: 2px 2px; width: 62px; font-family: var(--m
 .client-name { font-weight: 600; }
 .legend-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 4px 20px; font-size: 12.5px; color: var(--t1); }
 .legend-box b { font-family: var(--mono); color: var(--accent); }
+.legend-line { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; font-size: 12px; color: var(--t1); margin-bottom: 10px; }
+.legend-line .lg b { font-family: var(--mono); color: var(--accent); margin-right: 2px; }
 .print-head { display: none; }
 .print-only { display: none; }

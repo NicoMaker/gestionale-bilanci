@@ -14,7 +14,7 @@
       h("div", { class: "field" }, h("label", null, "Ragione sociale *"), f.rs),
       h("div", { class: "row2" },
         h("div", { class: "field" }, h("label", null, "Partita IVA"), f.piva),
-        h("div", { class: "field" }, h("label", null, "Anno impostato (ultimo esercizio chiuso)"), f.anno, nuovo ? h("div", { class: "hint" }, "Il bilancio mostra 3 esercizi (anno−2 … anno) e il budget dell'anno successivo.") : null)),
+        h("div", { class: "field" }, h("label", null, "Anno impostato (ultimo esercizio chiuso)"), f.anno, nuovo ? h("div", { class: "hint" }, "Il bilancio mostra tutti gli esercizi (almeno anno−2 … anno) e il budget dell'anno successivo.") : null)),
       h("div", { class: "field" }, h("label", null, "Note"), f.note));
     for (;;) {
       const r = await GB.modal({ title: nuovo ? "Nuovo cliente" : "Modifica cliente", body, buttons: [{ label: "Annulla", value: false }, { label: nuovo ? "Crea cliente" : "Salva", kind: "primary", value: true }] });
