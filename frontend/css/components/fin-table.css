@@ -17,7 +17,7 @@ table.fin tr.sub td { font-weight: 700; background: var(--s1); border-top: 1px s
 table.fin tr.big td { font-weight: 700; background: var(--accent-d); border-top: 1px solid var(--accent-b); border-bottom: 1px solid var(--accent-b); }
 table.fin tr.grand td { font-weight: 800; background: var(--accent); color: #fff; font-size: 13.5px; }
 [data-theme="dark"] table.fin tr.grand td { color: #1a1408; }
-table.fin tr.grand td.pc { color: rgba(255, 255, 255, 0.92); opacity: 1; background: transparent; }
+table.fin tr.grand td.pc { color: rgba(255, 255, 255, 0.92); opacity: 1; }
 [data-theme="dark"] table.fin tr.grand td.pc { color: rgba(26, 20, 8, 0.88); }
 table.fin tr.add td { border-bottom: none; padding: 0 8px 4px; }
 table.fin tr.line:hover td { background: var(--accent-d); }
