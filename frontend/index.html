@@ -1,66 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f7f5f1" />
-  <title>Gestionale Bilanci — Analisi di bilancio</title>
-  <script>
-    (function () {
-      var t = null;
-      try { t = localStorage.getItem("gb.theme"); } catch (e) {}
-      if (t !== "dark" && t !== "light") t = (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", t);
-    })();
-  </script>
-  <link rel="stylesheet" href="/css/tokens.css" />
-  <link rel="stylesheet" href="/css/layout.css" />
-  <link rel="stylesheet" href="/css/components.css" />
-  <link rel="stylesheet" href="/css/print.css" />
-</head>
-<body>
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-icon">📊</div>
-      <div>
-        <div class="logo-main">Gestionale Bilanci</div>
-        <div class="logo-sub">analisi di bilancio</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f5f1" />
+    <title>Gestionale Bilanci — Analisi di bilancio</title>
+    <script>
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem("gb.theme");
+        } catch (e) {}
+        if (t !== "dark" && t !== "light")
+          t =
+            window.matchMedia &&
+            matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
+    <link rel="stylesheet" href="/css/tokens.css" />
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/print.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">📊</div>
+        <div>
+          <div class="logo-main">Gestionale Bilanci</div>
+          <div class="logo-sub">analisi di bilancio</div>
+        </div>
       </div>
+      <nav class="nav" id="nav"></nav>
+      <button class="theme-toggle" id="theme-btn" type="button">
+        <span class="nav-icon">🌓</span
+        ><span class="theme-toggle-label" id="theme-label">Tema</span
+        ><span class="theme-toggle-pill"></span>
+      </button>
+      <div class="sidebar-footer">
+        <span class="conn-dot" id="conn"></span
+        ><span id="conn-t">Database connesso</span>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">
+          ☰
+        </button>
+        <div class="page-title" id="page-title"></div>
+        <div
+          id="ctl"
+          style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap"
+        ></div>
+        <button
+          class="theme-btn-top no-print"
+          id="theme-btn-top"
+          type="button"
+          aria-label="Cambia tema chiaro/scuro"
+          title="Cambia tema chiaro/scuro"
+        >
+          <span class="ico-sun" aria-hidden="true">☀️</span
+          ><span class="ico-moon" aria-hidden="true">🌙</span>
+        </button>
+      </header>
+      <main class="content" id="content"></main>
     </div>
-    <nav class="nav" id="nav"></nav>
-    <button class="theme-toggle" id="theme-btn" type="button"><span class="nav-icon">🌓</span><span class="theme-toggle-label" id="theme-label">Tema</span><span class="theme-toggle-pill"></span></button>
-    <div class="sidebar-footer"><span class="conn-dot" id="conn"></span><span id="conn-t">Database connesso</span></div>
-  </aside>
 
-  <div class="main">
-    <header class="topbar">
-      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
-      <div class="page-title" id="page-title"></div>
-      <div id="ctl" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"></div>
-      <button class="theme-btn-top no-print" id="theme-btn-top" type="button" aria-label="Cambia tema chiaro/scuro" title="Cambia tema chiaro/scuro"><span class="ico-sun" aria-hidden="true">☀️</span><span class="ico-moon" aria-hidden="true">🌙</span></button>
-    </header>
-    <main class="content" id="content"></main>
-  </div>
-
-  <script src="/shared/template.js"></script>
-  <script src="/shared/calc.js"></script>
-  <script src="/js/ui.js"></script>
-  <script src="/js/api.js"></script>
-  <script src="/js/store.js"></script>
-  <script src="/js/charts.js"></script>
-  <script src="/js/fin.js"></script>
-  <script src="/js/pages/clienti.js"></script>
-  <script src="/js/pages/dashboard.js"></script>
-  <script src="/js/pages/sp.js"></script>
-  <script src="/js/pages/ce.js"></script>
-  <script src="/js/pages/rating.js"></script>
-  <script src="/js/pages/indicatori.js"></script>
-  <script src="/js/pages/vendite.js"></script>
-  <script src="/js/pages/budget.js"></script>
-  <script src="/js/pages/bep.js"></script>
-  <script src="/js/pages/investimenti.js"></script>
-  <script src="/js/pages/cashflow.js"></script>
-  <script src="/js/pages/report.js"></script>
-  <script src="/js/main.js"></script>
-</body>
+    <script src="/shared/template.js"></script>
+    <script src="/shared/calc.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/charts.js"></script>
+    <script src="/js/fin.js"></script>
+    <script src="/js/pages/clienti.js"></script>
+    <script src="/js/pages/dashboard.js"></script>
+    <script src="/js/pages/sp.js"></script>
+    <script src="/js/pages/ce.js"></script>
+    <script src="/js/pages/rating.js"></script>
+    <script src="/js/pages/indicatori.js"></script>
+    <script src="/js/pages/vendite.js"></script>
+    <script src="/js/pages/budget.js"></script>
+    <script src="/js/pages/bep.js"></script>
+    <script src="/js/pages/investimenti.js"></script>
+    <script src="/js/pages/cashflow.js"></script>
+    <script src="/js/pages/report.js"></script>
+    <script src="/js/main.js"></script>
+  </body>
 </html>

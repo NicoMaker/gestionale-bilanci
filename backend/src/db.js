@@ -96,7 +96,10 @@ async function init() {
 
 function flush() {
   if (!db) return;
-  if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+  if (saveTimer) {
+    clearTimeout(saveTimer);
+    saveTimer = null;
+  }
   const data = db.export(); // export() azzera i PRAGMA: li riattiviamo
   db.exec("PRAGMA foreign_keys = ON;");
   const tmp = DB_PATH + ".tmp";
@@ -115,7 +118,9 @@ function all(sql, params = []) {
     const rows = [];
     while (stmt.step()) rows.push(stmt.getAsObject());
     return rows;
-  } finally { stmt.free(); }
+  } finally {
+    stmt.free();
+  }
 }
 const one = (sql, params = []) => all(sql, params)[0] || null;
 function run(sql, params = []) {
@@ -130,8 +135,15 @@ function insert(sql, params = []) {
 }
 function tx(fn) {
   db.exec("BEGIN");
-  try { const r = fn(); db.exec("COMMIT"); scheduleSave(); return r; }
-  catch (e) { db.exec("ROLLBACK"); throw e; }
+  try {
+    const r = fn();
+    db.exec("COMMIT");
+    scheduleSave();
+    return r;
+  } catch (e) {
+    db.exec("ROLLBACK");
+    throw e;
+  }
 }
 const dbPath = () => DB_PATH;
 
