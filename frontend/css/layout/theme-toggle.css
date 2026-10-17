@@ -1,0 +1,22 @@
+/* Pulsante tema chiaro/scuro in topbar e transizione tra i temi. */
+/* ─── TOGGLE TEMA (topbar) ─── */
+.theme-btn-top {
+  display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; flex-shrink: 0;
+  background: var(--s0); border: 1px solid var(--b1); border-radius: var(--radius); color: var(--t0); cursor: pointer;
+  font-size: 17px; line-height: 1; transition: background var(--duration-fast), border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.theme-btn-top:hover { background: var(--s1); border-color: var(--accent); }
+.theme-btn-top:focus-visible { outline: none; border-color: var(--accent); box-shadow: var(--shadow-glow); }
+.theme-btn-top .ico-sun, .theme-btn-top .ico-moon { display: none; }
+:root:not([data-theme="dark"]) .theme-btn-top .ico-moon { display: inline; }
+[data-theme="dark"] .theme-btn-top .ico-sun { display: inline; }
+
+/* transizione morbida tra i temi (solo mentre si cambia, classe messa da JS) */
+html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after {
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease !important;
+}
+@media (prefers-reduced-motion: reduce) { html.theme-anim, html.theme-anim * { transition: none !important; } }
+
+@media (max-width: 900px) {
+  .menu-btn { order: 0; } .page-title { order: 1; font-size: 19px; } .theme-btn-top { order: 2; } #ctl { order: 3; width: 100%; }
+}

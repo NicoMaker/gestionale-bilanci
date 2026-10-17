@@ -1,0 +1,15 @@
+/* Bottoni. */
+/* ─── BOTTONI ─── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: var(--radius); font-size: 13px; font-weight: 600;
+  border: 1px solid var(--b1); background: var(--s0); color: var(--t0); cursor: pointer; transition: all var(--duration-fast); white-space: nowrap;
+}
+.btn:hover { background: var(--s1); border-color: var(--b2); }
+.btn.primary { background: var(--accent-gradient); color: #fff; border-color: transparent; box-shadow: 0 2px 8px var(--accent-glow); }
+[data-theme="dark"] .btn.primary { color: #1a1408; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.danger { color: var(--red); border-color: var(--red-b); }
+.btn.danger:hover { background: var(--red-d); }
+.btn.sm { padding: 4px 9px; font-size: 12px; }
+.btn.icon { padding: 4px 8px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }

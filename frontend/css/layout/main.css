@@ -1,0 +1,24 @@
+/* Area principale: topbar, contenuto, pagina. */
+/* ─── MAIN ─── */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100%; }
+.topbar {
+  min-height: var(--topbar-h); background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--b0);
+  display: flex; align-items: center; gap: 14px; padding: 8px 24px; flex-wrap: wrap; z-index: 100;
+}
+.menu-btn { display: none; background: none; border: 1px solid var(--b1); border-radius: var(--r-sm); padding: 6px 10px; font-size: 16px; cursor: pointer; color: var(--t0); }
+.page-title { font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; margin-right: auto; }
+.topbar-ctl { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--t2); }
+.topbar-ctl label { font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; font-size: 10.5px; }
+.content { flex: 1; overflow: auto; padding: 24px; background-image: var(--ledger-rule); background-attachment: local; background-size: 100% 28px; background-color: var(--bg); }
+.page { max-width: 1500px; margin: 0 auto; }
+/* pagine con una tabella a tutti gli anni: la tabella occupa l'altezza disponibile, così la barra di scorrimento orizzontale sta sempre in fondo alla finestra */
+.page.fit { min-height: 100%; display: flex; flex-direction: column; }
+.page.fit > .tbl-wrap { flex: 1 0 340px; max-height: none; margin-bottom: 0; }
+
+@media (max-width: 900px) {
+  .sidebar { position: fixed; inset: 0 auto 0 0; transform: translateX(-100%); }
+  body.nav-open .sidebar { transform: none; box-shadow: var(--shadow-xl); }
+  .menu-btn { display: inline-block; }
+  .content { padding: 14px; }
+  .topbar { padding: 8px 14px; }
+}

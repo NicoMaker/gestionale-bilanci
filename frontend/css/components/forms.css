@@ -1,0 +1,12 @@
+/* Campi di input, select, etichette. */
+/* ─── FORM ─── */
+input, select, textarea { font-family: inherit; font-size: 13.5px; color: var(--t0); }
+.input, .select, .field input, .field select, .field textarea, .topbar select {
+  background: var(--s0); border: 1px solid var(--b1); border-radius: var(--r-sm); padding: 7px 10px; outline: none; transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.field input:focus, .field select:focus, .field textarea:focus, .topbar select:focus, .input:focus { border-color: var(--accent); box-shadow: var(--shadow-glow); }
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.field label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--t2); }
+.field input, .field select, .field textarea { width: 100%; }
+.field .hint { font-size: 12px; color: var(--t3); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }

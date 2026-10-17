@@ -1,0 +1,67 @@
+/* Tabelle finanziarie e celle a input. */
+/* ─── TABELLE FINANZIARIE ─── */
+.tbl-wrap { overflow: auto; border: 1px solid var(--b0); border-radius: var(--r-lg); background: var(--s0); box-shadow: var(--shadow-xs); margin-bottom: 18px; max-height: calc(100vh - 190px); }
+.tbl-wrap.free { max-height: none; }
+table.fin { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+table.fin th, table.fin td { padding: 3px 8px; border-bottom: 1px solid var(--b0); white-space: nowrap; }
+table.fin thead th { position: sticky; top: 0; z-index: 5; background: var(--s2); text-align: right; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--t1); border-bottom: 1px solid var(--b1); }
+table.fin thead tr.h2 th { top: 28px; background: var(--s1); font-weight: 600; color: var(--t2); }
+table.fin th.l, table.fin td.l { text-align: left; }
+table.fin td.n { text-align: right; font-family: var(--mono); font-size: 12.5px; }
+table.fin td.pc { text-align: right; font-family: var(--mono); font-size: 11.5px; color: var(--t2); }
+table.fin td.gap, table.fin th.gap { width: 10px; padding: 0; border-bottom: none; background: transparent; }
+table.fin tr.title td { background: var(--accent); color: #fff; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; }
+[data-theme="dark"] table.fin tr.title td { color: #1a1408; }
+table.fin tr.sec td { background: var(--s1); font-weight: 700; color: var(--accent); font-size: 12.5px; padding-top: 7px; }
+table.fin tr.sub td { font-weight: 700; background: var(--s1); border-top: 1px solid var(--b1); }
+table.fin tr.big td { font-weight: 700; background: var(--accent-d); border-top: 1px solid var(--accent-b); border-bottom: 1px solid var(--accent-b); }
+table.fin tr.grand td { font-weight: 800; background: var(--accent); color: #fff; font-size: 13.5px; }
+[data-theme="dark"] table.fin tr.grand td { color: #1a1408; }
+table.fin tr.grand td.pc { color: rgba(255, 255, 255, 0.92); opacity: 1; background: transparent; }
+[data-theme="dark"] table.fin tr.grand td.pc { color: rgba(26, 20, 8, 0.88); }
+table.fin tr.add td { border-bottom: none; padding: 0 8px 4px; }
+table.fin tr.line:hover td { background: var(--accent-d); }
+table.fin tr.chk.ok td { background: var(--green-d); color: var(--green); font-weight: 700; }
+table.fin tr.chk.ko td { background: var(--red-d); color: var(--red); font-weight: 700; }
+table.fin tr.spacer td { padding: 0; height: 6px; border: none; background: transparent; }
+td.neg, .neg { color: var(--red); }
+
+/* colonne fisse a sinistra (codice / nome) mentre si scorrono gli anni in orizzontale:
+   stk0 = una sola colonna nome · stk1 + stk2 = codice + descrizione */
+table.fin .stk0, table.fin .stk1, table.fin .stk2 { position: sticky; z-index: 3; background-color: var(--s0); }
+table.fin .stk0 { left: 0; min-width: 200px; border-right: 1px solid var(--b1); }
+table.fin .stk1 { left: 0; width: 100px; min-width: 100px; max-width: 100px; }
+table.fin .stk2 { left: 100px; min-width: 260px; border-right: 1px solid var(--b1); }
+table.fin thead th.stk0, table.fin thead th.stk1, table.fin thead th.stk2 { z-index: 7; background-color: var(--s2); }
+/* righe con sfondo trasparente: sotto la colonna fissa si deve vedere uno sfondo pieno, altrimenti i numeri scorrono "attraverso" */
+table.fin tr.big td.stk0, table.fin tr.big td.stk1, table.fin tr.big td.stk2,
+table.fin tr.line:hover td.stk0, table.fin tr.line:hover td.stk1, table.fin tr.line:hover td.stk2 { background: linear-gradient(var(--accent-d), var(--accent-d)), var(--s0); }
+table.fin tr.chk.ok td.stk1, table.fin tr.chk.ok td.stk2 { background: linear-gradient(var(--green-d), var(--green-d)), var(--s0); }
+table.fin tr.chk.ko td.stk1, table.fin tr.chk.ko td.stk2 { background: linear-gradient(var(--red-d), var(--red-d)), var(--s0); }
+/* titoli di sezione a tutta riga: il testo resta visibile anche scorrendo a destra */
+table.fin .stk-label { position: sticky; left: 10px; display: inline-block; }
+table.fin th.yr .xbtn { margin-left: 6px; font-size: 11px; vertical-align: middle; opacity: 0.45; }
+table.fin th.yr:hover .xbtn { opacity: 1; }
+/* schermi stretti: resta fissa solo la descrizione (il codice scorre via), così rimane spazio per i numeri */
+@media (max-width: 900px) {
+  table.fin .stk1 { left: auto; width: 56px; min-width: 56px; max-width: 56px; }
+  table.fin .stk2 { left: 0; min-width: 150px; }
+  table.fin .stk0 { min-width: 120px; max-width: 150px; white-space: normal; }
+  .ci.cod { width: 40px; } .ci.desc { min-width: 130px; }
+}
+
+/* input a cella (stile foglio di calcolo) */
+.ci { background: transparent; border: 1px solid transparent; border-radius: 3px; padding: 3px 6px; width: 100%; min-width: 0; outline: none; color: inherit; font-size: 13px; }
+.ci.num { text-align: right; font-family: var(--mono); font-size: 12.5px; }
+.ci:hover { border-color: var(--b1); background: var(--s0); }
+.ci:focus { border-color: var(--accent); background: var(--s0); box-shadow: var(--shadow-glow); color: var(--t0); }
+.ci.cod { width: 84px; } .ci.desc { min-width: 220px; }
+select.ci { cursor: pointer; padding: 2px 2px; width: 62px; font-family: var(--mono); font-weight: 700; }
+.ci.num.w-yr { width: 128px; } .ci.num.w-mo { width: 92px; }
+.ci:read-only { cursor: default; }
+.ro .ci:hover { border-color: transparent; background: transparent; }
+.ro .no-ro { display: none !important; }
+.xbtn { background: none; border: none; color: var(--t3); cursor: pointer; font-size: 14px; padding: 0 5px; border-radius: 3px; }
+.xbtn:hover { color: var(--red); background: var(--red-d); }
+.addbtn { background: none; border: 1px dashed var(--b1); color: var(--t2); font-size: 11.5px; padding: 2px 10px; border-radius: var(--r-sm); cursor: pointer; }
+.addbtn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-d); }

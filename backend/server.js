@@ -1,53 +1,13 @@
-const os = require("os");
-const path = require("path");
-const https = require("https");
-const express = require("express");
-const db = require("./src/db");
-const routes = require("./src/routes");
-
-const PORT = process.env.PORT || 3000;
-const ROOT = path.join(__dirname, "..");
-
-/* Primo indirizzo IPv4 non interno della macchina (rete locale). */
-function getLocalIP() {
-  for (const list of Object.values(os.networkInterfaces())) {
-    for (const i of list || [])
-      if (i.family === "IPv4" && !i.internal) return i.address;
-  }
-  return "127.0.0.1";
-}
-
-/* IP pubblico tramite ipify, con timeout: se sei offline il server parte comunque. */
-function getPublicIP(timeoutMs = 3000) {
-  return new Promise((resolve) => {
-    const req = https.get(
-      "https://api.ipify.org",
-      { timeout: timeoutMs },
-      (res) => {
-        let txt = "";
-        res.on("data", (c) => (txt += c));
-        res.on("end", () =>
-          resolve(/^[\d.:a-f]+$/i.test(txt.trim()) ? txt.trim() : null),
-        );
-      },
-    );
-    req.on("timeout", () => req.destroy());
-    req.on("error", () => resolve(null));
-  });
-}
+/* Avvio del server: database, app Express, banner con gli indirizzi, chiusura pulita. */
+const db = require("./src/core/db");
+const { PORT } = require("./src/config");
+const { createApp } = require("./src/app");
+const { getLocalIP, getPublicIP } = require("./src/core/network");
 
 /* banner = true solo all'avvio da riga di comando (nei test non si interroga la rete). */
 async function start({ banner = false } = {}) {
   await db.init();
-  const app = express();
-  app.use(express.json({ limit: "1mb" }));
-
-  app.use("/api", routes);
-  app.use("/shared", express.static(path.join(ROOT, "shared")));
-  app.use(express.static(path.join(ROOT, "frontend")));
-  app.get("*", (req, res) =>
-    res.sendFile(path.join(ROOT, "frontend", "index.html")),
-  );
+  const app = createApp();
 
   const server = app.listen(PORT, "0.0.0.0", async () => {
     if (!banner) {

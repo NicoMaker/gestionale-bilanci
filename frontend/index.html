@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f7f5f1" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png" />
   <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
   <title>Gestionale Bilanci — Analisi di bilancio</title>
   <script>
     (function () {
@@ -17,9 +17,23 @@
       document.documentElement.setAttribute("data-theme", t);
     })();
   </script>
-  <link rel="stylesheet" href="/css/tokens.css" />
-  <link rel="stylesheet" href="/css/layout.css" />
-  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/base/tokens.css" />
+  <link rel="stylesheet" href="/css/base/reset.css" />
+  <link rel="stylesheet" href="/css/layout/sidebar.css" />
+  <link rel="stylesheet" href="/css/layout/main.css" />
+  <link rel="stylesheet" href="/css/layout/theme-toggle.css" />
+  <link rel="stylesheet" href="/css/components/buttons.css" />
+  <link rel="stylesheet" href="/css/components/forms.css" />
+  <link rel="stylesheet" href="/css/components/search-select.css" />
+  <link rel="stylesheet" href="/css/components/cards.css" />
+  <link rel="stylesheet" href="/css/components/kpi.css" />
+  <link rel="stylesheet" href="/css/components/fin-table.css" />
+  <link rel="stylesheet" href="/css/components/badges.css" />
+  <link rel="stylesheet" href="/css/components/modal-toast.css" />
+  <link rel="stylesheet" href="/css/components/common.css" />
+  <link rel="stylesheet" href="/css/components/client-search.css" />
+  <link rel="stylesheet" href="/css/components/multi-table.css" />
+  <link rel="stylesheet" href="/css/components/amounts-and-totals.css" />
   <link rel="stylesheet" href="/css/print.css" />
 </head>
 <body>
@@ -48,24 +62,43 @@
 
   <script src="/shared/template.js"></script>
   <script src="/shared/calc.js"></script>
-  <script src="/js/ui.js"></script>
-  <script src="/js/api.js"></script>
-  <script src="/js/store.js"></script>
-  <script src="/js/charts.js"></script>
-  <script src="/js/fin.js"></script>
-  <script src="/js/multi.js"></script>
-  <script src="/js/pages/clienti.js"></script>
-  <script src="/js/pages/dashboard.js"></script>
-  <script src="/js/pages/sp.js"></script>
-  <script src="/js/pages/ce.js"></script>
-  <script src="/js/pages/rating.js"></script>
-  <script src="/js/pages/indicatori.js"></script>
-  <script src="/js/pages/vendite.js"></script>
-  <script src="/js/pages/budget.js"></script>
-  <script src="/js/pages/bep.js"></script>
-  <script src="/js/pages/investimenti.js"></script>
-  <script src="/js/pages/cashflow.js"></script>
-  <script src="/js/pages/report.js"></script>
+  <script src="/js/core/namespace.js"></script>
+  <script src="/js/core/format.js"></script>
+  <script src="/js/core/dom.js"></script>
+  <script src="/js/core/connection.js"></script>
+  <script src="/js/core/number-format.js"></script>
+  <script src="/js/core/live.js"></script>
+  <script src="/js/core/helpers.js"></script>
+  <script src="/js/core/print.js"></script>
+  <script src="/js/components/toast/toast.js"></script>
+  <script src="/js/components/modal/modal.js"></script>
+  <script src="/js/components/search-select/search-select.js"></script>
+  <script src="/js/components/num-input/num-input.js"></script>
+  <script src="/js/components/grid-nav/grid-nav.js"></script>
+  <script src="/js/components/auto-sign/auto-sign.js"></script>
+  <script src="/js/components/chart/chart.js"></script>
+  <script src="/js/components/fin-table/fin-table.js"></script>
+  <script src="/js/components/multi-table/multi-table.js"></script>
+  <script src="/js/features/voci/delete-voce.js"></script>
+  <script src="/js/features/anni/anni.js"></script>
+  <script src="/js/services/api.js"></script>
+  <script src="/js/services/store.js"></script>
+  <script src="/js/pages/clienti/clienti.page.js"></script>
+  <script src="/js/pages/dashboard/dashboard.page.js"></script>
+  <script src="/js/pages/sp/sp.page.js"></script>
+  <script src="/js/pages/ce/ce.page.js"></script>
+  <script src="/js/pages/rating/rating.page.js"></script>
+  <script src="/js/pages/indicatori/indicatori.page.js"></script>
+  <script src="/js/pages/vendite/vendite.page.js"></script>
+  <script src="/js/pages/budget/budget.page.js"></script>
+  <script src="/js/pages/bep/bep.page.js"></script>
+  <script src="/js/pages/investimenti/investimenti.page.js"></script>
+  <script src="/js/pages/cashflow/cashflow.page.js"></script>
+  <script src="/js/pages/report/report.page.js"></script>
+  <script src="/js/app/theme.js"></script>
+  <script src="/js/app/sidebar.js"></script>
+  <script src="/js/app/topbar.js"></script>
+  <script src="/js/app/router.js"></script>
   <script src="/js/main.js"></script>
 </body>
 </html>

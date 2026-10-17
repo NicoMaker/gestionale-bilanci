@@ -5,7 +5,7 @@ const path = require("path");
 process.env.PORT = "3999";
 process.env.DB_PATH = path.join(os.tmpdir(), "gb-test-" + Date.now() + ".db");
 const { start } = require("../server");
-const Calc = require("../../shared/calc.js");
+const Calc = require("../shared/calc.js");
 
 const base = "http://localhost:3999/api";
 const api = async (m, u, b) => {
