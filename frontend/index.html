@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f5f1" />
   <title>Gestionale Bilanci — Analisi di bilancio</title>
   <script>
-    (function () { try { var t = localStorage.getItem("gb.theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {} })();
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("gb.theme"); } catch (e) {}
+      if (t !== "dark" && t !== "light") t = (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
   </script>
   <link rel="stylesheet" href="/css/tokens.css" />
   <link rel="stylesheet" href="/css/layout.css" />
@@ -31,6 +37,7 @@
       <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu">☰</button>
       <div class="page-title" id="page-title"></div>
       <div id="ctl" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"></div>
+      <button class="theme-btn-top no-print" id="theme-btn-top" type="button" aria-label="Cambia tema chiaro/scuro" title="Cambia tema chiaro/scuro"><span class="ico-sun" aria-hidden="true">☀️</span><span class="ico-moon" aria-hidden="true">🌙</span></button>
     </header>
     <main class="content" id="content"></main>
   </div>

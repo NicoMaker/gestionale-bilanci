@@ -105,17 +105,60 @@
       const table = h("table", { class: "fin" });
       table.append(h("thead", null, h("tr", null, h("th", { class: "l" }, "Ragione sociale"), h("th", { class: "l" }, "P.IVA"), h("th", null, "Anno base"), h("th", { class: "l" }, "Esercizi"), h("th", { class: "l" }, "Creato il"), h("th", { class: "no-print" }, ""))));
       const tb = h("tbody"); table.append(tb);
-      S.clienti.forEach((c) => {
-        tb.append(h("tr", { class: "line", style: { fontWeight: c.id === S.clienteId ? 700 : 400 } },
-          h("td", { class: "l client-name" }, c.ragione_sociale + (c.id === S.clienteId ? "  ◀ selezionato" : "")),
-          h("td", { class: "l" }, c.partita_iva || "—"), h("td", { class: "n" }, String(c.anno_base)),
+
+      /* ── ricerca cliente: ragione sociale, P.IVA, anni, note — senza distinguere maiuscole/accenti ── */
+      const plain = (s) => String(s ?? "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+      const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const searchIn = (c) => plain([c.ragione_sociale, c.partita_iva, c.anno_base, (c.anni || []).join(" "), c.note].join(" "));
+      const hay = new Map(S.clienti.map((c) => [c.id, searchIn(c)]));
+      // evidenzia nel testo i termini cercati (le lettere accentate mantengono la stessa lunghezza dopo la normalizzazione)
+      const hl = (text, toks) => {
+        const t = String(text);
+        if (!toks.length) return t;
+        const re = new RegExp("(" + toks.map(esc).join("|") + ")", "gi");
+        const p = plain(t);
+        if (p.length !== t.length) return t;
+        const out = []; let last = 0, m;
+        const reP = new RegExp(re.source, "gi");
+        while ((m = reP.exec(p)) && m[0]) { out.push(t.slice(last, m.index), h("mark", { class: "hl" }, t.slice(m.index, m.index + m[0].length))); last = m.index + m[0].length; }
+        out.push(t.slice(last));
+        return out;
+      };
+
+      const input = h("input", { type: "search", placeholder: "Cerca cliente per nome, P.IVA o anno…", autocomplete: "off", spellcheck: "false", "aria-label": "Cerca cliente", value: GB.clientiQuery || "" });
+      const clear = h("button", { type: "button", class: "ls-clear", title: "Cancella ricerca", "aria-label": "Cancella ricerca" }, "✕");
+      const wrap = h("div", { class: "list-search" }, h("span", { class: "ls-ico", "aria-hidden": "true" }, "🔍"), input, clear);
+      const count = h("div", { class: "list-count", "aria-live": "polite" });
+      const tools = h("div", { class: "list-tools no-print" }, wrap, count);
+
+      function paintRows() {
+        const q = input.value;
+        GB.clientiQuery = q;
+        const toks = plain(q).split(/\s+/).filter(Boolean);
+        wrap.classList.toggle("has-value", !!q);
+        const rows = S.clienti.filter((c) => toks.every((k) => hay.get(c.id).includes(k)));
+        tb.replaceChildren(...(rows.length ? rows.map((c) => h("tr", { class: "line", style: { fontWeight: c.id === S.clienteId ? 700 : 400 } },
+          h("td", { class: "l client-name" }, hl(c.ragione_sociale, toks), c.id === S.clienteId ? "  ◀ selezionato" : ""),
+          h("td", { class: "l" }, c.partita_iva ? hl(c.partita_iva, toks) : "—"), h("td", { class: "n" }, String(c.anno_base)),
           h("td", { class: "l" }, (c.anni || []).join(", ")), h("td", { class: "l" }, fmt.data(c.created_at)),
           h("td", { class: "no-print", style: { textAlign: "right", whiteSpace: "nowrap" } },
             h("button", { class: "btn sm primary", onclick: () => apri(c) }, "Apri"), " ",
             h("button", { class: "btn sm", onclick: () => modifica(c) }, "Modifica"), " ",
-            h("button", { class: "btn sm danger", onclick: () => elimina(c) }, "Elimina"))));
+            h("button", { class: "btn sm danger", onclick: () => elimina(c) }, "Elimina"))))
+          : [h("tr", { class: "no-results" }, h("td", { colspan: 6 }, `Nessun cliente trovato per “${q.trim()}”`))]));
+        count.textContent = toks.length ? `${rows.length} di ${S.clienti.length} clienti` : `${S.clienti.length} client${S.clienti.length === 1 ? "e" : "i"}`;
+        return rows;
+      }
+      input.addEventListener("input", paintRows);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && input.value) { e.preventDefault(); input.value = ""; paintRows(); }
+        else if (e.key === "Enter") { const rows = paintRows(); if (rows.length === 1) apri(rows[0]); } // un solo risultato: Invio apre il cliente
       });
-      container.append(GB.printHead("Elenco clienti", ""), head, h("div", { class: "tbl-wrap free" }, table));
+      clear.addEventListener("click", () => { input.value = ""; paintRows(); input.focus(); });
+      paintRows();
+
+      container.append(GB.printHead("Elenco clienti", ""), head, tools, h("div", { class: "tbl-wrap free" }, table));
+      if (GB.clientiQuery) { const l = input.value.length; input.focus({ preventScroll: true }); try { input.setSelectionRange(l, l); } catch (e) { /* type=search */ } }
       return { update() {} };
     },
   };

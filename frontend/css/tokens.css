@@ -10,6 +10,8 @@
 
 /* ─── DESIGN TOKENS ──────────────────────────────────────────── */
 :root {
+  color-scheme: light;
+
   /* Backgrounds — carta calda, non slate freddo */
   --bg: #f7f5f1;
   --s0: #ffffff;
@@ -138,40 +140,8 @@
 
 /* ─── DARK MODE TOKENS ───────────────────────────────────────── */
 [data-theme="dark"] {
-  /* Backgrounds — inchiostro notturno */
-  --bg: #10131a;
-  --s0: #1a1f29;
-  --s1: #212734;
-  --s2: #272e3d;
-  --s3: #313a4d;
+  color-scheme: dark;
 
-  --b0: #2a3140;
-  --b1: #3a4356;
-  --b2: #4e5a70;
-
-  /* Accent — oro/ottone (notturno) */
-  --accent: #d4a24c;
-  --accent-d: rgba(212, 162, 76, 0.12);
-  --accent-b: rgba(212, 162, 76, 0.24);
-  --accent-hov: #e3b563;
-  --accent-glow: rgba(212, 162, 76, 0.3);
-  --accent-gradient: linear-gradient(135deg, #e3b563 0%, #d4a24c 100%);
-
-  --green: #4cae7f;
-  --green-d: rgba(76, 174, 127, 0.14);
-  --red: #e2665d;
-  --red-d: rgba(226, 102, 93, 0.14);
-  --yellow: #e0aa4e;
-  --yellow-d: rgba(224, 170, 78, 0.14);
-  --purple: #a98fd1;
-  --purple-d: rgba(169, 143, 209, 0.14);
-  --cyan: #4fc1c9;
-  --cyan-d: rgba(79, 193, 201, 0.14);
-  --orange: #e08a4c;
-  --orange-d: rgba(224, 138, 76, 0.14);
-
-/* ─── DARK MODE TOKENS ───────────────────────────────────────── */
-[data-theme="dark"] {
   /* Backgrounds — inchiostro notturno */
   --bg: #10131a;
   --s0: #1a1f29;
