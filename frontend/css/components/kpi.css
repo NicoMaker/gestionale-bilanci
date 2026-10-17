@@ -1,7 +1,34 @@
 /* Indicatori KPI. */
 /* ─── KPI ─── */
-.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 18px; }
-.kpi { background: var(--s0); border: 1px solid var(--b0); border-radius: var(--r-lg); padding: 14px 16px; box-shadow: var(--shadow-xs); }
-.kpi .l { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--t3); }
-.kpi .v { font-family: var(--serif); font-size: 24px; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
-.kpi .s { font-size: 12px; color: var(--t2); margin-top: 2px; }
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.kpi {
+  background: var(--s0);
+  border: 1px solid var(--b0);
+  border-radius: var(--r-lg);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-xs);
+}
+.kpi .l {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--t3);
+}
+.kpi .v {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.kpi .s {
+  font-size: 12px;
+  color: var(--t2);
+  margin-top: 2px;
+}

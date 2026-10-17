@@ -30,7 +30,11 @@
   // helper: imposta testo + classe neg
   GB.setNum = (el, v, dec = 2) => {
     el.textContent = fmt.num(v, dec);
-    const nz = v !== null && v !== undefined && isFinite(v) && Math.abs(v) >= 0.5 * Math.pow(10, -dec);
+    const nz =
+      v !== null &&
+      v !== undefined &&
+      isFinite(v) &&
+      Math.abs(v) >= 0.5 * Math.pow(10, -dec);
     el.classList.toggle("neg", nz && v < 0);
     el.classList.toggle("pos", nz && v > 0);
   };

@@ -1,23 +1,90 @@
 /* Ricerca nell'elenco clienti. */
 /* ─── RICERCA CLIENTI (pagina iniziale) ─── */
-.list-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
-.list-search { position: relative; flex: 1 1 320px; max-width: 520px; }
-.list-search .ls-ico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--t3); pointer-events: none; }
+.list-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.list-search {
+  position: relative;
+  flex: 1 1 320px;
+  max-width: 520px;
+}
+.list-search .ls-ico {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--t3);
+  pointer-events: none;
+}
 .list-search input {
-  width: 100%; background: var(--s0); border: 1px solid var(--b1); border-radius: var(--radius); padding: 10px 38px 10px 36px; outline: none;
-  font-size: 14px; transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+  width: 100%;
+  background: var(--s0);
+  border: 1px solid var(--b1);
+  border-radius: var(--radius);
+  padding: 10px 38px 10px 36px;
+  outline: none;
+  font-size: 14px;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
 }
-.list-search input::placeholder { color: var(--t3); }
-.list-search input:focus { border-color: var(--accent); box-shadow: var(--shadow-glow); }
+.list-search input::placeholder {
+  color: var(--t3);
+}
+.list-search input:focus {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
+}
 .list-search .ls-clear {
-  position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border: none; border-radius: var(--r-sm);
-  background: transparent; color: var(--t2); cursor: pointer; font-size: 14px; display: none;
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--t2);
+  cursor: pointer;
+  font-size: 14px;
+  display: none;
 }
-.list-search .ls-clear:hover { background: var(--s2); color: var(--t0); }
-.list-search.has-value .ls-clear { display: block; }
-.list-count { font-size: 12.5px; color: var(--t2); font-family: var(--mono); }
-mark.hl { background: var(--accent-b); color: inherit; border-radius: 2px; padding: 0 1px; }
-tr.no-results td { text-align: center !important; color: var(--t2); padding: 26px 12px !important; font-style: italic; }
-.list-search input[type="search"] { -webkit-appearance: none; appearance: none; }
+.list-search .ls-clear:hover {
+  background: var(--s2);
+  color: var(--t0);
+}
+.list-search.has-value .ls-clear {
+  display: block;
+}
+.list-count {
+  font-size: 12.5px;
+  color: var(--t2);
+  font-family: var(--mono);
+}
+mark.hl {
+  background: var(--accent-b);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+tr.no-results td {
+  text-align: center !important;
+  color: var(--t2);
+  padding: 26px 12px !important;
+  font-style: italic;
+}
+.list-search input[type="search"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
 .list-search input[type="search"]::-webkit-search-cancel-button,
-.list-search input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; display: none; }
+.list-search input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  display: none;
+}

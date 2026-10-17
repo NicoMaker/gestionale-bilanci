@@ -68,13 +68,11 @@ router.delete(
     if (nAnni <= 1)
       throw new HttpError(400, "Il cliente deve avere almeno un anno");
     if (dAnno && dAnno.totale && String(req.query.conferma) !== "1") {
-      return res
-        .status(409)
-        .json({
-          error: "L'anno contiene dati: conferma l'eliminazione",
-          richiede_conferma: true,
-          dati: dAnno,
-        });
+      return res.status(409).json({
+        error: "L'anno contiene dati: conferma l'eliminazione",
+        richiede_conferma: true,
+        dati: dAnno,
+      });
     }
     db.tx(() => {
       const sub = "SELECT id FROM voci WHERE cliente_id=?";

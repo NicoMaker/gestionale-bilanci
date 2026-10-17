@@ -81,14 +81,12 @@ router.delete(
     const c = getCliente(toId(req.params.id));
     const d = datiCliente(c.id);
     if (d.ha_dati && norm(req.query.conferma) !== norm(c.ragione_sociale)) {
-      return res
-        .status(409)
-        .json({
-          error:
-            "Il cliente contiene dati: per eliminarlo conferma digitando la ragione sociale",
-          richiede_conferma: true,
-          dati: d,
-        });
+      return res.status(409).json({
+        error:
+          "Il cliente contiene dati: per eliminarlo conferma digitando la ragione sociale",
+        richiede_conferma: true,
+        dati: d,
+      });
     }
     db.tx(() => {
       // eliminazione esplicita (non ci affidiamo solo al CASCADE)

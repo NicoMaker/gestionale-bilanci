@@ -15,8 +15,10 @@
         if (el.classList.contains("pc") && c === "pos") c = "";
         const neg = c === "neg",
           pos = c === "pos";
-        if (el.classList.contains("neg") !== neg) el.classList.toggle("neg", neg);
-        if (el.classList.contains("pos") !== pos) el.classList.toggle("pos", pos);
+        if (el.classList.contains("neg") !== neg)
+          el.classList.toggle("neg", neg);
+        if (el.classList.contains("pos") !== pos)
+          el.classList.toggle("pos", pos);
       });
     };
     let queued = false;

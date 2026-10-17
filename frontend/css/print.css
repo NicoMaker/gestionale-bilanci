@@ -142,8 +142,12 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  .ci.pos { color: var(--green) !important; }
-  .ci.neg { color: var(--red) !important; }
+  .ci.pos {
+    color: var(--green) !important;
+  }
+  .ci.neg {
+    color: var(--red) !important;
+  }
   .ci {
     border: none !important;
     background: transparent !important;

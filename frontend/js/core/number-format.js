@@ -40,7 +40,13 @@
       const rep = hasComma ? "" : ",";
       txt = raw.slice(0, caret - 1) + rep + raw.slice(caret);
       before = raw.slice(0, caret - 1) + rep;
-    } else if (ev && /^insertFrom/.test(ev.inputType || "") && raw.indexOf(",") === -1 && !/^\s*[-−(]?\d{1,3}(\.\d{3})+\s*\)?$/.test(raw) && (raw.match(/\./g) || []).length === 1) {
+    } else if (
+      ev &&
+      /^insertFrom/.test(ev.inputType || "") &&
+      raw.indexOf(",") === -1 &&
+      !/^\s*[-−(]?\d{1,3}(\.\d{3})+\s*\)?$/.test(raw) &&
+      (raw.match(/\./g) || []).length === 1
+    ) {
       // testo incollato tipo "1234.56": il punto singolo è decimale
       txt = raw.replace(".", ",");
       before = before.replace(".", ",");
@@ -54,7 +60,10 @@
       // una seconda virgola prima del cursore non conta
       const b = clean(before);
       const first = b.indexOf(",");
-      sig = first === -1 ? b.length : first + 1 + b.slice(first + 1).replace(/,/g, "").length;
+      sig =
+        first === -1
+          ? b.length
+          : first + 1 + b.slice(first + 1).replace(/,/g, "").length;
     }
     const hasDec = t.indexOf(",") !== -1;
     let [ip, dp] = t.split(",");
@@ -78,7 +87,6 @@
     }
   }
   GB.liveFormat = liveFormat;
-
 
   GB.numFmt = { group, editText, signOf, paintInput, liveFormat };
 })();

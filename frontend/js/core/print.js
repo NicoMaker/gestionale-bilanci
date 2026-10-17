@@ -10,7 +10,6 @@
     table.style.setProperty("--pz", scale.toFixed(3));
   };
 
-
   GB.printHead = (title, sub) => {
     const S = GB.store;
     return h(

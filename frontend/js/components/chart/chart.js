@@ -98,7 +98,8 @@
       const b = box.getBoundingClientRect();
       let x = ev.clientX - b.left + 14,
         y = ev.clientY - b.top - 14 - tip.offsetHeight;
-      if (x + tip.offsetWidth > b.width) x = ev.clientX - b.left - tip.offsetWidth - 14;
+      if (x + tip.offsetWidth > b.width)
+        x = ev.clientX - b.left - tip.offsetWidth - 14;
       if (x < 0) x = 4;
       if (y < 0) y = ev.clientY - b.top + 16;
       tip.style.left = x + "px";
@@ -203,7 +204,12 @@
           class: "bar",
           style: { fill: b.color || "var(--accent)" },
         });
-        attach(rect, () => ({ name: b.name, label: labels[i], v, color: b.color }));
+        attach(rect, () => ({
+          name: b.name,
+          label: labels[i],
+          v,
+          color: b.color,
+        }));
         svg.append(rect);
       });
     });
@@ -239,7 +245,13 @@
       // punti con il valore originale (serve per il tooltip)
       const data = [];
       l.values.forEach((v, i) => {
-        if (v != null) data.push({ v, i, x: l.x ? l.x[i] : L + slot * i + slot / 2, y: f(v) });
+        if (v != null)
+          data.push({
+            v,
+            i,
+            x: l.x ? l.x[i] : L + slot * i + slot / 2,
+            y: f(v),
+          });
       });
       const mark = s("circle", {
         r: 5,
@@ -266,7 +278,14 @@
         const d = nearest(ev);
         mark.setAttribute("cx", d.x);
         mark.setAttribute("cy", d.y);
-        return { name: l.name, label: labels[d.i], v: d.v, color: l.color, y2: l.y2, mark };
+        return {
+          name: l.name,
+          label: labels[d.i],
+          v: d.v,
+          color: l.color,
+          y2: l.y2,
+          mark,
+        };
       };
       const hitLine = s("polyline", {
         points: pts.map((p) => p.join(",")).join(" "),
@@ -276,7 +295,12 @@
       attach(hitLine, lineInfo);
       svg.append(hitLine, mark);
       if (data.length === 1) {
-        const c = s("circle", { cx: data[0].x, cy: data[0].y, r: 9, class: "line-hit-dot" });
+        const c = s("circle", {
+          cx: data[0].x,
+          cy: data[0].y,
+          r: 9,
+          class: "line-hit-dot",
+        });
         attach(c, lineInfo);
         svg.append(c);
       }
