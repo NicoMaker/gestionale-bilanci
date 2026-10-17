@@ -210,3 +210,4 @@
   --cyan-b: color-mix(in srgb, var(--cyan) 26%, transparent);
   --orange-b: color-mix(in srgb, var(--orange) 26%, transparent);
 }
+
