@@ -49,3 +49,9 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* icona davanti al testo del pulsante */
+.btn .btn-ico {
+  margin-right: 6px;
+  font-size: 0.95em;
+}

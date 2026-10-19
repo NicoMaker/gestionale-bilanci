@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "demo": "node scripts/seed-demo.js",
+    "demo": "node scripts/seed/index.js",
+    "demo:singolo": "node scripts/seed-demo.js",
     "seed": "node scripts/seed/index.js",
     "seed:casi": "node scripts/seed/index.js --set=casi",
     "seed:tutti": "node scripts/seed/index.js --set=tutti",

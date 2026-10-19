@@ -1,0 +1,91 @@
+/* Grafici: elementi cliccabili e tooltip (compare solo sull'elemento toccato). */
+.chart-box {
+  position: relative;
+}
+.chart .bar {
+  cursor: pointer;
+  transition: opacity var(--duration-fast);
+}
+.chart .bar.sel {
+  stroke: var(--t0);
+  stroke-width: 1.6;
+}
+.chart .line-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 16;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  cursor: pointer;
+  pointer-events: stroke;
+}
+.chart .line-hit-dot {
+  fill: transparent;
+  cursor: pointer;
+}
+.chart .mark {
+  fill: var(--s0);
+  stroke-width: 2.6;
+  pointer-events: none;
+}
+.chart-tip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  background: var(--t0);
+  color: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 7px 10px;
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: nowrap;
+  transition: opacity var(--duration-fast);
+}
+.chart-tip.on {
+  opacity: 1;
+  visibility: visible;
+}
+.chart-tip .t {
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.chart-tip .r {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.chart-tip .r i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.chart-tip .v {
+  font-family: var(--mono);
+  margin-left: 8px;
+}
+.chart-tip .v.pos {
+  color: #7ee0a8;
+}
+.chart-tip .v.neg {
+  color: #ffa198;
+}
+[data-theme="dark"] .chart-tip .v.pos {
+  color: #0a5a2d;
+}
+[data-theme="dark"] .chart-tip .v.neg {
+  color: #8f1810;
+}
+@media print {
+  .chart-tip {
+    display: none !important;
+  }
+  .chart .mark {
+    display: none !important;
+  }
+}

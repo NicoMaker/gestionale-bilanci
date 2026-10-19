@@ -1,4 +1,4 @@
-/* Righe della tabella: filtro per ricerca, evidenziazione, penna ✏️ accanto al nome per modificare, pulsanti Apri / Elimina e riga «nessun risultato». */
+/* Righe della tabella: filtro per ricerca, evidenziazione, penna ✏️ accanto al nome per modificare, pulsanti Apri 📂 / Elimina 🗑️ e riga «nessun risultato». */
 (function () {
   const GB = window.GB;
   const { h, fmt } = GB;
@@ -65,12 +65,14 @@
                   h(
                     "button",
                     { class: "btn sm primary", onclick: () => apri(c) },
+                    h("span", { class: "btn-ico", "aria-hidden": "true" }, "📂"),
                     "Apri",
                   ),
                   " ",
                   h(
                     "button",
                     { class: "btn sm danger", onclick: () => elimina(c) },
+                    h("span", { class: "btn-ico", "aria-hidden": "true" }, "🗑️"),
                     "Elimina",
                   ),
                 ),

@@ -10,7 +10,11 @@
     render(container) {
       const S = GB.store;
       const PT = GB.parts.clienti;
-      const head = PT.barra({ nuovo: PT.azioni.nuovo, demo: PT.azioni.demo });
+      const head = PT.barra({
+        nuovo: PT.azioni.nuovo,
+        demo: PT.azioni.demo,
+        demoClienti: PT.azioni.demoClienti,
+      });
 
       if (!S.clienti.length) {
         container.append(head, PT.vuoto());

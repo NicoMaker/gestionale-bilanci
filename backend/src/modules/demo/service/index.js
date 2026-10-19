@@ -1,13 +1,13 @@
 /* Cliente demo: 4 esercizi di dati coerenti (stato patrimoniale in pareggio), vendite mensili, budget e cash flow. */
 const db = require("../../../core/db");
 const { creaContesto } = require("./contesto");
-const { inserisciContoEconomico } = require("./conto-economico");
-const { inserisciStatoPatrimoniale } = require("./stato-patrimoniale");
-const { inserisciEsercizio2025 } = require("./esercizio-2025");
-const { quadraBilancio } = require("./quadratura");
-const { inserisciVendite } = require("./vendite");
-const { inserisciParametriBudget } = require("./budget");
-const { inserisciCashflow } = require("./cashflow");
+const { inserisciContoEconomico } = require("./bilancio/conto-economico");
+const { inserisciStatoPatrimoniale } = require("./bilancio/stato-patrimoniale");
+const { inserisciEsercizio2025 } = require("./bilancio/esercizio-2025");
+const { quadraBilancio } = require("./bilancio/quadratura");
+const { inserisciVendite } = require("./previsioni/vendite");
+const { inserisciParametriBudget } = require("./previsioni/budget");
+const { inserisciCashflow } = require("./previsioni/cashflow");
 
 function creaDemo() {
   return db.tx(() => {

@@ -1,5 +1,5 @@
 /* Trasforma la scheda di un cliente (clienti.js) in un caso di seed: bilancio dettagliato, vendite, parametri, budget e cash flow. */
-const { profilo } = require("../core/profilo");
+const { profilo } = require("../core/cliente/profilo");
 const CURVE = require("./curve");
 const { rng, r2, curvaAnno } = require("./random");
 const { applicaDettaglio } = require("./dettaglio");

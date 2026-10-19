@@ -34,20 +34,20 @@
     <link rel="stylesheet" href="/css/layout/sidebar.css" />
     <link rel="stylesheet" href="/css/layout/main.css" />
     <link rel="stylesheet" href="/css/layout/theme-toggle.css" />
-    <link rel="stylesheet" href="/css/components/buttons.css" />
-    <link rel="stylesheet" href="/css/components/forms.css" />
-    <link rel="stylesheet" href="/css/components/search-select.css" />
-    <link rel="stylesheet" href="/css/components/cards.css" />
-    <link rel="stylesheet" href="/css/components/kpi.css" />
-    <link rel="stylesheet" href="/css/components/fin-table.css" />
-    <link rel="stylesheet" href="/css/components/badges.css" />
-    <link rel="stylesheet" href="/css/components/modal-toast.css" />
-    <link rel="stylesheet" href="/css/components/edit-row.css" />
-    <link rel="stylesheet" href="/css/components/common.css" />
-    <link rel="stylesheet" href="/css/components/chart.css" />
-    <link rel="stylesheet" href="/css/components/client-search.css" />
-    <link rel="stylesheet" href="/css/components/multi-table.css" />
-    <link rel="stylesheet" href="/css/components/amounts-and-totals.css" />
+    <link rel="stylesheet" href="/css/components/ui/buttons.css" />
+    <link rel="stylesheet" href="/css/components/form/forms.css" />
+    <link rel="stylesheet" href="/css/components/form/search-select.css" />
+    <link rel="stylesheet" href="/css/components/ui/cards.css" />
+    <link rel="stylesheet" href="/css/components/ui/kpi.css" />
+    <link rel="stylesheet" href="/css/components/tabelle/fin-table.css" />
+    <link rel="stylesheet" href="/css/components/ui/badges.css" />
+    <link rel="stylesheet" href="/css/components/dialoghi/modal-toast.css" />
+    <link rel="stylesheet" href="/css/components/form/edit-row.css" />
+    <link rel="stylesheet" href="/css/components/ui/common.css" />
+    <link rel="stylesheet" href="/css/components/ui/chart.css" />
+    <link rel="stylesheet" href="/css/components/form/client-search.css" />
+    <link rel="stylesheet" href="/css/components/tabelle/multi-table.css" />
+    <link rel="stylesheet" href="/css/components/tabelle/amounts-and-totals.css" />
     <link rel="stylesheet" href="/css/print.css" />
   </head>
   <body>
@@ -104,29 +104,29 @@
     <script src="/shared/template/sezioni/cf.js"></script>
     <script src="/shared/template/tutte-le-sezioni.js"></script>
     <script src="/shared/calc/helpers.js"></script>
-    <script src="/shared/calc/sp.js"></script>
-    <script src="/shared/calc/ce.js"></script>
-    <script src="/shared/calc/rating.js"></script>
-    <script src="/shared/calc/indicatori.js"></script>
-    <script src="/shared/calc/vendite.js"></script>
-    <script src="/shared/calc/budget.js"></script>
-    <script src="/shared/calc/investimenti.js"></script>
-    <script src="/shared/calc/bep.js"></script>
-    <script src="/shared/calc/cashflow.js"></script>
-    <script src="/shared/calc/anni.js"></script>
-    <script src="/shared/calc/year-data.js"></script>
-    <script src="/shared/calc/riepilogo.js"></script>
-    <script src="/shared/calc/compute.js"></script>
-    <script src="/shared/calc/build-ds.js"></script>
-    <script src="/js/core/namespace.js"></script>
-    <script src="/js/core/format.js"></script>
-    <script src="/js/core/dom.js"></script>
-    <script src="/js/core/text.js"></script>
-    <script src="/js/core/connection.js"></script>
-    <script src="/js/core/number-format.js"></script>
-    <script src="/js/core/live.js"></script>
-    <script src="/js/core/helpers.js"></script>
-    <script src="/js/core/print.js"></script>
+    <script src="/shared/calc/bilancio/sp.js"></script>
+    <script src="/shared/calc/bilancio/ce.js"></script>
+    <script src="/shared/calc/bilancio/rating.js"></script>
+    <script src="/shared/calc/bilancio/indicatori.js"></script>
+    <script src="/shared/calc/flussi/vendite.js"></script>
+    <script src="/shared/calc/previsioni/budget.js"></script>
+    <script src="/shared/calc/previsioni/investimenti.js"></script>
+    <script src="/shared/calc/previsioni/bep.js"></script>
+    <script src="/shared/calc/flussi/cashflow.js"></script>
+    <script src="/shared/calc/dataset/anni.js"></script>
+    <script src="/shared/calc/dataset/year-data.js"></script>
+    <script src="/shared/calc/dataset/riepilogo.js"></script>
+    <script src="/shared/calc/dataset/compute.js"></script>
+    <script src="/shared/calc/dataset/build-ds.js"></script>
+    <script src="/js/core/base/namespace.js"></script>
+    <script src="/js/core/formati/format.js"></script>
+    <script src="/js/core/base/dom.js"></script>
+    <script src="/js/core/formati/text.js"></script>
+    <script src="/js/core/runtime/connection.js"></script>
+    <script src="/js/core/formati/number-format.js"></script>
+    <script src="/js/core/runtime/live.js"></script>
+    <script src="/js/core/base/helpers.js"></script>
+    <script src="/js/core/runtime/print.js"></script>
     <script src="/js/components/toast/toast.js"></script>
     <script src="/js/components/modal/modal.js"></script>
     <script src="/js/components/edit-row/edit-row.js"></script>
@@ -169,16 +169,17 @@
     <script src="/js/pages/clienti/form.js"></script>
     <script src="/js/pages/clienti/azioni/nuovo.js"></script>
     <script src="/js/pages/clienti/azioni/demo.js"></script>
+    <script src="/js/pages/clienti/azioni/demo-clienti.js"></script>
     <script src="/js/pages/clienti/azioni/apri.js"></script>
     <script src="/js/pages/clienti/azioni/modifica.js"></script>
     <script src="/js/pages/clienti/azioni/elimina.js"></script>
-    <script src="/js/pages/clienti/barra-azioni.js"></script>
-    <script src="/js/pages/clienti/vuoto.js"></script>
-    <script src="/js/pages/clienti/tabella.js"></script>
-    <script src="/js/pages/clienti/ricerca.js"></script>
-    <script src="/js/pages/clienti/barra-ricerca.js"></script>
-    <script src="/js/pages/clienti/righe.js"></script>
-    <script src="/js/pages/clienti/eventi-ricerca.js"></script>
+    <script src="/js/pages/clienti/tabella/barra-azioni.js"></script>
+    <script src="/js/pages/clienti/tabella/vuoto.js"></script>
+    <script src="/js/pages/clienti/tabella/tabella.js"></script>
+    <script src="/js/pages/clienti/ricerca/ricerca.js"></script>
+    <script src="/js/pages/clienti/ricerca/barra-ricerca.js"></script>
+    <script src="/js/pages/clienti/tabella/righe.js"></script>
+    <script src="/js/pages/clienti/ricerca/eventi-ricerca.js"></script>
     <script src="/js/pages/clienti/page.js"></script>
     <script src="/js/pages/dashboard/kpi.js"></script>
     <script src="/js/pages/dashboard/avvisi.js"></script>

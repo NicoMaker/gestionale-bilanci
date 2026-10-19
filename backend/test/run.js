@@ -5,18 +5,18 @@ const { api } = require("./helpers/api");
 const { report } = require("./helpers/runner");
 
 const SUITES = [
-  "cliente-base",
-  "calcoli-demo",
-  "budget",
-  "valori",
-  "voci",
-  "parametri-anni",
-  "rating",
-  "database",
-  "validazioni-cliente",
-  "elimina-anno",
-  "elimina-cliente",
-  "elimina-demo",
+  "clienti/cliente-base",
+  "calcoli/calcoli-demo",
+  "calcoli/budget",
+  "calcoli/valori",
+  "dati/voci",
+  "dati/parametri-anni",
+  "calcoli/rating",
+  "dati/database",
+  "clienti/validazioni-cliente",
+  "dati/elimina-anno",
+  "clienti/elimina-cliente",
+  "clienti/elimina-demo",
 ];
 
 (async () => {
@@ -24,7 +24,7 @@ const SUITES = [
   console.log("\nTest Gestionale Bilanci");
 
   // la suite cliente-base gira prima della creazione del cliente demo
-  await require("./suites/cliente-base")({});
+  await require("./suites/" + SUITES[0])({});
 
   const demo = (await api("POST", "/demo")).body;
   const raw = () =>

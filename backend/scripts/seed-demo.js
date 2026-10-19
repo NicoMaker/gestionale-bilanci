@@ -1,4 +1,4 @@
-// Uso: npm run demo   → crea il cliente demo nel database (db/gestionale.db)
+// Uso: npm run demo:singolo   → crea il solo cliente «Azienda Demo S.r.l.» nel database (db/gestionale.db)
 const db = require("../src/core/db");
 const { creaDemo } = require("../src/modules/demo/service");
 db.init()

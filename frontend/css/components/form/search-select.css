@@ -1,0 +1,92 @@
+/* Select con ricerca (selettore cliente). */
+/* ─── SELECT CON RICERCA ─── */
+.ss {
+  position: relative;
+  width: 260px;
+  max-width: 100%;
+}
+.ss-input {
+  width: 100%;
+  background: var(--s0);
+  border: 1px solid var(--b1);
+  border-radius: var(--r-sm);
+  padding: 7px 28px 7px 10px;
+  outline: none;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+.ss-input:focus,
+.ss.open .ss-input {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
+  cursor: text;
+}
+.ss-caret {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--t3);
+  pointer-events: none;
+  transition: transform var(--duration-fast);
+}
+.ss.open .ss-caret {
+  transform: translateY(-50%) rotate(180deg);
+}
+.ss-list {
+  display: none;
+  position: absolute;
+  z-index: 300;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  max-height: 320px;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--s0);
+  border: 1px solid var(--b1);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 4px;
+}
+.ss.open .ss-list {
+  display: block;
+}
+.ss-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  padding: 7px 10px;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  color: var(--t0);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ss-item .ss-l {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ss-item .sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--t3);
+  flex-shrink: 0;
+}
+.ss-item.active {
+  background: var(--accent-d);
+}
+.ss-item.sel {
+  color: var(--accent);
+  font-weight: 700;
+}
+.ss-item.none {
+  color: var(--t2);
+  cursor: default;
+  font-style: italic;
+}
