@@ -18,7 +18,10 @@
   let idx = 0;
 
   const esc = (t) =>
-    String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    String(t).replace(
+      /[&<>"]/g,
+      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+    );
 
   /* voci attuali: pagine attive del menu laterale + clienti + azioni */
   function costruisci() {
@@ -44,21 +47,43 @@
       }),
     );
     out.push(
-      { gruppo: "Azioni", icona: "🌓", label: "Tema chiaro / scuro", vai: () => GB.theme.toggle() },
-      { gruppo: "Azioni", icona: "⌨️", label: "Guida tasti da tastiera", vai: () => window.GB.apriGuidaTasti?.() },
-      { gruppo: "Azioni", icona: "🖨️", label: "Stampa la pagina", vai: () => window.print() },
+      {
+        gruppo: "Azioni",
+        icona: "🌓",
+        label: "Tema chiaro / scuro",
+        vai: () => GB.theme.toggle(),
+      },
+      {
+        gruppo: "Azioni",
+        icona: "⌨️",
+        label: "Guida tasti da tastiera",
+        vai: () => window.GB.apriGuidaTasti?.(),
+      },
+      {
+        gruppo: "Azioni",
+        icona: "🖨️",
+        label: "Stampa la pagina",
+        vai: () => window.print(),
+      },
     );
     return out;
   }
 
-  const norm = (t) => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const norm = (t) =>
+    String(t)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
 
   function disegna() {
     let g = null;
     lista.innerHTML = mostrate.length
       ? mostrate
           .map((v, n) => {
-            const testa = v.gruppo !== g ? `<li class="grp">${esc((g = v.gruppo))}</li>` : "";
+            const testa =
+              v.gruppo !== g
+                ? `<li class="grp">${esc((g = v.gruppo))}</li>`
+                : "";
             return `${testa}<li data-n="${n}" class="${n === idx ? "on" : ""}"><span>${v.icona}</span><span>${esc(v.label)}</span>${v.sub ? `<span class="sub">${esc(v.sub)}</span>` : ""}</li>`;
           })
           .join("")
@@ -69,7 +94,9 @@
     const q = norm(input.value.trim());
     const toks = q.split(/\s+/).filter(Boolean);
     mostrate = voci
-      .filter((v) => toks.every((t) => norm(v.label + " " + (v.sub || "")).includes(t)))
+      .filter((v) =>
+        toks.every((t) => norm(v.label + " " + (v.sub || "")).includes(t)),
+      )
       .slice(0, q ? 30 : 24);
     idx = 0;
     disegna();
@@ -91,7 +118,9 @@
   input.addEventListener("keydown", (e) => {
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
-      idx = (idx + (e.key === "ArrowDown" ? 1 : -1) + mostrate.length) % (mostrate.length || 1);
+      idx =
+        (idx + (e.key === "ArrowDown" ? 1 : -1) + mostrate.length) %
+        (mostrate.length || 1);
       disegna();
     } else if (e.key === "Enter") vai(mostrate[idx]);
   });

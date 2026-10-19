@@ -90,12 +90,7 @@
       );
     }
     paint();
-    return h(
-      "table",
-      { class: "fin studio-tab" },
-      h("thead", null, head),
-      tb,
-    );
+    return h("table", { class: "fin studio-tab" }, h("thead", null, head), tb);
   }
 
   function avvisi(st) {
@@ -119,9 +114,27 @@
           lista(arr),
         ),
       );
-    add("warn", noQuadra.length === 1 ? "cliente con stato patrimoniale che non quadra" : "clienti con stato patrimoniale che non quadra", noQuadra);
-    add("red", perdita.length === 1 ? "cliente in perdita nell'ultimo esercizio" : "clienti in perdita nell'ultimo esercizio", perdita);
-    add("info", noDati.length === 1 ? "cliente ancora senza dati di bilancio" : "clienti ancora senza dati di bilancio", noDati);
+    add(
+      "warn",
+      noQuadra.length === 1
+        ? "cliente con stato patrimoniale che non quadra"
+        : "clienti con stato patrimoniale che non quadra",
+      noQuadra,
+    );
+    add(
+      "red",
+      perdita.length === 1
+        ? "cliente in perdita nell'ultimo esercizio"
+        : "clienti in perdita nell'ultimo esercizio",
+      perdita,
+    );
+    add(
+      "info",
+      noDati.length === 1
+        ? "cliente ancora senza dati di bilancio"
+        : "clienti ancora senza dati di bilancio",
+      noDati,
+    );
     return out;
   }
 
@@ -134,12 +147,32 @@
           { class: "empty" },
           h("div", { class: "big" }, "👥"),
           h("h2", null, "Nessun cliente per ora"),
-          h("p", null, "Crea il primo cliente oppure carica i 20 clienti demo per vedere subito i totali."),
+          h(
+            "p",
+            null,
+            "Crea il primo cliente oppure carica i 20 clienti demo per vedere subito i totali.",
+          ),
           h(
             "div",
-            { style: { marginTop: "16px", display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" } },
-            h("button", { class: "btn primary", onclick: GB.parts.clienti.azioni.nuovo }, "＋ Nuovo cliente"),
-            h("button", { class: "btn", onclick: GB.parts.clienti.azioni.demoClienti }, "📦 Carica clienti demo"),
+            {
+              style: {
+                marginTop: "16px",
+                display: "flex",
+                gap: "10px",
+                justifyContent: "center",
+                flexWrap: "wrap",
+              },
+            },
+            h(
+              "button",
+              { class: "btn primary", onclick: GB.parts.clienti.azioni.nuovo },
+              "＋ Nuovo cliente",
+            ),
+            h(
+              "button",
+              { class: "btn", onclick: GB.parts.clienti.azioni.demoClienti },
+              "📦 Carica clienti demo",
+            ),
           ),
         ),
       ];
@@ -159,7 +192,11 @@
             "div",
             { class: "card-h" },
             h("h3", null, "Distribuzione dei rating"),
-            h("span", { class: "small muted" }, t.clienti_con_dati + " clienti con dati"),
+            h(
+              "span",
+              { class: "small muted" },
+              t.clienti_con_dati + " clienti con dati",
+            ),
           ),
           h(
             "div",
@@ -182,7 +219,11 @@
         h(
           "div",
           { class: "card" },
-          h("div", { class: "card-h" }, h("h3", null, "Ricavi dei 10 clienti maggiori")),
+          h(
+            "div",
+            { class: "card-h" },
+            h("h3", null, "Ricavi dei 10 clienti maggiori"),
+          ),
           h(
             "div",
             { class: "card-b" },
@@ -198,14 +239,24 @@
                 ...top.map((c) =>
                   h(
                     "div",
-                    { class: "hbar", title: c.ragione_sociale + ": " + fmt.eur(c.ricavi) },
+                    {
+                      class: "hbar",
+                      title: c.ragione_sociale + ": " + fmt.eur(c.ricavi),
+                    },
                     h("span", { class: "hbar-n" }, c.ragione_sociale),
                     h(
                       "span",
                       { class: "hbar-t" },
-                      h("span", { class: "hbar-f", style: { width: (c.ricavi / max) * 100 + "%" } }),
+                      h("span", {
+                        class: "hbar-f",
+                        style: { width: (c.ricavi / max) * 100 + "%" },
+                      }),
                     ),
-                    h("span", { class: "hbar-v" }, GB.parts.studio.eurK(c.ricavi)),
+                    h(
+                      "span",
+                      { class: "hbar-v" },
+                      GB.parts.studio.eurK(c.ricavi),
+                    ),
                   ),
                 ),
               );
@@ -229,7 +280,10 @@
         ),
         h(
           "div",
-          { class: "tbl-wrap free", style: { margin: 0, border: "none", borderRadius: 0 } },
+          {
+            class: "tbl-wrap free",
+            style: { margin: 0, border: "none", borderRadius: 0 },
+          },
           classifica(st),
         ),
       ),
