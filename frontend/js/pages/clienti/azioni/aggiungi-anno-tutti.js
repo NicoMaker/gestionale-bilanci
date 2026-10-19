@@ -8,16 +8,18 @@
     const anni = S.clienti.map((c) => ({ id: c.id, anni: c.anni || [] }));
     const toAdd = [];
     for (const c of anni) {
-      const max = c.anni.length ? Math.max(...c.anni) : c.anno_base || new Date().getFullYear() - 1;
+      const max = c.anni.length
+        ? Math.max(...c.anni)
+        : c.anno_base || new Date().getFullYear() - 1;
       const cand = max + 1;
       if (!c.anni.includes(cand)) toAdd.push({ id: c.id, anno: cand });
     }
-    if (!toAdd.length) return GB.toast("Tutti i clienti hanno già l'anno successivo", "info");
+    if (!toAdd.length)
+      return GB.toast("Tutti i clienti hanno già l'anno successivo", "info");
 
     const body = document.createElement("div");
-    body.appendChild(
-      document.createElement("p")
-    ).textContent = `Verranno aggiunti ${toAdd.length} nuovi anni (uno per cliente). Procedere?`;
+    body.appendChild(document.createElement("p")).textContent =
+      `Verranno aggiunti ${toAdd.length} nuovi anni (uno per cliente). Procedere?`;
 
     const r = await GB.modal({
       title: "Aggiungi anno a tutti i clienti",
@@ -32,7 +34,9 @@
     const results = { ok: 0, exist: 0, err: [] };
     for (const t of toAdd) {
       try {
-        const res = await GB.api.post(`/clienti/${t.id}/anni`, { anno: t.anno });
+        const res = await GB.api.post(`/clienti/${t.id}/anni`, {
+          anno: t.anno,
+        });
         results.ok++;
       } catch (e) {
         if (e && e.status === 409) results.exist++;
@@ -46,7 +50,8 @@
       summary += ` ${results.err.length} errori (vedi console).`;
 
     GB.toast(summary);
-    if (results.err.length) console.error("AggiungiAnnoATutti errori:", results.err);
+    if (results.err.length)
+      console.error("AggiungiAnnoATutti errori:", results.err);
     await S.loadClienti();
     S.emit("structure");
   };

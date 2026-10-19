@@ -41,7 +41,9 @@
         "🗂️",
         "Esercizi inseriti",
         fmt.int(t.esercizi),
-        t.clienti ? "in media " + fmt.num(t.esercizi / t.clienti, 1) + " per cliente" : "",
+        t.clienti
+          ? "in media " + fmt.num(t.esercizi / t.clienti, 1) + " per cliente"
+          : "",
       ),
       kpi(
         "💶",
@@ -54,10 +56,7 @@
         "Utile totale",
         eurK(t.utile),
         t.clienti_con_dati
-          ? t.utile_positivo +
-              " in utile · " +
-              t.utile_negativo +
-              " in perdita"
+          ? t.utile_positivo + " in utile · " + t.utile_negativo + " in perdita"
           : "",
         t.utile < 0 ? "neg" : "pos",
       ),
@@ -68,16 +67,34 @@
           "⚠️",
           "Da controllare",
           fmt.int(t.quadratura_ko + t.utile_negativo),
-          t.quadratura_ko + " non quadrano · " + t.utile_negativo + " in perdita",
+          t.quadratura_ko +
+            " non quadrano · " +
+            t.utile_negativo +
+            " in perdita",
           t.quadratura_ko + t.utile_negativo ? "warn" : "",
         ),
       );
       return h("div", { class: "kpis studio-kpis" }, ...base);
     }
     base.push(
-      kpi("🏭", "EBITDA totale", eurK(t.ebitda), t.ricavi ? fmt.pct(t.ebitda / t.ricavi, 1) + " dei ricavi" : ""),
-      kpi("🏦", "Totale attivo", eurK(t.attivo), "somma degli stati patrimoniali"),
-      kpi("🧱", "Patrimonio netto", eurK(t.pn), t.attivo ? fmt.pct(t.pn / t.attivo, 1) + " dell'attivo" : ""),
+      kpi(
+        "🏭",
+        "EBITDA totale",
+        eurK(t.ebitda),
+        t.ricavi ? fmt.pct(t.ebitda / t.ricavi, 1) + " dei ricavi" : "",
+      ),
+      kpi(
+        "🏦",
+        "Totale attivo",
+        eurK(t.attivo),
+        "somma degli stati patrimoniali",
+      ),
+      kpi(
+        "🧱",
+        "Patrimonio netto",
+        eurK(t.pn),
+        t.attivo ? fmt.pct(t.pn / t.attivo, 1) + " dell'attivo" : "",
+      ),
       kpi(
         "⚖️",
         "Quadratura bilancio",
@@ -91,7 +108,9 @@
 
   /* Carica i dati dal server e li disegna dentro `box` tramite draw(stats). */
   GB.parts.studio.carica = async function (box, draw) {
-    box.replaceChildren(h("div", { class: "muted small" }, "Calcolo dei totali…"));
+    box.replaceChildren(
+      h("div", { class: "muted small" }, "Calcolo dei totali…"),
+    );
     try {
       const st = await GB.api.get("/statistiche");
       if (!box.isConnected) return;
@@ -99,7 +118,11 @@
     } catch (e) {
       if (box.isConnected)
         box.replaceChildren(
-          h("div", { class: "note", style: { borderLeftColor: "var(--red)" } }, "Totali non disponibili: " + e.message),
+          h(
+            "div",
+            { class: "note", style: { borderLeftColor: "var(--red)" } },
+            "Totali non disponibili: " + e.message,
+          ),
         );
     }
   };

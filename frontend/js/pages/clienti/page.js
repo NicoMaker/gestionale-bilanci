@@ -12,9 +12,10 @@
       const PT = GB.parts.clienti;
       // raccolgo anni disponibili tra tutti i clienti per il selettore
       const anniOptions = Array.from(
-        new Set([].concat(...S.clienti.map((c) => c.anni || [])))
+        new Set([].concat(...S.clienti.map((c) => c.anni || []))),
       ).sort((a, b) => a - b);
-      const selectedYear = Number(localStorage.getItem("gb.clienti.year")) || null;
+      const selectedYear =
+        Number(localStorage.getItem("gb.clienti.year")) || null;
       const head = PT.barra({
         nuovo: PT.azioni.nuovo,
         demoClienti: PT.azioni.demoClienti,
