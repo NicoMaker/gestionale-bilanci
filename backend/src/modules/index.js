@@ -6,6 +6,7 @@ const router = express.Router();
 
 [
   "health/routes",
+  "statistiche/routes",
   "clienti/routes",
   "dataset/routes",
   "anni/routes",

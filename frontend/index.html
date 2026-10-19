@@ -51,11 +51,13 @@
       rel="stylesheet"
       href="/css/components/tabelle/amounts-and-totals.css"
     />
+    <link rel="stylesheet" href="/css/pages/home.css" />
+    <link rel="stylesheet" href="/css/layout/topbar-pills.css" />
     <link rel="stylesheet" href="/css/print.css" />
   </head>
   <body>
     <aside class="sidebar">
-      <div class="logo">
+      <div class="logo" style="cursor: pointer" onclick="location.hash = '#/home'">
         <div class="logo-icon">📊</div>
         <div>
           <div class="logo-main">Gestionale Bilanci</div>
@@ -84,16 +86,34 @@
           id="ctl"
           style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap"
         ></div>
-        <button
-          class="theme-btn-top no-print"
-          id="theme-btn-top"
-          type="button"
-          aria-label="Cambia tema chiaro/scuro"
-          title="Cambia tema chiaro/scuro"
-        >
-          <span class="ico-sun" aria-hidden="true">☀️</span
-          ><span class="ico-moon" aria-hidden="true">🌙</span>
-        </button>
+<div class="topbar-pills no-print">
+          <button
+            class="cmdk-trigger"
+            id="cmdk-btn"
+            type="button"
+            aria-label="Vai a…"
+            title="Vai a una pagina o a un cliente (Ctrl K)"
+          >
+            <span>Vai a…</span><kbd id="cmdk-kbd">Ctrl K</kbd>
+          </button>
+          <button
+            class="kb-trigger"
+            id="kb-btn"
+            type="button"
+            aria-label="Guida tasti da tastiera"
+            title="Guida tasti da tastiera (?)"
+          >
+            ⌨️ <kbd>?</kbd>
+          </button>
+          <button
+            class="kb-trigger theme-top"
+            id="theme-btn-top"
+            type="button"
+            aria-label="Tema chiaro / scuro"
+          >
+            🌙 <span>Scuro</span>
+          </button>
+        </div>
       </header>
       <main class="content" id="content"></main>
     </div>
@@ -169,6 +189,7 @@
     <script src="/js/services/store/voci.js"></script>
     <script src="/js/services/store/anni.js"></script>
     <script src="/js/features/voci/edit-voce.js"></script>
+    <script src="/js/pages/home/riepilogo-studio.js"></script>
     <script src="/js/pages/clienti/form.js"></script>
     <script src="/js/pages/clienti/azioni/nuovo.js"></script>
     <script src="/js/pages/clienti/azioni/demo-clienti.js"></script>
@@ -238,10 +259,13 @@
     <script src="/js/pages/report/copertina.js"></script>
     <script src="/js/pages/report/sezione.js"></script>
     <script src="/js/pages/report/page.js"></script>
+    <script src="/js/pages/home/page.js"></script>
     <script src="/js/app/theme.js"></script>
     <script src="/js/app/sidebar.js"></script>
     <script src="/js/app/topbar.js"></script>
     <script src="/js/app/router.js"></script>
+    <script src="/js/app/palette.js"></script>
+    <script src="/js/app/guida-tasti.js"></script>
     <script src="/js/main.js"></script>
   </body>
 </html>

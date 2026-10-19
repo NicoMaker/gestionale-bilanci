@@ -8,13 +8,14 @@
   /* ── routing ── */
   function routeKey() {
     const k = (location.hash || "").replace(/^#\//, "").split("?")[0];
-    return GB.pages[k] ? k : S.clienteId ? "dashboard" : "clienti";
+    const p = GB.pages[k];
+    // pagina inesistente, o che richiede un cliente quando non ce n'è uno selezionato → Panoramica
+    if (!p || (!p.noClient && !S.clienteId)) return "home";
+    return k;
   }
 
   function render() {
-    let key = routeKey();
-    const page = GB.pages[key];
-    if (!page.noClient && !S.clienteId) key = "clienti";
+    const key = routeKey();
     const content = document.getElementById("content");
     const keepTop = content.scrollTop;
     // la posizione di scorrimento delle tabelle si conserva solo se si ridisegna la stessa pagina (non quando si cambia pagina)
@@ -30,23 +31,6 @@
     GB.app.buildNav();
     GB.app.buildTopbar();
     const p = GB.pages[key];
-    if (!p.noClient && !S.clienteId) {
-      box.append(
-        h(
-          "div",
-          { class: "empty" },
-          h("div", { class: "big" }, "👥"),
-          h("h2", null, "Seleziona un cliente"),
-          h(
-            "p",
-            null,
-            "Scegli un cliente dal menu in alto oppure creane uno nella pagina Clienti.",
-          ),
-        ),
-      );
-      current = null;
-      return;
-    }
     try {
       current = { key, inst: p.render(box, false) };
     } catch (e) {
@@ -79,7 +63,7 @@
   S.on("clienti", () => {
     GB.app.buildTopbar();
     GB.app.buildNav();
-    if (routeKey() === "clienti") render();
+    if (["clienti", "home"].includes(routeKey())) render();
   });
   S.on("calc", () => {
     if (current && current.inst && current.inst.update) current.inst.update();

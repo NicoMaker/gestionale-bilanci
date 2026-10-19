@@ -26,9 +26,12 @@
       PT.eventiRicerca({ input, clear, paintRows });
       paintRows();
 
+      const strip = h("div", { class: "studio-strip no-print" });
+      GB.parts.studio.carica(strip, (st) => GB.parts.studio.kpi(st, true));
       container.append(
         GB.printHead("Elenco clienti", ""),
         head,
+        strip,
         tools,
         h("div", { class: "tbl-wrap free" }, table),
       );

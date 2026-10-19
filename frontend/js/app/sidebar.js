@@ -37,6 +37,7 @@
         label,
       );
     nav.replaceChildren(
+      item("home", "🏠", "Panoramica studio"),
       item("clienti", "👥", "Clienti"),
       item("dashboard", "📊", "Riepilogo cliente", { disabled: !hasC }),
       h(

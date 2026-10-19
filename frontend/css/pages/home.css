@@ -1,0 +1,92 @@
+/* Panoramica studio e fascia dei totali. */
+.studio-kpi .l .ico {
+  margin-right: 6px;
+  font-size: 13px;
+}
+.studio-kpi .v {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.studio-kpi.pos .v {
+  color: var(--green);
+}
+.studio-kpi.neg .v {
+  color: var(--red);
+}
+.studio-kpi.warn {
+  border-color: var(--yellow-b, var(--b1));
+  background: var(--yellow-d);
+}
+.studio-kpis {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+.studio-avviso.warn {
+  border-left-color: var(--yellow);
+}
+.studio-avviso.red {
+  border-left-color: var(--red);
+}
+.studio-avviso.info {
+  border-left-color: var(--accent);
+}
+.studio-tab th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.studio-tab th.sortable:hover,
+.studio-tab th.sorted {
+  color: var(--accent);
+}
+.studio-tab td.neg {
+  color: var(--red);
+}
+.rating.sm {
+  min-width: 0;
+  padding: 1px 10px;
+  font-size: 13px;
+}
+/* barre orizzontali: ricavi per cliente */
+.hbars {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.hbar {
+  display: grid;
+  grid-template-columns: minmax(90px, 36%) 1fr 70px;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+}
+.hbar-n {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--t1);
+}
+.hbar-t {
+  height: 12px;
+  background: var(--s1);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+.hbar-f {
+  display: block;
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: var(--r-full);
+}
+.hbar-v {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--t2);
+}
+.studio-strip {
+  margin-bottom: 4px;
+}
+@media (max-width: 900px) {
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}

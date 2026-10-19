@@ -7,6 +7,7 @@ const { report } = require("./helpers/runner");
 const SUITES = [
   "clienti/cliente-base",
   "calcoli/calcoli-demo",
+  "clienti/statistiche",
   "calcoli/budget",
   "calcoli/valori",
   "dati/voci",
