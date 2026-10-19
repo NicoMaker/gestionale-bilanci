@@ -15,19 +15,7 @@
     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
     <title>Gestionale Bilanci — Analisi di bilancio</title>
     <script>
-      (function () {
-        var t = null;
-        try {
-          t = localStorage.getItem("gb.theme");
-        } catch (e) {}
-        if (t !== "dark" && t !== "light")
-          t =
-            window.matchMedia &&
-            matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light";
-        document.documentElement.setAttribute("data-theme", t);
-      })();
+
     </script>
     <link rel="stylesheet" href="/css/base/tokens.css" />
     <link rel="stylesheet" href="/css/base/reset.css" />
