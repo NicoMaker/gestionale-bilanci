@@ -44,9 +44,7 @@
   const apri = () => (ov.hidden = false);
   const chiudi = () => (ov.hidden = true);
   ov.addEventListener("mousedown", (e) => e.target === ov && chiudi());
-  document
-    .getElementById("kb-btn")
-    .addEventListener("click", () => (ov.hidden ? apri() : chiudi()));
+  document.getElementById("kb-btn").addEventListener("click", () => (ov.hidden ? apri() : chiudi()));
   GB.apriGuidaTasti = apri;
 
   const inCampo = (t) =>
@@ -55,10 +53,7 @@
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !ov.hidden) return chiudi();
     if (e.ctrlKey || e.metaKey || e.altKey || inCampo(e.target)) return;
-    if (
-      document.querySelector(".modal-overlay.open, .cmdk-overlay:not([hidden])")
-    )
-      return;
+    if (document.querySelector(".modal-overlay.open, .cmdk-overlay:not([hidden])")) return;
     const k = e.key;
     if (k === "?") {
       e.preventDefault();
@@ -79,9 +74,7 @@
     if (k === "g") attesaG = Date.now();
     else if (k === "t") GB.theme.toggle();
     else if (k === "/") {
-      const q = document.querySelector(
-        "#content input[type=search], #content .client-search input",
-      );
+      const q = document.querySelector("#content input[type=search], #content .client-search input");
       if (q) {
         e.preventDefault();
         q.focus();

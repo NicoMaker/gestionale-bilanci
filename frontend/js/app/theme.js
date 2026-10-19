@@ -39,8 +39,7 @@
     const next = t === "dark" ? "chiaro" : "scuro";
     const pill = document.getElementById("theme-btn-top");
     if (pill)
-      pill.innerHTML =
-        t === "dark" ? "☀️ <span>Chiaro</span>" : "🌙 <span>Scuro</span>";
+      pill.innerHTML = t === "dark" ? "☀️ <span>Chiaro</span>" : "🌙 <span>Scuro</span>";
     ["theme-btn", "theme-btn-top"].forEach((id) => {
       const b = document.getElementById(id);
       if (b) {
@@ -81,17 +80,4 @@
     apply: applyTheme,
     toggle: toggleTheme,
   };
-})();
-
-(function () {
-  var t = null;
-  try {
-    t = localStorage.getItem("gb.theme");
-  } catch (e) {}
-  if (t !== "dark" && t !== "light")
-    t =
-      window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-  document.documentElement.setAttribute("data-theme", t);
 })();

@@ -15,7 +15,19 @@
     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
     <title>Gestionale Bilanci — Analisi di bilancio</title>
     <script>
-
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem("gb.theme");
+        } catch (e) {}
+        if (t !== "dark" && t !== "light")
+          t =
+            window.matchMedia &&
+            matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
     </script>
     <link rel="stylesheet" href="/css/base/tokens.css" />
     <link rel="stylesheet" href="/css/base/reset.css" />
@@ -45,11 +57,7 @@
   </head>
   <body>
     <aside class="sidebar">
-      <div
-        class="logo"
-        style="cursor: pointer"
-        onclick="location.hash = '#/home'"
-      >
+      <div class="logo" style="cursor: pointer" onclick="location.hash = '#/home'">
         <div class="logo-icon">📊</div>
         <div>
           <div class="logo-main">Gestionale Bilanci</div>
@@ -78,7 +86,7 @@
           id="ctl"
           style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap"
         ></div>
-        <div class="topbar-pills no-print">
+<div class="topbar-pills no-print">
           <button
             class="cmdk-trigger"
             id="cmdk-btn"
@@ -188,9 +196,6 @@
     <script src="/js/pages/clienti/azioni/apri.js"></script>
     <script src="/js/pages/clienti/azioni/modifica.js"></script>
     <script src="/js/pages/clienti/azioni/elimina.js"></script>
-    <script src="/js/pages/clienti/azioni/aggiungi-anno-tutti.js"></script>
-    <script src="/js/pages/clienti/azioni/aggiungi-anno-selezionati.js"></script>
-    <script src="/js/pages/clienti/azioni/elimina-dati-selezionati.js"></script>
     <script src="/js/pages/clienti/tabella/barra-azioni.js"></script>
     <script src="/js/pages/clienti/tabella/vuoto.js"></script>
     <script src="/js/pages/clienti/tabella/tabella.js"></script>
