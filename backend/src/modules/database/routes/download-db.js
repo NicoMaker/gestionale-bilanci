@@ -1,8 +1,8 @@
-/* Scarica il file del database SQLite come backup. */
+/* GET /download-db — scarica il file del database SQLite come backup. */
 const express = require("express");
 const fs = require("fs");
-const db = require("../../core/db");
-const { HttpError, wrap } = require("../../core/http");
+const db = require("../../../core/db");
+const { HttpError, wrap } = require("../../../core/http");
 
 const router = express.Router();
 

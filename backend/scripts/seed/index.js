@@ -1,11 +1,27 @@
-/* Seed del database con 27 clienti che coprono tutti i casi possibili.
-   Uso:  npm run seed            → aggiunge i clienti mancanti
-         npm run seed -- --reset → cancella i clienti di seed (note «SEED #») e li ricrea */
+/* Seed del database. Due insiemi di clienti:
+   · completi → 20 aziende realistiche (settori diversi) con bilancio dettagliato, vendite, parametri, budget e cash flow
+   · casi     → 27 casi limite (rating AAA…CCC, bilancio sbilanciato, anni vuoti, numeri estremi…)
+   Uso:  npm run seed                 → i 20 clienti completi (aggiunge solo i mancanti)
+         npm run seed:casi            → i 27 casi limite
+         npm run seed:tutti           → entrambi gli insiemi (47 clienti)
+         npm run seed:reset           → cancella i clienti di seed (note «SEED #») e ricrea i 20 completi
+   Opzioni: --set=completi|casi|tutti   --reset */
 const db = require("../../src/core/db");
-const Calc = require("../../shared/calc");
+const Calc = require("../../../shared/calc");
 const { creaContesto } = require("./core/contesto");
 const { loadRaw } = require("./core/dataset");
-const casi = require("./casi");
+const insiemi = {
+  completi: () => require("./completi"),
+  casi: () => require("./casi"),
+  tutti: () => require("./completi").concat(require("./casi")),
+};
+const arg = process.argv.find((a) => a.startsWith("--set="));
+const nomeInsieme = arg ? arg.slice(6) : "completi";
+if (!insiemi[nomeInsieme]) {
+  console.error("Insieme sconosciuto:", nomeInsieme, "(usa completi, casi o tutti)");
+  process.exit(1);
+}
+const casi = insiemi[nomeInsieme]();
 
 function eliminaSeed() {
   const ids = db
@@ -71,7 +87,7 @@ function riepilogo(cid, anni) {
   if (righe.length) console.table(righe);
   const errati = righe.filter((r) => r.atteso && r.atteso !== r.rating);
   console.log(
-    `✅ ${righe.length} clienti creati (${casi.length} casi disponibili)`,
+    `✅ ${righe.length} clienti creati (${casi.length} disponibili nell'insieme «${nomeInsieme}»)`,
   );
   if (errati.length) {
     console.error(

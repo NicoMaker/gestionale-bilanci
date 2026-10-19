@@ -1,7 +1,7 @@
 /* Budget: fattori per tipo riga e variazioni manuali (regola Excel). */
 const assert = require("assert");
 const { t, near } = require("../helpers/runner");
-const Calc = require("../../shared/calc");
+const Calc = require("../../../shared/calc");
 
 module.exports = async function ({ raw }) {
   await t(

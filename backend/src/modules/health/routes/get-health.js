@@ -1,4 +1,4 @@
-/* GET /api/health — verifica che il server risponda. */
+/* GET /health */
 const express = require("express");
 
 const router = express.Router();

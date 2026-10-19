@@ -21,6 +21,7 @@
           h("th", null, "FT. MEDIO"),
           h("th", null, "STAGIO. %"),
           h("th", null, "PROGRESS. %"),
+          h("th", { class: "no-ro" }),
         ),
       ),
     );
@@ -48,7 +49,25 @@
     live.add(sw, (e) => {
       e.textContent = fmt.num(V().somma_pesi, 2);
     });
-    pr.append(sw, h("td"), h("td"));
+    pr.append(
+      sw,
+      h("td"),
+      h("td"),
+      h(
+        "td",
+        { class: "no-ro pen-cell" },
+        GB.penBtn({
+          title: "Modifica i pesi",
+          onclick: () =>
+            GB.editParamAnni({
+              title: "Modifica peso delle vendite (media ponderata)",
+              campo: "peso_vendite",
+              dec: 2,
+              years,
+            }),
+        }),
+      ),
+    );
     tb.append(pr);
 
     T.MESI_BREVI.forEach((mn, m) => {
@@ -77,7 +96,19 @@
       live.add(pg, (e) => {
         e.textContent = fmt.num(V().prog[m], 4);
       });
-      tr.append(ft, st, pg);
+      tr.append(
+        ft,
+        st,
+        pg,
+        h(
+          "td",
+          { class: "no-ro pen-cell" },
+          GB.penBtn({
+            title: "Modifica " + mn,
+            onclick: () => GB.editMeseVendite(m, years),
+          }),
+        ),
+      );
       tb.append(tr);
     });
     const tot = h("tr", { class: "grand" }, h("td", { class: "l" }, "TOT"));
@@ -96,7 +127,7 @@
     live.add(t2, (e) => {
       e.textContent = fmt.num(V().stag_tot, 4);
     });
-    tot.append(t1, t2, h("td"));
+    tot.append(t1, t2, h("td"), h("td", { class: "no-ro" }));
     tb.append(tot);
     GB.gridNav(table);
     return table;

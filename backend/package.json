@@ -8,6 +8,9 @@
     "dev": "nodemon server.js",
     "demo": "node scripts/seed-demo.js",
     "seed": "node scripts/seed/index.js",
+    "seed:casi": "node scripts/seed/index.js --set=casi",
+    "seed:tutti": "node scripts/seed/index.js --set=tutti",
+    "seed:reset": "node scripts/seed/index.js --reset",
     "test": "node test/run.js"
   },
   "license": "MIT",

@@ -1,6 +1,6 @@
 /* Crea l'anagrafica del cliente, la struttura di partenza (voci predefinite del template) e le righe parametri per ogni anno. */
 const db = require("../../../src/core/db");
-const Template = require("../../../shared/template");
+const Template = require("../../../../shared/template");
 
 function creaCliente({
   ragione_sociale,

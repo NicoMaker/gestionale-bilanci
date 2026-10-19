@@ -1,6 +1,6 @@
 /* Quadratura: risultato d'esercizio = utile del C.E.; riserva straordinaria = differenza (Check S.P. = 0). */
 const db = require("../../../core/db");
-const Calc = require("../../../../shared/calc");
+const Calc = require("../../../../../shared/calc");
 const { loadRaw } = require("../../dataset/service");
 const { ANNI } = require("./costanti");
 

@@ -1,7 +1,7 @@
 /* Quadratura: risultato d'esercizio = utile del C.E.; riserva straordinaria = quanto serve perché il Check dello S.P. valga `sbilancio`
    (0 = bilancio in pareggio; un altro numero lascia volutamente il bilancio sbilanciato). Gli anni completamente vuoti vengono saltati. */
 const db = require("../../../src/core/db");
-const Calc = require("../../../shared/calc");
+const Calc = require("../../../../shared/calc");
 const { loadRaw } = require("./dataset");
 
 function quadra(ctx, { sbilancio = 0 } = {}) {

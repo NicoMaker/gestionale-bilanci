@@ -1,7 +1,8 @@
-/* Creazione del cliente demo con dati di esempio. */
+/* POST /demo — crea il cliente demo (409 se esiste già). */
 const express = require("express");
-const db = require("../../core/db");
-const { HttpError, wrap } = require("../../core/http");
+const db = require("../../../core/db");
+const { HttpError, wrap } = require("../../../core/http");
+const { creaDemo } = require("../service");
 
 const router = express.Router();
 
@@ -18,7 +19,6 @@ router.post(
         "Il cliente demo esiste già: eliminalo prima di ricrearlo",
       );
     }
-    const { creaDemo } = require("./service");
     res.status(201).json(creaDemo());
   }),
 );

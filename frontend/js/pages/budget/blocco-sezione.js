@@ -58,7 +58,23 @@
           });
           live.add(hh, (e) => GB.setNum(e, row().H));
           pc.bind();
-          tr.append(c, pc.d, f, h("td", { class: "n" }, g), hh, pc.i, pc.j);
+          tr.append(
+            c,
+            pc.d,
+            f,
+            h("td", { class: "n" }, g),
+            hh,
+            pc.i,
+            pc.j,
+            h(
+              "td",
+              { class: "no-ro pen-cell" },
+              GB.penBtn({
+                title: "Modifica riga",
+                onclick: () => GB.editVoceBudget(v, Y),
+              }),
+            ),
+          );
           tb.append(tr);
         });
       totalRow(

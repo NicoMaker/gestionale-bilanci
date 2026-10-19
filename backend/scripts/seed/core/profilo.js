@@ -1,6 +1,8 @@
 /* Genera un bilancio coerente partendo da pochi parametri «di rischio».
    knobs: ricavi (array per anno, null = anno vuoto), margine (utile / ricavi), cr (current ratio),
           pn (patrimonio netto / totale passivo), oneri (oneri finanziari / ricavi), t (totale attivo / ricavi).
+   Opzionali: quote = {acq, prod, comm, amm, ammo} (costi in % dei ricavi; il personale è il residuo),
+              s = {immMat, rimanenze, crediti, liquidita} (struttura dell'attivo in % del totale; devono sommare 1,05 perché il fondo ammortamento vale −0,05).
    Restituisce { ce, sp } (ogni campo è un array per anno) da passare a ctx.bilancio({...ce, ...sp}). */
 const r2 = (x) => Math.round(x * 100) / 100;
 const at = (x, i) => (Array.isArray(x) ? x[i] : x);
@@ -13,7 +15,11 @@ function profilo({
   oneri = 0.03,
   t = 1,
   tipi,
+  quote,
+  s,
 }) {
+  const q = { acq: 0.45, prod: 0.1, comm: 0.05, amm: 0.04, ammo: 0.03, ...quote };
+  const st = { immMat: 0.4, rimanenze: 0.1, crediti: 0.3, liquidita: 0.25, ...s };
   const ce = {},
     sp = {};
   const campi = (o, k, v) => (o[k] = o[k] || []).push(v);
@@ -25,11 +31,11 @@ function profilo({
     const utile = vuoto ? 0 : m * R;
     const ante = utile > 0 ? utile / 0.75 : utile; // imposte 25% solo se c'è utile
     const imposte = utile > 0 ? ante - utile : 0;
-    const acq = 0.45 * R,
-      prod = 0.1 * R,
-      comm = 0.05 * R,
-      amm = 0.04 * R,
-      ammo = 0.03 * R;
+    const acq = q.acq * R,
+      prod = q.prod * R,
+      comm = q.comm * R,
+      amm = q.amm * R,
+      ammo = q.ammo * R;
     const personale = vuoto
       ? 0
       : R - acq - prod - comm - amm - ammo - oneriFin - ante;
@@ -46,15 +52,15 @@ function profilo({
         ammortamenti: ammo,
         oneriFin,
         imposte,
-        rimIniz: 0.1 * T,
-        rimFin: 0.1 * T,
+        rimIniz: st.rimanenze * T,
+        rimFin: st.rimanenze * T,
       },
       sp: {
-        immMat: 0.4 * T,
+        immMat: st.immMat * T,
         fondoMat: -0.05 * T,
-        rimanenze: 0.1 * T,
-        crediti: 0.3 * T,
-        liquidita: 0.25 * T,
+        rimanenze: st.rimanenze * T,
+        crediti: st.crediti * T,
+        liquidita: st.liquidita * T,
         capitale: PN / 2,
         fornitori: pc / 2,
         banche: pc / 2,

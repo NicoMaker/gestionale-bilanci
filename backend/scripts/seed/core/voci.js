@@ -1,6 +1,6 @@
 /* Helper per righe di conto e valori di un cliente: trova una voce predefinita, aggiungine di nuove, imposta i valori per anno. */
 const db = require("../../../src/core/db");
-const Template = require("../../../shared/template");
+const Template = require("../../../../shared/template");
 
 const ambitoDi = (sez) =>
   sez.startsWith("A_") || sez.startsWith("P_")

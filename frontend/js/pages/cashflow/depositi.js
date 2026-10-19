@@ -37,7 +37,26 @@
           live.add(c, (e) => GB.setNum(e, CF().saldo[m]));
         }
       }
-      tr.append(h("td"), h("td", { class: "no-ro" }));
+      tr.append(
+        h("td"),
+        h(
+          "td",
+          { class: "no-ro pen-cell" },
+          GB.penBtn({
+            title: "Modifica saldo iniziale",
+            onclick: () =>
+              GB.editParams({
+                title: "Modifica saldo banca — Cash Flow " + (Y + 1),
+                intro:
+                  "Il saldo di gennaio è il saldo iniziale; dagli altri mesi il saldo è la liquidità del mese precedente.",
+                anno: Y,
+                campi: [
+                  { campo: "saldo_iniziale_cf", label: "Saldo iniziale (gennaio)" },
+                ],
+              }),
+          }),
+        ),
+      );
       tb.append(tr);
     }
     calcRow("A  SALDO BANCA", "sub", (m) => CF().saldo[m], false);

@@ -1,7 +1,7 @@
 /* Cliente demo: stato patrimoniale in pareggio, rating, budget e cash flow calcolati. */
 const assert = require("assert");
 const { t, near } = require("../helpers/runner");
-const Calc = require("../../shared/calc");
+const Calc = require("../../../shared/calc");
 
 module.exports = async function ({ demo, raw }) {
   await t(

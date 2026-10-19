@@ -4,8 +4,8 @@
   const { h } = GB;
 
   /* ───────── modale ───────── */
-  // modal({title, body:Node, buttons:[{label, kind, value}]}) → Promise<value|null>
-  GB.modal = function ({ title, body, buttons }) {
+  // modal({title, body:Node, buttons:[{label, kind, value}], wide?}) → Promise<value|null>
+  GB.modal = function ({ title, body, buttons, wide }) {
     return new Promise((resolve) => {
       const close = (v) => {
         overlay.remove();
@@ -34,7 +34,7 @@
         },
         h(
           "div",
-          { class: "modal", role: "dialog" },
+          { class: "modal" + (wide ? " wide" : ""), role: "dialog" },
           h("div", { class: "modal-h" }, title),
           h("div", { class: "modal-b" }, body),
           h("div", { class: "modal-f" }, btns),

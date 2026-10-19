@@ -73,6 +73,21 @@
         h("td", { class: "n" }, inp),
         h("td"),
         h("td"),
+        h(
+          "td",
+          { class: "no-ro pen-cell" },
+          GB.penBtn({
+            title: "Modifica imposte",
+            onclick: () =>
+              GB.editParams({
+                title: "Modifica imposte — Budget " + (Y + 1),
+                anno: Y,
+                campi: [
+                  { campo: "imposte_budget", label: "Imposte esercizio (previsione)" },
+                ],
+              }),
+          }),
+        ),
       );
       tb.append(tr);
     }

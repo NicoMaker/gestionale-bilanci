@@ -3,7 +3,7 @@ const express = require("express");
 const db = require("../../../core/db");
 const { HttpError, wrap } = require("../../../core/http");
 const { toId, clean } = require("../../../core/validators");
-const Template = require("../../../../shared/template");
+const Template = require("../../../../../shared/template");
 const { getVoce } = require("../service");
 
 const router = express.Router();

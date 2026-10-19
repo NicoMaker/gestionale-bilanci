@@ -1,10 +1,10 @@
-/* Cash flow mensile per voce e anno. */
+/* PUT /clienti/:id/cashflow — imposta o cancella l'importo di una voce di cash flow in un mese. */
 const express = require("express");
-const db = require("../../core/db");
-const { HttpError, wrap } = require("../../core/http");
-const { toId, toYear, toMonth, toNum } = require("../../core/validators");
-const { getCliente } = require("../clienti/service");
-const { getVoce } = require("../voci/service");
+const db = require("../../../core/db");
+const { HttpError, wrap } = require("../../../core/http");
+const { toId, toYear, toMonth, toNum } = require("../../../core/validators");
+const { getCliente } = require("../../clienti/service");
+const { getVoce } = require("../../voci/service");
 
 const router = express.Router();
 

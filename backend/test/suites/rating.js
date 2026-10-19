@@ -1,7 +1,7 @@
 /* Rating: soglie dello scoring. */
 const assert = require("assert");
 const { t } = require("../helpers/runner");
-const Calc = require("../../shared/calc");
+const Calc = require("../../../shared/calc");
 
 module.exports = async function () {
   await t("rating: soglie dello scoring", async () => {

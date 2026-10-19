@@ -1,8 +1,8 @@
-/* Crea per un nuovo cliente la struttura di partenza (sezioni, voci predefinite, anno base). */
-const db = require("../../core/db");
-const Template = require("../../../shared/template");
+/* Inserisce le voci predefinite del template (S.P., C.E., C.F.) per un cliente. */
+const db = require("../../../core/db");
+const Template = require("../../../../../shared/template");
 
-function seedCliente(clienteId, annoBase) {
+function inserisciVociPredefinite(clienteId) {
   for (const ambito of Object.keys(Template.SEZIONI)) {
     for (const s of Template.SEZIONI[ambito]) {
       s.def.forEach((descr, i) => {
@@ -22,10 +22,6 @@ function seedCliente(clienteId, annoBase) {
       });
     }
   }
-  db.run(
-    "INSERT OR IGNORE INTO parametri_anno (cliente_id, anno) VALUES (?,?)",
-    [clienteId, annoBase],
-  );
 }
 
-module.exports = { seedCliente };
+module.exports = { inserisciVociPredefinite };

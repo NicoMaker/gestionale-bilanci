@@ -9,6 +9,6 @@ module.exports = {
   BACKEND_DIR,
   ROOT,
   // codice condiviso browser + server (template del bilancio, motore di calcolo)
-  SHARED_DIR: path.join(BACKEND_DIR, "shared"),
+  SHARED_DIR: path.join(ROOT, "shared"),
   FRONTEND_DIR: path.join(ROOT, "frontend"),
 };

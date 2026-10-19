@@ -2,7 +2,7 @@
 const assert = require("assert");
 const { api } = require("../helpers/api");
 const { t, near } = require("../helpers/runner");
-const Calc = require("../../shared/calc");
+const Calc = require("../../../shared/calc");
 
 module.exports = async function ({ demo, raw }) {
   await t("parametri, vendite, cash flow, anni", async () => {

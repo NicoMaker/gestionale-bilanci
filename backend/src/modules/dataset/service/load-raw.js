@@ -1,5 +1,5 @@
 /* Lettura completa dei dati grezzi di un cliente (voci, valori, vendite, cash flow, parametri). */
-const db = require("../../core/db");
+const db = require("../../../core/db");
 
 function loadRaw(cid) {
   return {

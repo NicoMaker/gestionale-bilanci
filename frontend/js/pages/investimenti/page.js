@@ -60,6 +60,26 @@
               fatt,
               fatt1,
             ),
+            ro
+              ? null
+              : GB.penBtn({
+                  title: "Modifica investimento e aumento utile",
+                  onclick: () =>
+                    GB.editParams({
+                      title: `Modifica investimenti — budget ${Y + 1}`,
+                      anno: Y,
+                      campi: [
+                        {
+                          campo: "investimento",
+                          label: "Investimento previsto (€)",
+                        },
+                        {
+                          campo: "aumento_utile",
+                          label: "Richiesta di aumento utile (€)",
+                        },
+                      ],
+                    }),
+                }),
           ),
         ),
         h(

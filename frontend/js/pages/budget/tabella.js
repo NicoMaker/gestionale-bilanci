@@ -22,12 +22,13 @@
           h("th", null, "Previsione " + (Y + 1)),
           h("th", null, "%"),
           h("th", null, "Diff. % su cons."),
+          h("th", { class: "no-ro" }),
         ),
       ),
     );
     const tb = h("tbody");
     table.append(tb);
-    const span = 9;
+    const span = 10;
     return { table, tb, span };
   };
 })();

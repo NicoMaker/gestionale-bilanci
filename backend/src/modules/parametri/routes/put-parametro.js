@@ -1,21 +1,13 @@
-/* Parametri annuali (inflazione, produttività, investimento, saldo iniziale…). */
+/* PUT /clienti/:id/parametri — imposta un parametro annuale (vuoto = valore di default). */
 const express = require("express");
-const db = require("../../core/db");
-const { HttpError, wrap } = require("../../core/http");
-const { toId, toYear, toMonth, toNum } = require("../../core/validators");
-const { getCliente } = require("../clienti/service");
+const db = require("../../../core/db");
+const { HttpError, wrap } = require("../../../core/http");
+const { toId, toYear, toNum } = require("../../../core/validators");
+const { getCliente } = require("../../clienti/service");
+const { CAMPI_PARAM } = require("./campi");
 
 const router = express.Router();
 
-const CAMPI_PARAM = [
-  "peso_vendite",
-  "inflazione",
-  "produttivita",
-  "imposte_budget",
-  "investimento",
-  "aumento_utile",
-  "saldo_iniziale_cf",
-];
 router.put(
   "/clienti/:id/parametri",
   wrap((req, res) => {

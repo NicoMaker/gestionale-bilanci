@@ -79,7 +79,12 @@
     tr.append(
       h(
         "td",
-        { class: "no-ro" },
+        { class: "no-ro pen-cell" },
+        GB.penBtn({
+          title: "Modifica riga",
+          onclick: () =>
+            GB.editVoce(v, { tipo: ce && item.id !== "C_IMPOSTE", years }),
+        }),
         v.fissa
           ? ""
           : h(

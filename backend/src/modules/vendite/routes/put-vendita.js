@@ -1,9 +1,9 @@
-/* Vendite mensili per anno. */
+/* PUT /clienti/:id/vendite — imposta o cancella le vendite di un mese. */
 const express = require("express");
-const db = require("../../core/db");
-const { HttpError, wrap } = require("../../core/http");
-const { toId, toYear, toMonth, toNum } = require("../../core/validators");
-const { getCliente } = require("../clienti/service");
+const db = require("../../../core/db");
+const { wrap } = require("../../../core/http");
+const { toId, toYear, toMonth, toNum } = require("../../../core/validators");
+const { getCliente } = require("../../clienti/service");
 
 const router = express.Router();
 

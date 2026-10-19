@@ -55,7 +55,11 @@
               t,
               h(
                 "td",
-                { class: "no-ro" },
+                { class: "no-ro pen-cell" },
+                GB.penBtn({
+                  title: "Modifica riga",
+                  onclick: () => GB.editVoceCashflow(v, Y),
+                }),
                 h(
                   "button",
                   {

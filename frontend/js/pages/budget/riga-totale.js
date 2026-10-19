@@ -39,10 +39,20 @@
           hh,
           h("td", { class: "pc" }),
           h("td", { class: "pc" }),
+          h("td", { class: "no-ro" }),
         );
       else {
         pc.bind();
-        tr.append(c, pc.d, h("td"), h("td"), hh, pc.i, pc.j);
+        tr.append(
+          c,
+          pc.d,
+          h("td"),
+          h("td"),
+          hh,
+          pc.i,
+          pc.j,
+          h("td", { class: "no-ro" }),
+        );
       }
       tb.append(tr);
     };
