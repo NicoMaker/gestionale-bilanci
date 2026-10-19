@@ -6,11 +6,7 @@
   /* ───────── select con ricerca ─────────
      searchSelect({ items:[{value,label,sub}], value, placeholder, emptyLabel, onChange(value) }) → elemento DOM.
      Si scrive nel campo per filtrare (anche senza accenti / maiuscole); ↑ ↓ Invio Esc da tastiera. */
-  const plain = (s) =>
-    String(s ?? "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[̀-ͯ]/g, "");
+  const plain = GB.plain;
   GB.searchSelect = function (opts) {
     const items = opts.items || [];
     let value = opts.value === undefined ? null : opts.value;

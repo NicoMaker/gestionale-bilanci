@@ -52,6 +52,25 @@
 .client-name {
   font-weight: 600;
 }
+/* penna di modifica accanto al nome del cliente */
+.edit-pen {
+  margin-left: 8px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.55;
+  vertical-align: middle;
+}
+.edit-pen:hover,
+.edit-pen:focus-visible {
+  opacity: 1;
+  background: var(--bg2, rgba(127, 127, 127, 0.15));
+  border-color: var(--line, rgba(127, 127, 127, 0.4));
+}
 .legend-box {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

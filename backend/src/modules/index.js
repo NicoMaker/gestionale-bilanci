@@ -5,18 +5,18 @@ const { notFound, errorHandler } = require("../core/http");
 const router = express.Router();
 
 [
-  "health/health.routes",
-  "clienti/clienti.routes",
-  "dataset/dataset.routes",
-  "anni/anni.routes",
-  "voci/voci.routes",
-  "valori/valori.routes",
-  "budget/budget.routes",
-  "vendite/vendite.routes",
-  "cashflow/cashflow.routes",
-  "parametri/parametri.routes",
-  "demo/demo.routes",
-  "database/database.routes",
+  "health/routes",
+  "clienti/routes",
+  "dataset/routes",
+  "anni/routes",
+  "voci/routes",
+  "valori/routes",
+  "budget/routes",
+  "vendite/routes",
+  "cashflow/routes",
+  "parametri/routes",
+  "demo/routes",
+  "database/routes",
 ].forEach((m) => router.use(require("./" + m)));
 
 router.use(notFound);

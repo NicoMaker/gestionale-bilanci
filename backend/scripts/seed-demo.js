@@ -1,6 +1,6 @@
 // Uso: npm run demo   → crea il cliente demo nel database (db/gestionale.db)
 const db = require("../src/core/db");
-const { creaDemo } = require("../src/modules/demo/demo.service");
+const { creaDemo } = require("../src/modules/demo/service");
 db.init()
   .then(() => {
     const r = creaDemo();

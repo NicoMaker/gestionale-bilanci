@@ -1,0 +1,39 @@
+/* Test automatici: motore di calcolo + API (database temporaneo). Uso: npm test */
+require("./helpers/env");
+const { start } = require("../server");
+const { api } = require("./helpers/api");
+const { report } = require("./helpers/runner");
+
+const SUITES = [
+  "cliente-base",
+  "calcoli-demo",
+  "budget",
+  "valori",
+  "voci",
+  "parametri-anni",
+  "rating",
+  "database",
+  "validazioni-cliente",
+  "elimina-anno",
+  "elimina-cliente",
+  "elimina-demo",
+];
+
+(async () => {
+  const { server } = await start();
+  console.log("\nTest Gestionale Bilanci");
+
+  // la suite cliente-base gira prima della creazione del cliente demo
+  await require("./suites/cliente-base")({});
+
+  const demo = (await api("POST", "/demo")).body;
+  const raw = () =>
+    api("GET", `/clienti/${demo.id}/dataset`).then((r) => r.body);
+
+  for (const nome of SUITES.slice(1))
+    await require("./suites/" + nome)({ demo, raw });
+
+  report();
+  server.close();
+  process.exit(process.exitCode || 0);
+})();
