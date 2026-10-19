@@ -1,4 +1,4 @@
-/* Clienti: elenco con ricerca, creazione, modifica, eliminazione e caricamento del cliente demo. */
+/* Clienti: elenco con ricerca, creazione, modifica, eliminazione e caricamento dei clienti demo. */
 (function () {
   const GB = window.GB;
   const { h, fmt } = GB;
@@ -12,7 +12,6 @@
       const PT = GB.parts.clienti;
       const head = PT.barra({
         nuovo: PT.azioni.nuovo,
-        demo: PT.azioni.demo,
         demoClienti: PT.azioni.demoClienti,
       });
 

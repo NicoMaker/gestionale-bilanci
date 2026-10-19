@@ -1,9 +1,9 @@
-/* Barra in alto: «＋ Nuovo cliente» e «✨ Carica cliente demo» e «📦 Carica clienti demo» (20 aziende). */
+/* Barra in alto: «＋ Nuovo cliente» e «📦 Carica clienti demo» (20 aziende). */
 (function () {
   const GB = window.GB;
   const { h, fmt } = GB;
 
-  GB.parts.clienti.barra = function ({ nuovo, demo, demoClienti }) {
+  GB.parts.clienti.barra = function ({ nuovo, demoClienti }) {
     return h(
       "div",
       {
@@ -16,15 +16,6 @@
         },
       },
       h("button", { class: "btn primary", onclick: nuovo }, "＋ Nuovo cliente"),
-      h(
-        "button",
-        {
-          class: "btn",
-          onclick: demo,
-          title: "Crea un cliente di esempio con dati fittizi",
-        },
-        "✨ Carica cliente demo",
-      ),
       h(
         "button",
         {
