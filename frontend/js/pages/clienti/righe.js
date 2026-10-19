@@ -65,14 +65,22 @@
                   h(
                     "button",
                     { class: "btn sm primary", onclick: () => apri(c) },
-                    h("span", { class: "btn-ico", "aria-hidden": "true" }, "📂"),
+                    h(
+                      "span",
+                      { class: "btn-ico", "aria-hidden": "true" },
+                      "📂",
+                    ),
                     "Apri",
                   ),
                   " ",
                   h(
                     "button",
                     { class: "btn sm danger", onclick: () => elimina(c) },
-                    h("span", { class: "btn-ico", "aria-hidden": "true" }, "🗑️"),
+                    h(
+                      "span",
+                      { class: "btn-ico", "aria-hidden": "true" },
+                      "🗑️",
+                    ),
                     "Elimina",
                   ),
                 ),

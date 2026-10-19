@@ -32,7 +32,10 @@
                   title: `Modifica parametri del budget ${Y + 1}`,
                   anno: Y,
                   campi: [
-                    { campo: "inflazione", label: "i · Inflazione prevista (%)" },
+                    {
+                      campo: "inflazione",
+                      label: "i · Inflazione prevista (%)",
+                    },
                     {
                       campo: "produttivita",
                       label: "p · Maggior produttività prevista (%)",

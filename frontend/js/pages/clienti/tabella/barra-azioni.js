@@ -21,7 +21,8 @@
         {
           class: "btn",
           onclick: demoClienti,
-          title: "Aggiunge 20 clienti di esempio con bilanci, vendite, budget e cash flow",
+          title:
+            "Aggiunge 20 clienti di esempio con bilanci, vendite, budget e cash flow",
         },
         "📦 Carica clienti demo",
       ),

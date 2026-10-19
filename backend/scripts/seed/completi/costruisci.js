@@ -33,10 +33,18 @@ function costruisci(spec, n) {
       const originali = { ce: { ...ce }, sp: { ...sp } };
 
       // imposte e tasse locali (10% dei costi amministrativi) e interessi attivi sulla liquidità
-      ce.oneriTrib = ce.amministrativi.map((x) => (x == null ? null : r2(x * 0.1)));
-      ce.amministrativi = ce.amministrativi.map((x, i) => (x == null ? null : r2(x - ce.oneriTrib[i])));
-      ce.proventiFin = sp.liquidita.map((x) => (x == null ? null : r2(x * 0.004)));
-      ce.personale = ce.personale.map((x, i) => (x == null ? null : r2(x + ce.proventiFin[i])));
+      ce.oneriTrib = ce.amministrativi.map((x) =>
+        x == null ? null : r2(x * 0.1),
+      );
+      ce.amministrativi = ce.amministrativi.map((x, i) =>
+        x == null ? null : r2(x - ce.oneriTrib[i]),
+      );
+      ce.proventiFin = sp.liquidita.map((x) =>
+        x == null ? null : r2(x * 0.004),
+      );
+      ce.personale = ce.personale.map((x, i) =>
+        x == null ? null : r2(x + ce.proventiFin[i]),
+      );
 
       // sopravvenienze attive/passive (Z): compensate sul personale per non alterare il risultato
       for (const [anno, attive, passive] of spec.sopravv || []) {
@@ -48,13 +56,18 @@ function costruisci(spec, n) {
         ce.personale[i] = r2(ce.personale[i] + attive - passive);
       }
 
-      const extra = applicaDettaglio({ ce, sp }, spec.det).concat(spec.extra || []);
+      const extra = applicaDettaglio({ ce, sp }, spec.det).concat(
+        spec.extra || [],
+      );
       ctx.bilancio({ ...ce, ...sp, extra });
       ctx.quadra();
 
       // vendite mensili: stessa stagionalità, leggermente diversa ogni anno
       const curva = CURVE[spec.stag];
-      ctx.vendite({ tot: spec.ricavi, stag: anni.map(() => curvaAnno(curva, rand)) });
+      ctx.vendite({
+        tot: spec.ricavi,
+        stag: anni.map(() => curvaAnno(curva, rand)),
+      });
 
       // parametri per ogni esercizio (il peso delle vendite cresce con l'anno)
       anni.forEach((a, i) => {
@@ -79,7 +92,12 @@ function costruisci(spec, n) {
       (spec.bvar || []).forEach(([sez, descr, valore], k) => {
         ctx.budgetVar(sez, descr, base, valore);
         if (k === 0 && anni.length > 1)
-          ctx.budgetVar(sez, descr, anni[anni.length - 2], valore > 1 && valore < 2 ? r2(valore - 0.02) : valore);
+          ctx.budgetVar(
+            sez,
+            descr,
+            anni[anni.length - 2],
+            valore > 1 && valore < 2 ? r2(valore - 0.02) : valore,
+          );
       });
     },
   };

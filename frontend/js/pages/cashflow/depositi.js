@@ -51,7 +51,10 @@
                   "Il saldo di gennaio è il saldo iniziale; dagli altri mesi il saldo è la liquidità del mese precedente.",
                 anno: Y,
                 campi: [
-                  { campo: "saldo_iniziale_cf", label: "Saldo iniziale (gennaio)" },
+                  {
+                    campo: "saldo_iniziale_cf",
+                    label: "Saldo iniziale (gennaio)",
+                  },
                 ],
               }),
           }),

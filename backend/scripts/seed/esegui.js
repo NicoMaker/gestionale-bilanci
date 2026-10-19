@@ -43,9 +43,15 @@ function riepilogo(cid, anni) {
 }
 
 /* nomeInsieme: completi | casi | tutti — ritorna { righe, saltati, disponibili, rimossi } */
-function eseguiSeed({ insieme = "completi", reset = false, log = () => {} } = {}) {
+function eseguiSeed({
+  insieme = "completi",
+  reset = false,
+  log = () => {},
+} = {}) {
   if (!insiemi[insieme])
-    throw new Error(`Insieme sconosciuto: ${insieme} (usa completi, casi o tutti)`);
+    throw new Error(
+      `Insieme sconosciuto: ${insieme} (usa completi, casi o tutti)`,
+    );
   const casi = insiemi[insieme]();
   const rimossi = reset ? eliminaSeed() : 0;
   const righe = [];

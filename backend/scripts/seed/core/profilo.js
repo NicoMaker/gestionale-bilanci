@@ -18,8 +18,21 @@ function profilo({
   quote,
   s,
 }) {
-  const q = { acq: 0.45, prod: 0.1, comm: 0.05, amm: 0.04, ammo: 0.03, ...quote };
-  const st = { immMat: 0.4, rimanenze: 0.1, crediti: 0.3, liquidita: 0.25, ...s };
+  const q = {
+    acq: 0.45,
+    prod: 0.1,
+    comm: 0.05,
+    amm: 0.04,
+    ammo: 0.03,
+    ...quote,
+  };
+  const st = {
+    immMat: 0.4,
+    rimanenze: 0.1,
+    crediti: 0.3,
+    liquidita: 0.25,
+    ...s,
+  };
   const ce = {},
     sp = {};
   const campi = (o, k, v) => (o[k] = o[k] || []).push(v);

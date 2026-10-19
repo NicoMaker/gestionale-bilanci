@@ -83,7 +83,10 @@
                 title: "Modifica imposte — Budget " + (Y + 1),
                 anno: Y,
                 campi: [
-                  { campo: "imposte_budget", label: "Imposte esercizio (previsione)" },
+                  {
+                    campo: "imposte_budget",
+                    label: "Imposte esercizio (previsione)",
+                  },
                 ],
               }),
           }),
