@@ -9,14 +9,40 @@
     totalRow,
   ) {
     const S = GB.store;
+    const extra =
+      "\n\nLa riga è condivisa: viene eliminata anche dal Conto Economico.";
+    const ctx = GB.sel.voci({
+      key: "budget-" + Y,
+      ambiti: ["CE"],
+      cosa: "budget",
+      anno: Y,
+      extra,
+    });
     const sectionBlock = (id, totKey) => {
       const def = T.SEZIONI.CE.find((s) => s.id === id);
+      const righe = S.ds.voci.filter((v) => v.sezione === id);
       tb.append(
-        h("tr", { class: "sec" }, h("td", { colspan: span }, def.label)),
+        h(
+          "tr",
+          { class: "sec" },
+          h(
+            "td",
+            { colspan: span },
+            h(
+              "span",
+              { class: "stk-label" },
+              def.label,
+              ro
+                ? null
+                : GB.sel.sezione(ctx, {
+                    label: def.label,
+                    ids: righe.map((v) => v.id),
+                  }),
+            ),
+          ),
+        ),
       );
-      S.ds.voci
-        .filter((v) => v.sezione === id)
-        .forEach((v) => {
+      righe.forEach((v) => {
           const tr = h("tr", { class: "line" });
           tr.append(
             h(
@@ -69,14 +95,47 @@
             h(
               "td",
               { class: "no-ro pen-cell" },
+              GB.sel.box(ctx, v.id),
               GB.penBtn({
                 title: "Modifica riga",
                 onclick: () => GB.editVoceBudget(v, Y),
               }),
+              h(
+                "button",
+                {
+                  class: "xbtn",
+                  title: "Elimina riga",
+                  onclick: () => GB.deleteVoceFlow(v, extra),
+                },
+                "✕",
+              ),
             ),
           );
           tb.append(tr);
         });
+      if (!ro && !def.single)
+        tb.append(
+          h(
+            "tr",
+            { class: "add no-ro" },
+            h(
+              "td",
+              { colspan: span },
+              h(
+                "span",
+                { class: "stk-label" },
+                h(
+                  "button",
+                  {
+                    class: "addbtn",
+                    onclick: () => S.addVoce("CE", id),
+                  },
+                  "+ aggiungi riga",
+                ),
+              ),
+            ),
+          ),
+        );
       totalRow(
         def.tot,
         "sub",

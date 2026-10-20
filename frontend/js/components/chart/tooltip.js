@@ -2,7 +2,7 @@
 (function () {
   const GB = window.GB;
 
-  GB.chartTooltip = function ({ svg, fmt2, tipFmt }) {
+  GB.chartTooltip = function ({ svg, fmt2, tipFmt, actions }) {
     const tip = GB.h("div", { class: "chart-tip", role: "status" });
     const box = GB.h("div", { class: "chart-box" });
     let pinned = null; // elemento fissato con il clic
@@ -48,6 +48,32 @@
           GB.h("b", { class: "v" + cls }, valueText(info.v, info.y2)),
         ),
       );
+      // dopo il clic (tooltip fissato) compaiono le azioni sull'esercizio scelto
+      const az = pinned && actions ? actions(String(info.label)) : [];
+      if (az.length)
+        tip.append(
+          GB.h(
+            "div",
+            { class: "tip-actions" },
+            az.map((a) =>
+              GB.h(
+                "button",
+                {
+                  type: "button",
+                  class: "tip-btn" + (a.danger ? " danger" : ""),
+                  onclick: (e) => {
+                    e.stopPropagation();
+                    pinned = null;
+                    hideTip();
+                    a.fn();
+                  },
+                },
+                a.label,
+              ),
+            ),
+          ),
+        );
+      tip.style.pointerEvents = az.length ? "auto" : "";
       tip.classList.add("on");
       unmark();
       if (markEl) {

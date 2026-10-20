@@ -1,0 +1,72 @@
+/* Selezione multipla delle righe: casella, riga evidenziata, strumenti di sezione e barra delle azioni. */
+table.fin .sel-box {
+  width: 15px;
+  height: 15px;
+  margin: 0 4px 0 0;
+  vertical-align: middle;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+table.fin tr.sel td {
+  background: color-mix(in srgb, var(--accent) 14%, var(--s0)) !important;
+}
+.sec-tools {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 14px;
+  vertical-align: middle;
+  font-weight: 400;
+}
+.sec-btn {
+  font: inherit;
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--b1);
+  background: var(--s0);
+  color: var(--t2);
+  cursor: pointer;
+  opacity: 0.75;
+}
+.sec-btn:hover:not(:disabled) {
+  opacity: 1;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.sec-btn.danger:hover:not(:disabled) {
+  color: var(--red);
+  border-color: var(--red);
+  background: var(--red-d);
+}
+.sec-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.selbar {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translate(-50%, 140%);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: calc(100vw - 24px);
+  padding: 10px 14px;
+  background: var(--s0);
+  color: var(--t0);
+  border: 1px solid var(--b1);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.18s ease;
+  pointer-events: none;
+}
+.selbar.on {
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+.selbar-n {
+  font-weight: 700;
+  margin-right: 6px;
+}

@@ -34,5 +34,55 @@
       S.recompute();
       S.emit("structure");
     },
+    // elimina più righe insieme (con tutti i loro valori)
+    async deleteVoci(ids) {
+      if (!ids.length) return;
+      await S._save(api.post(`/clienti/${S.clienteId}/voci/elimina`, { ids }));
+      const out = new Set(ids);
+      S.ds.voci = S.ds.voci.filter((x) => !out.has(x.id));
+      ids.forEach((id) => {
+        delete S.ds.val[id];
+        delete S.ds.bvar[id];
+        delete S.ds.cf[id];
+      });
+      S.recompute();
+      S.emit("structure");
+    },
+    /* cancella i valori di più righe senza eliminarle.
+       cosa: "valori" (importi di tutti gli esercizi) | "cashflow" | "budget" (solo l'anno di riferimento `anno`) */
+    async clearVoci(ids, cosa, anno) {
+      if (!ids.length) return;
+      await S._save(
+        api.post(`/clienti/${S.clienteId}/voci/azzera`, { ids, cosa, anno }),
+      );
+      ids.forEach((id) => {
+        if (cosa === "valori") delete S.ds.val[id];
+        else if (cosa === "budget") {
+          if (S.ds.bvar[id]) delete S.ds.bvar[id][anno];
+        } else if (S.ds.cf[id]) delete S.ds.cf[id][anno];
+      });
+      S.recompute();
+      S.emit("structure");
+    },
+    // azzera le vendite dei mesi (1..12) e/o degli anni indicati
+    async clearVendite({ mesi, anni }) {
+      await S._save(
+        api.post(`/clienti/${S.clienteId}/vendite/azzera`, { mesi, anni }),
+      );
+      Object.keys(S.ds.vend).forEach((a) => {
+        if (anni && !anni.includes(Number(a))) return;
+        (S.ds.vend[a] || []).forEach((_, m) => {
+          if (!mesi || mesi.includes(m + 1)) S.ds.vend[a][m] = 0;
+        });
+      });
+      S.recompute();
+      S.emit("structure");
+    },
+    // riporta a zero uno o più parametri di un anno (saldo banca, imposte, inflazione…)
+    async clearParams(anno, campi) {
+      const jobs = campi.map((c) => S.saveParam(anno, c, 0));
+      await Promise.all(jobs);
+      S.emit("structure");
+    },
   });
 })();

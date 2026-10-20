@@ -80,6 +80,22 @@
                       ],
                     }),
                 }),
+            ro
+              ? null
+              : h(
+                  "button",
+                  {
+                    class: "btn sm no-print",
+                    title: "Riporta investimento e aumento utile a zero",
+                    onclick: () =>
+                      GB.clearParamsFlow(
+                        Y,
+                        ["investimento", "aumento_utile"],
+                        "investimento e richiesta di aumento utile",
+                      ),
+                  },
+                  "Azzera",
+                ),
           ),
         ),
         h(

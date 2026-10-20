@@ -90,6 +90,11 @@
                 ],
               }),
           }),
+          GB.xBtn({
+            title: "Azzera le imposte",
+            onclick: () =>
+              GB.clearParamsFlow(Y, ["imposte_budget"], "le imposte del budget"),
+          }),
         ),
       );
       tb.append(tr);

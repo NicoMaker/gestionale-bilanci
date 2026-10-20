@@ -9,6 +9,7 @@
     lines = [],
     fmt = GB.fmt.short,
     fmt2 = (v) => v + "%",
+    actions = null, // (etichetta) → [{label, fn, danger}]: azioni mostrate cliccando una barra
     tipFmt = null, // formato del valore nel tooltip (default: numero intero o 2 decimali)
     height = 260,
     width = 680,
@@ -44,7 +45,12 @@
       role: "img",
     });
 
-    const { box, tip, attach } = GB.chartTooltip({ svg, fmt2, tipFmt });
+    const { box, tip, attach } = GB.chartTooltip({
+      svg,
+      fmt2,
+      tipFmt,
+      actions,
+    });
     const g = { W, H, L, R, T, B, iw, ih, slot, y1, y2, sc1, sc2, labels };
 
     GB.chartAxes(svg, g, fmt, fmt2);

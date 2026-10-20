@@ -22,7 +22,12 @@
       const span = 2 + (ce ? 1 : 0) + years.length * 3 + 1;
       GB.printFit(table, 250 + (ce ? 40 : 0), 122, years.length);
 
-      const x = { cfg, ro, ce, years, live, S, span, tb };
+      const ctx = GB.sel.voci({
+        key: "fin-" + cfg.ambito,
+        ambiti: [cfg.ambito],
+        cosa: "valori",
+      });
+      const x = { cfg, ro, ce, years, live, S, span, tb, ctx };
       const R = GB.finRows;
 
       for (const item of cfg.layout) {
@@ -30,9 +35,11 @@
         else if (item.t === "spacer") R.spazio(x);
         else if (item.t === "sec") {
           const voci = S.ds.voci.filter((v) => v.sezione === item.id);
-          if (!item.noHeader) R.intestazioneSez(x, item);
+          if (!item.noHeader && !ro) R.intestazioneSez(x, item, voci);
+          else if (!item.noHeader) R.intestazioneSez(x, item, null);
           voci.forEach((v) => R.voce(x, item, v));
-          if (!item.single && !ro) R.aggiungi(x, item);
+          // le sezioni a riga singola si possono ricreare dopo l'eliminazione
+          if ((!item.single || !voci.length) && !ro) R.aggiungi(x, item);
           if (!item.noTotal)
             tb.append(
               R.totale(

@@ -16,7 +16,15 @@ router.post(
     const sez = clean(req.body.sezione, 40);
     const def = sezioneValida(ambito, sez);
     if (!def) throw new HttpError(400, "Sezione non valida");
-    if (def.single) throw new HttpError(400, "Questa sezione ha una sola riga");
+    // le sezioni a riga singola accettano una nuova riga solo se la precedente è stata eliminata
+    if (
+      def.single &&
+      db.one(
+        "SELECT id FROM voci WHERE cliente_id=? AND sezione=? LIMIT 1",
+        [c.id, sez],
+      )
+    )
+      throw new HttpError(400, "Questa sezione ha una sola riga");
     const max = db.one(
       "SELECT COALESCE(MAX(ordine),0) AS m FROM voci WHERE cliente_id=? AND sezione=?",
       [c.id, sez],

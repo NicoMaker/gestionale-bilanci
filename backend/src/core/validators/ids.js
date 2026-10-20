@@ -20,10 +20,10 @@ const toMonth = (v) => {
 };
 
 /* Elenco di id (senza duplicati, da 1 a max elementi). */
-const toIds = (v, max = 1000) => {
+const toIds = (v, max = 1000, cosa = "cliente") => {
   if (!Array.isArray(v) || !v.length)
-    throw new HttpError(400, "Seleziona almeno un cliente");
-  if (v.length > max) throw new HttpError(400, "Troppi clienti selezionati");
+    throw new HttpError(400, `Seleziona almeno un ${cosa}`);
+  if (v.length > max) throw new HttpError(400, `Troppi elementi selezionati`);
   return [...new Set(v.map(toId))];
 };
 

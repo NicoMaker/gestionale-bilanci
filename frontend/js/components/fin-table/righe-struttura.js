@@ -25,8 +25,8 @@
     tb.append(h("tr", { class: "spacer" }, h("td", { colspan: span })));
   };
 
-  GB.finRows.intestazioneSez = function (x, item) {
-    const { span, tb } = x;
+  GB.finRows.intestazioneSez = function (x, item, voci) {
+    const { span, tb, ctx } = x;
     tb.append(
       h(
         "tr",
@@ -34,7 +34,17 @@
         h(
           "td",
           { colspan: span },
-          h("span", { class: "stk-label" }, item.label),
+          h(
+            "span",
+            { class: "stk-label" },
+            item.label,
+            voci
+              ? GB.sel.sezione(ctx, {
+                  label: item.label,
+                  ids: voci.map((v) => v.id),
+                })
+              : null,
+          ),
         ),
       ),
     );

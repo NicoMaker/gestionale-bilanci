@@ -8,6 +8,18 @@
 
   GB.parts.vendite.tabella = function ({ years, ro, live, V }) {
     const S = GB.store;
+    const ctx = GB.sel.mesi({ key: "vendite", years });
+    const azzeraAnno = async (a) => {
+      if (
+        await GB.confirm(
+          `Azzerare tutte le vendite dell'esercizio ${a}?`,
+          "Azzera",
+        )
+      )
+        S.clearVendite({ anni: [a] })
+          .then(() => GB.toast("Vendite azzerate"))
+          .catch(() => {});
+    };
     const table = h("table", { class: "fin" });
     table.append(
       h(
@@ -17,7 +29,22 @@
           "tr",
           null,
           h("th", { class: "l" }, ""),
-          years.map((a) => h("th", null, "ES. " + a)),
+          years.map((a) =>
+            h(
+              "th",
+              null,
+              "ES. " + a,
+              h(
+                "button",
+                {
+                  class: "xbtn no-ro no-print",
+                  title: `Azzera le vendite dell'esercizio ${a}`,
+                  onclick: () => azzeraAnno(a),
+                },
+                "✕",
+              ),
+            ),
+          ),
           h("th", null, "FT. MEDIO"),
           h("th", null, "STAGIO. %"),
           h("th", null, "PROGRESS. %"),
@@ -103,10 +130,20 @@
         h(
           "td",
           { class: "no-ro pen-cell" },
+          GB.sel.box(ctx, m + 1),
           GB.penBtn({
             title: "Modifica " + mn,
             onclick: () => GB.editMeseVendite(m, years),
           }),
+          h(
+            "button",
+            {
+              class: "xbtn",
+              title: "Azzera " + mn,
+              onclick: () => ctx.azzera([m + 1]),
+            },
+            "✕",
+          ),
         ),
       );
       tb.append(tr);

@@ -80,22 +80,21 @@
       h(
         "td",
         { class: "no-ro pen-cell" },
+        GB.sel.box(x.ctx, v.id),
         GB.penBtn({
           title: "Modifica riga",
           onclick: () =>
             GB.editVoce(v, { tipo: ce && item.id !== "C_IMPOSTE", years }),
         }),
-        v.fissa
-          ? ""
-          : h(
-              "button",
-              {
-                class: "xbtn",
-                title: "Elimina riga",
-                onclick: () => GB.deleteVoceFlow(v),
-              },
-              "✕",
-            ),
+        h(
+          "button",
+          {
+            class: "xbtn",
+            title: "Elimina riga",
+            onclick: () => GB.deleteVoceFlow(v),
+          },
+          "✕",
+        ),
       ),
     );
     tb.append(tr);

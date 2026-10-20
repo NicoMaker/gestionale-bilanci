@@ -6,14 +6,37 @@
 
   GB.parts.cashflow.gruppi = function ({ tb, ro, Y, live, CF, span }) {
     const S = GB.store;
+    const ctx = GB.sel.voci({
+      key: "cf-" + Y,
+      ambiti: ["CF"],
+      cosa: "cashflow",
+      anno: Y,
+    });
     const gruppi = (dir) => {
       T.SEZIONI.CF.filter((g) => g.dir === dir).forEach((g) => {
+        const righe = S.ds.voci.filter((v) => v.sezione === g.id);
         tb.append(
-          h("tr", { class: "sec" }, h("td", { colspan: span }, g.label)),
+          h(
+            "tr",
+            { class: "sec" },
+            h(
+              "td",
+              { colspan: span },
+              h(
+                "span",
+                { class: "stk-label" },
+                g.label,
+                ro
+                  ? null
+                  : GB.sel.sezione(ctx, {
+                      label: g.label,
+                      ids: righe.map((v) => v.id),
+                    }),
+              ),
+            ),
+          ),
         );
-        S.ds.voci
-          .filter((v) => v.sezione === g.id)
-          .forEach((v) => {
+        righe.forEach((v) => {
             const tr = h("tr", { class: "line" });
             tr.append(
               h(
@@ -56,6 +79,7 @@
               h(
                 "td",
                 { class: "no-ro pen-cell" },
+                GB.sel.box(ctx, v.id),
                 GB.penBtn({
                   title: "Modifica riga",
                   onclick: () => GB.editVoceCashflow(v, Y),

@@ -58,6 +58,15 @@
                 ],
               }),
           }),
+          GB.xBtn({
+            title: "Azzera il saldo iniziale",
+            onclick: () =>
+              GB.clearParamsFlow(
+                Y,
+                ["saldo_iniziale_cf"],
+                "il saldo iniziale della banca",
+              ),
+          }),
         ),
       );
       tb.append(tr);

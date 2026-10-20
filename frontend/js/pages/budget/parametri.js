@@ -43,6 +43,23 @@
                   ],
                 }),
             }),
+        ro
+          ? null
+          : h(
+              "button",
+              {
+                class: "btn sm",
+                style: { marginLeft: "8px" },
+                title: "Riporta inflazione e produttività a zero",
+                onclick: () =>
+                  GB.clearParamsFlow(
+                    Y,
+                    ["inflazione", "produttivita"],
+                    "inflazione e produttività",
+                  ),
+              },
+              "Azzera",
+            ),
       ),
       h(
         "div",

@@ -4,6 +4,23 @@
   const { h, fmt } = GB;
 
   GB.parts.dashboard.grafici = function (rows) {
+    const S = GB.store;
+    // cliccando una barra: aprire l'esercizio o eliminarlo
+    const actions = (label) => {
+      const a = Number(label);
+      return [
+        {
+          label: "Apri esercizio",
+          fn: () => {
+            S.setYear(a);
+            location.hash = "#/sp";
+          },
+        },
+        S.anni.length > 1 && S.anni.includes(a)
+          ? { label: "Elimina esercizio", danger: true, fn: () => GB.eliminaAnno(a) }
+          : null,
+      ].filter(Boolean);
+    };
     return h(
       "div",
       { class: "grid2" },
@@ -33,6 +50,7 @@
               },
             ],
             height: 240,
+            actions,
           }),
         ),
       ),
@@ -58,6 +76,7 @@
               },
             ],
             height: 240,
+            actions,
           }),
         ),
       ),
