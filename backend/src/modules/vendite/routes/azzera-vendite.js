@@ -42,7 +42,9 @@ router.post(
           cliente: c,
           etichetta:
             "Vendite azzerate" +
-            (mesi ? ": " + mesi.map((m) => T.MESI_BREVI[m - 1]).join(", ") : "") +
+            (mesi
+              ? ": " + mesi.map((m) => T.MESI_BREVI[m - 1]).join(", ")
+              : "") +
             (anni ? " · esercizi " + anni.join(", ") : ""),
           dettaglio: `${cancellate.length} importi mensili`,
           snapshot: { vendite: cancellate },

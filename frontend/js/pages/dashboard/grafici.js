@@ -17,7 +17,11 @@
           },
         },
         S.anni.length > 1 && S.anni.includes(a)
-          ? { label: "Elimina esercizio", danger: true, fn: () => GB.eliminaAnno(a) }
+          ? {
+              label: "Elimina esercizio",
+              danger: true,
+              fn: () => GB.eliminaAnno(a),
+            }
           : null,
       ].filter(Boolean);
     };

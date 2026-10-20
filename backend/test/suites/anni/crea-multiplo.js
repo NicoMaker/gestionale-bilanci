@@ -26,10 +26,25 @@ module.exports = async function () {
 
   await t("crea anno multiplo: validazioni e atomicità", async () => {
     const a = await nuovo("Multi C Srl", 2025);
-    assert.equal((await api("POST", "/anni/bulk", { cliente_ids: [], anno: 2030 })).status, 400);
-    assert.equal((await api("POST", "/anni/bulk", { cliente_ids: [a.id], anno: 1800 })).status, 400);
+    assert.equal(
+      (await api("POST", "/anni/bulk", { cliente_ids: [], anno: 2030 })).status,
+      400,
+    );
+    assert.equal(
+      (await api("POST", "/anni/bulk", { cliente_ids: [a.id], anno: 1800 }))
+        .status,
+      400,
+    );
     // un id inesistente blocca tutto: nessun anno creato
-    assert.equal((await api("POST", "/anni/bulk", { cliente_ids: [a.id, 999999], anno: 2031 })).status, 404);
+    assert.equal(
+      (
+        await api("POST", "/anni/bulk", {
+          cliente_ids: [a.id, 999999],
+          anno: 2031,
+        })
+      ).status,
+      404,
+    );
     const c = (await api("GET", "/clienti")).body.find((x) => x.id === a.id);
     assert.ok(!c.anni.includes(2031));
     await api("DELETE", `/clienti/${a.id}`);

@@ -94,7 +94,9 @@
   }
 
   function avvisi(st) {
-    const periodo = st.anno ? "nell'esercizio " + st.anno : "nell'ultimo esercizio";
+    const periodo = st.anno
+      ? "nell'esercizio " + st.anno
+      : "nell'ultimo esercizio";
     const out = [];
     const lista = (arr) =>
       arr
@@ -151,7 +153,11 @@
           ricarica();
         },
       },
-      h("option", { value: "", selected: !st.anno || null }, "Ultimo esercizio di ogni cliente"),
+      h(
+        "option",
+        { value: "", selected: !st.anno || null },
+        "Ultimo esercizio di ogni cliente",
+      ),
       ...st.anni_disponibili.map((a) =>
         h("option", { value: a, selected: a === st.anno || null }, String(a)),
       ),

@@ -55,10 +55,7 @@
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !ov.hidden) return chiudi();
     if (e.ctrlKey || e.metaKey || e.altKey || inCampo(e.target)) return;
-    if (
-      document.querySelector(".modal-overlay.open")
-    )
-      return;
+    if (document.querySelector(".modal-overlay.open")) return;
     const k = e.key;
     if (k === "?") {
       e.preventDefault();

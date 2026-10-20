@@ -43,76 +43,76 @@
         ),
       );
       righe.forEach((v) => {
-          const tr = h("tr", { class: "line" });
-          tr.append(
-            h(
-              "td",
-              { class: "l" },
-              v.descrizione || h("span", { class: "muted" }, "(senza nome)"),
-            ),
-          );
-          tr.append(
-            h(
-              "td",
-              {
-                class: "l",
-                style: { fontFamily: "var(--mono)", fontWeight: 700 },
-              },
-              (v.tipo || "—").toUpperCase(),
-            ),
-          );
-          const c = h("td", { class: "n" }),
-            f = h("td", { class: "n" }),
-            hh = h("td", { class: "n" });
-          const G = S.ds.bvar[v.id] ? S.ds.bvar[v.id][Y] : undefined;
-          const g = GB.numInput(G === undefined ? null : G, {
-            readonly: ro,
-            dec: 4,
-            cls: "w-yr",
-            onCommit: (val) => S.saveBudgetVar(v.id, Y, val),
-          });
-          g.dataset.col = "g";
-          const row = () => B().righe[v.id] || { C: 0, F: 0, H: 0 };
-          const pc = pctCells(
-            tr,
-            () => row().C,
-            () => row().H,
-          );
-          live.add(c, (e) => GB.setNum(e, row().C));
-          live.add(f, (e) => {
-            e.textContent = fmt.num(row().F, 4);
-          });
-          live.add(hh, (e) => GB.setNum(e, row().H));
-          pc.bind();
-          tr.append(
-            c,
-            pc.d,
-            f,
-            h("td", { class: "n" }, g),
-            hh,
-            pc.i,
-            pc.j,
-            h(
-              "td",
-              { class: "no-ro pen-cell" },
-              GB.sel.box(ctx, v.id),
-              GB.penBtn({
-                title: "Modifica riga",
-                onclick: () => GB.editVoceBudget(v, Y),
-              }),
-              h(
-                "button",
-                {
-                  class: "xbtn",
-                  title: "Elimina riga",
-                  onclick: () => GB.deleteVoceFlow(v, extra),
-                },
-                "✕",
-              ),
-            ),
-          );
-          tb.append(tr);
+        const tr = h("tr", { class: "line" });
+        tr.append(
+          h(
+            "td",
+            { class: "l" },
+            v.descrizione || h("span", { class: "muted" }, "(senza nome)"),
+          ),
+        );
+        tr.append(
+          h(
+            "td",
+            {
+              class: "l",
+              style: { fontFamily: "var(--mono)", fontWeight: 700 },
+            },
+            (v.tipo || "—").toUpperCase(),
+          ),
+        );
+        const c = h("td", { class: "n" }),
+          f = h("td", { class: "n" }),
+          hh = h("td", { class: "n" });
+        const G = S.ds.bvar[v.id] ? S.ds.bvar[v.id][Y] : undefined;
+        const g = GB.numInput(G === undefined ? null : G, {
+          readonly: ro,
+          dec: 4,
+          cls: "w-yr",
+          onCommit: (val) => S.saveBudgetVar(v.id, Y, val),
         });
+        g.dataset.col = "g";
+        const row = () => B().righe[v.id] || { C: 0, F: 0, H: 0 };
+        const pc = pctCells(
+          tr,
+          () => row().C,
+          () => row().H,
+        );
+        live.add(c, (e) => GB.setNum(e, row().C));
+        live.add(f, (e) => {
+          e.textContent = fmt.num(row().F, 4);
+        });
+        live.add(hh, (e) => GB.setNum(e, row().H));
+        pc.bind();
+        tr.append(
+          c,
+          pc.d,
+          f,
+          h("td", { class: "n" }, g),
+          hh,
+          pc.i,
+          pc.j,
+          h(
+            "td",
+            { class: "no-ro pen-cell" },
+            GB.sel.box(ctx, v.id),
+            GB.penBtn({
+              title: "Modifica riga",
+              onclick: () => GB.editVoceBudget(v, Y),
+            }),
+            h(
+              "button",
+              {
+                class: "xbtn",
+                title: "Elimina riga",
+                onclick: () => GB.deleteVoceFlow(v, extra),
+              },
+              "✕",
+            ),
+          ),
+        );
+        tb.append(tr);
+      });
       if (!ro && !def.single)
         tb.append(
           h(

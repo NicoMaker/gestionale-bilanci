@@ -14,7 +14,10 @@ async function start({ banner = false } = {}) {
   const pulisciCestino = () => {
     try {
       const n = cestino.eliminaScaduti();
-      if (n) console.log(`🗑️ Cestino: eliminati definitivamente ${n} elementi scaduti`);
+      if (n)
+        console.log(
+          `🗑️ Cestino: eliminati definitivamente ${n} elementi scaduti`,
+        );
     } catch (e) {
       console.error("Pulizia cestino:", e.message);
     }

@@ -9,7 +9,10 @@
       const c = S.clienti.find((x) => x.id === id);
       return c ? c.ragione_sociale : "#" + id;
     });
-    return n.slice(0, 8).join(", ") + (n.length > 8 ? " e altri " + (n.length - 8) : "");
+    return (
+      n.slice(0, 8).join(", ") +
+      (n.length > 8 ? " e altri " + (n.length - 8) : "")
+    );
   };
 
   GB.parts.clienti.azioni.creaAnnoMultiplo = async (ids, anno) => {

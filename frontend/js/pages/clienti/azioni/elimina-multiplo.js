@@ -39,12 +39,20 @@
         body: h(
           "div",
           null,
-          h("p", null, `Nessuno dei ${n} clienti contiene dati. Spostarli nel cestino? (ripristinabili per 15 giorni)`),
+          h(
+            "p",
+            null,
+            `Nessuno dei ${n} clienti contiene dati. Spostarli nel cestino? (ripristinabili per 15 giorni)`,
+          ),
           elenco(ids.map(nomeDi)),
         ),
         buttons: [
           { label: "Annulla", value: false },
-          { label: `Elimina ${n} client${n === 1 ? "e" : "i"}`, kind: "danger", value: true },
+          {
+            label: `Elimina ${n} client${n === 1 ? "e" : "i"}`,
+            kind: "danger",
+            value: true,
+          },
         ],
       });
       if (!ok) return;
@@ -105,7 +113,9 @@
       await S.loadClienti();
       if (S.clienteId && !S.clienti.some((c) => c.id === S.clienteId))
         await S.select(S.clienti[0] ? S.clienti[0].id : null);
-      GB.deleted(`${r.eliminati} client${r.eliminati === 1 ? "e eliminato" : "i eliminati"}`);
+      GB.deleted(
+        `${r.eliminati} client${r.eliminati === 1 ? "e eliminato" : "i eliminati"}`,
+      );
     } catch (e) {
       GB.toast(e.message, "err");
     }

@@ -49,9 +49,11 @@ router.post(
     const c = getCliente(toId(req.params.id));
     const ids = toIds(req.body.ids, 2000, "elemento");
     righeDelCliente(c.id, ids);
-    const tabella = { valori: "valori", cashflow: "cashflow", budget: "budget_var" }[
-      req.body.cosa
-    ];
+    const tabella = {
+      valori: "valori",
+      cashflow: "cashflow",
+      budget: "budget_var",
+    }[req.body.cosa];
     if (!tabella) throw new HttpError(400, "Tipo di dati non valido");
     const anno = tabella === "valori" ? null : toYear(req.body.anno);
     const filtro = anno === null ? "" : "anno=? AND ";
@@ -65,7 +67,11 @@ router.post(
         const nomi = db
           .all(`SELECT descrizione FROM voci WHERE id IN (${marks(ids)})`, ids)
           .map((r) => r.descrizione || "(senza nome)");
-        const cosa = { valori: "Valori", cashflow: "Cash flow", budget_var: "Variazioni budget" }[tabella];
+        const cosa = {
+          valori: "Valori",
+          cashflow: "Cash flow",
+          budget_var: "Variazioni budget",
+        }[tabella];
         C.sposta({
           tipo: "azzera_valori",
           cliente: c,
@@ -74,7 +80,10 @@ router.post(
           snapshot: { [tabella]: cancellati },
         });
       }
-      db.run(`DELETE FROM ${tabella} WHERE ${filtro}voce_id IN (${marks(ids)})`, par);
+      db.run(
+        `DELETE FROM ${tabella} WHERE ${filtro}voce_id IN (${marks(ids)})`,
+        par,
+      );
     });
     res.json({ ok: true });
   }),

@@ -52,7 +52,9 @@ router.get(
       }
       tot.esercizi += rows.length;
       rows.forEach((r) => anniDisponibili.add(r.anno));
-      const u = annoSel ? rows.find((r) => r.anno === annoSel) : ultimaRiga(rows);
+      const u = annoSel
+        ? rows.find((r) => r.anno === annoSel)
+        : ultimaRiga(rows);
       const riga = {
         id: c.id,
         ragione_sociale: c.ragione_sociale,

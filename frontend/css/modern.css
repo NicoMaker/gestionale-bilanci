@@ -353,7 +353,8 @@ table.fin tr.title td {
   }
   .content {
     padding: 14px calc(14px + env(safe-area-inset-right))
-      calc(20px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
+      calc(20px + env(safe-area-inset-bottom))
+      calc(14px + env(safe-area-inset-left));
   }
 }
 

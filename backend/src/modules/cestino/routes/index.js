@@ -10,9 +10,7 @@ const ids = (b) => toIds(b.ids, 5000, "elemento");
 
 router.get(
   "/cestino",
-  wrap((req, res) =>
-    res.json({ giorni: C.GIORNI, elementi: C.elenco() }),
-  ),
+  wrap((req, res) => res.json({ giorni: C.GIORNI, elementi: C.elenco() })),
 );
 
 router.get(

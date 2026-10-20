@@ -21,10 +21,10 @@ router.post(
           [c.id, anno],
         );
         if (!gia)
-          db.run(
-            "INSERT INTO parametri_anno (cliente_id, anno) VALUES (?,?)",
-            [c.id, anno],
-          );
+          db.run("INSERT INTO parametri_anno (cliente_id, anno) VALUES (?,?)", [
+            c.id,
+            anno,
+          ]);
         return {
           id: c.id,
           ragione_sociale: c.ragione_sociale,

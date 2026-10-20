@@ -51,7 +51,11 @@
       r = await GB.api.get("/cestino");
     } catch (e) {
       box.replaceChildren(
-        h("div", { class: "note", style: { borderLeftColor: "var(--red)" } }, e.message),
+        h(
+          "div",
+          { class: "note", style: { borderLeftColor: "var(--red)" } },
+          e.message,
+        ),
       );
       return;
     }
@@ -73,14 +77,22 @@
       return;
     }
     if (r.ripristinati.length)
-      GB.toast(plurale(r.ripristinati.length, "elemento ripristinato", "elementi ripristinati"));
+      GB.toast(
+        plurale(
+          r.ripristinati.length,
+          "elemento ripristinato",
+          "elementi ripristinati",
+        ),
+      );
     if (r.errori.length)
       await GB.modal({
         title: "Alcuni elementi non sono stati ripristinati",
         body: h(
           "ul",
           { class: "sel-lista" },
-          r.errori.map((e) => h("li", null, h("b", null, e.etichetta), " — ", e.error)),
+          r.errori.map((e) =>
+            h("li", null, h("b", null, e.etichetta), " — ", e.error),
+          ),
         ),
       });
     stato.sel.clear();
@@ -192,7 +204,11 @@
       h("span", { class: "grow" }),
       nSel
         ? [
-            h("span", { class: "sel-count" }, plurale(nSel, "selezionato", "selezionati")),
+            h(
+              "span",
+              { class: "sel-count" },
+              plurale(nSel, "selezionato", "selezionati"),
+            ),
             h(
               "button",
               { class: "btn primary sm", onclick: () => ripristina(box, ids) },
@@ -202,7 +218,8 @@
               "button",
               {
                 class: "btn danger sm",
-                onclick: () => eliminaDef(box, ids, plurale(nSel, "elemento", "elementi")),
+                onclick: () =>
+                  eliminaDef(box, ids, plurale(nSel, "elemento", "elementi")),
               },
               "Elimina definitivamente",
             ),
@@ -220,7 +237,10 @@
       type: "checkbox",
       class: "sel-chk",
       "aria-label": "Seleziona tutti",
-      checked: visibili.length && visibili.every((x) => stato.sel.has(x.id)) ? true : null,
+      checked:
+        visibili.length && visibili.every((x) => stato.sel.has(x.id))
+          ? true
+          : null,
       onchange: (e) => {
         visibili.forEach((x) =>
           e.target.checked ? stato.sel.add(x.id) : stato.sel.delete(x.id),
@@ -231,7 +251,8 @@
     const tb = h("tbody");
     visibili.forEach((x) => {
       const [icona, nomeTipo] = TIPI[x.tipo] || ["•", x.tipo];
-      const urgente = x.giorni_rimasti <= 3 ? "ko" : x.giorni_rimasti <= 7 ? "warn" : "info";
+      const urgente =
+        x.giorni_rimasti <= 3 ? "ko" : x.giorni_rimasti <= 7 ? "warn" : "info";
       tb.append(
         h(
           "tr",
@@ -250,12 +271,18 @@
               },
             }),
           ),
-          h("td", { class: "l" }, h("span", { class: "cest-tipo" }, icona + " " + nomeTipo)),
+          h(
+            "td",
+            { class: "l" },
+            h("span", { class: "cest-tipo" }, icona + " " + nomeTipo),
+          ),
           h(
             "td",
             { class: "l" },
             h("div", { class: "cest-nome" }, x.etichetta),
-            x.dettaglio ? h("div", { class: "muted small" }, x.dettaglio) : null,
+            x.dettaglio
+              ? h("div", { class: "muted small" }, x.dettaglio)
+              : null,
           ),
           h("td", { class: "l" }, x.cliente_nome || "—"),
           h("td", { class: "l" }, data(x.data_eliminazione)),
@@ -264,7 +291,10 @@
             { class: "l" },
             h(
               "span",
-              { class: "pill " + urgente, title: "Eliminazione definitiva il " + data(x.scade_il) },
+              {
+                class: "pill " + urgente,
+                title: "Eliminazione definitiva il " + data(x.scade_il),
+              },
               plurale(x.giorni_rimasti, "giorno", "giorni"),
             ),
           ),
@@ -273,7 +303,11 @@
             { class: "pen-cell no-print" },
             h(
               "button",
-              { class: "btn sm", title: "Ripristina", onclick: () => ripristina(box, [x.id]) },
+              {
+                class: "btn sm",
+                title: "Ripristina",
+                onclick: () => ripristina(box, [x.id]),
+              },
               "↩ Ripristina",
             ),
             h(
@@ -294,7 +328,15 @@
         h(
           "tr",
           null,
-          h("td", { colspan: 7, class: "muted", style: { padding: "18px", textAlign: "center" } }, "Nessun elemento corrisponde alla ricerca"),
+          h(
+            "td",
+            {
+              colspan: 7,
+              class: "muted",
+              style: { padding: "18px", textAlign: "center" },
+            },
+            "Nessun elemento corrisponde alla ricerca",
+          ),
         ),
       );
 

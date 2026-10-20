@@ -19,10 +19,10 @@ router.post(
     // le sezioni a riga singola accettano una nuova riga solo se la precedente è stata eliminata
     if (
       def.single &&
-      db.one(
-        "SELECT id FROM voci WHERE cliente_id=? AND sezione=? LIMIT 1",
-        [c.id, sez],
-      )
+      db.one("SELECT id FROM voci WHERE cliente_id=? AND sezione=? LIMIT 1", [
+        c.id,
+        sez,
+      ])
     )
       throw new HttpError(400, "Questa sezione ha una sola riga");
     const max = db.one(

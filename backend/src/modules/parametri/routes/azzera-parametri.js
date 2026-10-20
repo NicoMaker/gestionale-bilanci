@@ -37,11 +37,20 @@ router.post(
           tipo: "azzera_parametri",
           cliente: c,
           etichetta: `Parametri azzerati ${anno}: ${Object.keys(precedenti).join(", ")}`,
-          dettaglio: "valori precedenti: " + Object.entries(precedenti).map(([k, v]) => `${k} = ${v}`).join(" · "),
-          snapshot: { param_set: [{ cliente_id: c.id, anno, campi: precedenti }] },
+          dettaglio:
+            "valori precedenti: " +
+            Object.entries(precedenti)
+              .map(([k, v]) => `${k} = ${v}`)
+              .join(" · "),
+          snapshot: {
+            param_set: [{ cliente_id: c.id, anno, campi: precedenti }],
+          },
         });
       for (const k of campi)
-        db.run(`UPDATE parametri_anno SET ${k}=? WHERE cliente_id=? AND anno=?`, [def(k), c.id, anno]);
+        db.run(
+          `UPDATE parametri_anno SET ${k}=? WHERE cliente_id=? AND anno=?`,
+          [def(k), c.id, anno],
+        );
     });
     res.json({ ok: true });
   }),

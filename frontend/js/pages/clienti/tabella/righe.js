@@ -9,7 +9,9 @@
     for (let i = 0; i < anni.length; i++) {
       let j = i;
       while (j + 1 < anni.length && anni[j + 1] === anni[j] + 1) j++;
-      out.push(j - i >= 2 ? `${anni[i]}–${anni[j]}` : anni.slice(i, j + 1).join(", "));
+      out.push(
+        j - i >= 2 ? `${anni[i]}–${anni[j]}` : anni.slice(i, j + 1).join(", "),
+      );
       i = j;
     }
     return out.join(", ");
@@ -55,7 +57,9 @@
                     onchange: (e) => {
                       if (e.target.checked) sel.ids.add(c.id);
                       else sel.ids.delete(c.id);
-                      e.target.closest("tr").classList.toggle("selected", e.target.checked);
+                      e.target
+                        .closest("tr")
+                        .classList.toggle("selected", e.target.checked);
                       sel.sincronizza(rows);
                     },
                   }),

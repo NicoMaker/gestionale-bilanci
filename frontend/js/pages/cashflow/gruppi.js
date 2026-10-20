@@ -37,66 +37,66 @@
           ),
         );
         righe.forEach((v) => {
-            const tr = h("tr", { class: "line" });
-            tr.append(
+          const tr = h("tr", { class: "line" });
+          tr.append(
+            h(
+              "td",
+              { class: "l" },
+              h("input", {
+                class: "ci desc",
+                "data-voce": v.id,
+                value: v.descrizione || "",
+                readonly: ro || null,
+                placeholder: "descrizione…",
+                onchange: (e) =>
+                  S.updateVoce(v.id, { descrizione: e.target.value }),
+              }),
+            ),
+          );
+          for (let m = 0; m < 12; m++) {
+            const cur =
+              S.ds.cf[v.id] && S.ds.cf[v.id][Y] ? S.ds.cf[v.id][Y][m] : 0;
+            const inp = GB.numInput(cur || null, {
+              readonly: ro,
+              cls: "w-mo",
+              onCommit: (val) => S.saveCashflow(v.id, Y, m + 1, val),
+            });
+            inp.dataset.col = "m" + m;
+            tr.append(h("td", { class: "n" }, inp));
+          }
+          const t = h("td", { class: "n", style: { fontWeight: 700 } });
+          live.add(t, (e) =>
+            GB.setNum(
+              e,
+              Array.from({ length: 12 }, (_, m) => CF().cfv(v.id, m)).reduce(
+                (s, x) => s + x,
+                0,
+              ),
+            ),
+          );
+          tr.append(
+            t,
+            h(
+              "td",
+              { class: "no-ro pen-cell" },
+              GB.sel.box(ctx, v.id),
+              GB.penBtn({
+                title: "Modifica riga",
+                onclick: () => GB.editVoceCashflow(v, Y),
+              }),
               h(
-                "td",
-                { class: "l" },
-                h("input", {
-                  class: "ci desc",
-                  "data-voce": v.id,
-                  value: v.descrizione || "",
-                  readonly: ro || null,
-                  placeholder: "descrizione…",
-                  onchange: (e) =>
-                    S.updateVoce(v.id, { descrizione: e.target.value }),
-                }),
+                "button",
+                {
+                  class: "xbtn",
+                  title: "Elimina riga",
+                  onclick: () => GB.deleteVoceFlow(v),
+                },
+                "✕",
               ),
-            );
-            for (let m = 0; m < 12; m++) {
-              const cur =
-                S.ds.cf[v.id] && S.ds.cf[v.id][Y] ? S.ds.cf[v.id][Y][m] : 0;
-              const inp = GB.numInput(cur || null, {
-                readonly: ro,
-                cls: "w-mo",
-                onCommit: (val) => S.saveCashflow(v.id, Y, m + 1, val),
-              });
-              inp.dataset.col = "m" + m;
-              tr.append(h("td", { class: "n" }, inp));
-            }
-            const t = h("td", { class: "n", style: { fontWeight: 700 } });
-            live.add(t, (e) =>
-              GB.setNum(
-                e,
-                Array.from({ length: 12 }, (_, m) => CF().cfv(v.id, m)).reduce(
-                  (s, x) => s + x,
-                  0,
-                ),
-              ),
-            );
-            tr.append(
-              t,
-              h(
-                "td",
-                { class: "no-ro pen-cell" },
-                GB.sel.box(ctx, v.id),
-                GB.penBtn({
-                  title: "Modifica riga",
-                  onclick: () => GB.editVoceCashflow(v, Y),
-                }),
-                h(
-                  "button",
-                  {
-                    class: "xbtn",
-                    title: "Elimina riga",
-                    onclick: () => GB.deleteVoceFlow(v),
-                  },
-                  "✕",
-                ),
-              ),
-            );
-            tb.append(tr);
-          });
+            ),
+          );
+          tb.append(tr);
+        });
         if (!ro)
           tb.append(
             h(

@@ -30,7 +30,10 @@ function snapCliente(c) {
   return Object.assign(
     {
       clienti: [db.one("SELECT * FROM clienti WHERE id=?", [c.id])],
-      parametri_anno: db.all("SELECT * FROM parametri_anno WHERE cliente_id=?", [c.id]),
+      parametri_anno: db.all(
+        "SELECT * FROM parametri_anno WHERE cliente_id=?",
+        [c.id],
+      ),
       vendite: db.all("SELECT * FROM vendite WHERE cliente_id=?", [c.id]),
     },
     snapVoci(ids),

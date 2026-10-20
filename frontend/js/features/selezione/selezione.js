@@ -36,7 +36,13 @@
     if (!n) return b.replaceChildren();
     const c = state.ctx;
     b.replaceChildren(
-      h("span", { class: "selbar-n" }, plural(n, c.uno, c.molti) + " selezionat" + (n === 1 ? (c.f ? "a" : "o") : c.f ? "e" : "i")),
+      h(
+        "span",
+        { class: "selbar-n" },
+        plural(n, c.uno, c.molti) +
+          " selezionat" +
+          (n === 1 ? (c.f ? "a" : "o") : c.f ? "e" : "i"),
+      ),
       h(
         "button",
         { class: "btn sm", onclick: () => GB.sel.set(c, c.all()) },
@@ -122,7 +128,8 @@
             .length;
         ids.forEach((id) => {
           if (cosa === "valori") n += nz(S.ds.val[id]);
-          else if (cosa === "budget") n += S.ds.bvar[id] && S.ds.bvar[id][anno] != null ? 1 : 0;
+          else if (cosa === "budget")
+            n += S.ds.bvar[id] && S.ds.bvar[id][anno] != null ? 1 : 0;
           else n += ((S.ds.cf[id] || {})[anno] || []).filter((x) => x).length;
         });
         return n;
@@ -146,8 +153,7 @@
         molti: "righe",
         f: true,
         all: () => righe().map((v) => v.id),
-        azzeraLabel:
-          cosa === "budget" ? "Azzera variazioni" : "Azzera valori",
+        azzeraLabel: cosa === "budget" ? "Azzera variazioni" : "Azzera valori",
         async elimina(ids) {
           const n = tuttiDati(ids);
           const msg =
@@ -239,8 +245,10 @@
           GB.sel.set(ctx, ids),
         ),
         ctx.azzera
-          ? btn("Azzera", `Cancella i valori di «${label}» (le righe restano)`, () =>
-              ctx.azzera(ids),
+          ? btn(
+              "Azzera",
+              `Cancella i valori di «${label}» (le righe restano)`,
+              () => ctx.azzera(ids),
             )
           : null,
         ctx.elimina
@@ -260,7 +268,11 @@
   S.on("context", () => GB.sel.clear());
   window.addEventListener("hashchange", () => GB.sel.clear());
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && state.ids.size && !document.querySelector(".overlay"))
+    if (
+      e.key === "Escape" &&
+      state.ids.size &&
+      !document.querySelector(".overlay")
+    )
       GB.sel.clear();
   });
 })();

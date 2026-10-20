@@ -42,7 +42,10 @@ router.delete(
         tipo: "anno",
         cliente: c,
         etichetta: `Esercizio ${anno}`,
-        dettaglio: dAnno && dAnno.totale ? `${dAnno.totale} dati inseriti` : "senza dati",
+        dettaglio:
+          dAnno && dAnno.totale
+            ? `${dAnno.totale} dati inseriti`
+            : "senza dati",
         snapshot: Object.assign(C.snapAnno(c.id, anno), { anno }),
       });
       const sub = "SELECT id FROM voci WHERE cliente_id=?";

@@ -45,7 +45,9 @@ function ripristinaDati(d) {
   // 3. righe di conto (se l'id è occupato la riga prende un id nuovo)
   const mappa = {};
   for (const v of d.voci || []) {
-    const sez = (Template.SEZIONI[v.ambito] || []).find((s) => s.id === v.sezione);
+    const sez = (Template.SEZIONI[v.ambito] || []).find(
+      (s) => s.id === v.sezione,
+    );
     if (
       sez &&
       sez.single &&
@@ -64,14 +66,19 @@ function ripristinaDati(d) {
     } else {
       const { id, ...resto } = v;
       mappa[id] = db.insert(
-        `INSERT INTO voci (${Object.keys(resto).join(",")}) VALUES (${Object.keys(resto).map(() => "?").join(",")})`,
+        `INSERT INTO voci (${Object.keys(resto).join(",")}) VALUES (${Object.keys(
+          resto,
+        )
+          .map(() => "?")
+          .join(",")})`,
         Object.values(resto),
       );
     }
   }
 
   // 4. dati collegati
-  for (const r of d.parametri_anno || []) inserisci("parametri_anno", r, "OR REPLACE");
+  for (const r of d.parametri_anno || [])
+    inserisci("parametri_anno", r, "OR REPLACE");
   for (const r of d.vendite || []) inserisci("vendite", r);
   for (const t of ["valori", "budget_var", "cashflow"])
     for (const r of d[t] || []) {
@@ -80,10 +87,10 @@ function ripristinaDati(d) {
         inserisci(t, { ...r, voce_id: id });
     }
   for (const p of d.param_set || []) {
-    db.run("INSERT OR IGNORE INTO parametri_anno (cliente_id, anno) VALUES (?,?)", [
-      p.cliente_id,
-      p.anno,
-    ]);
+    db.run(
+      "INSERT OR IGNORE INTO parametri_anno (cliente_id, anno) VALUES (?,?)",
+      [p.cliente_id, p.anno],
+    );
     for (const [campo, val] of Object.entries(p.campi))
       if (CAMPI_PARAM.includes(campo))
         db.run(
@@ -102,8 +109,7 @@ function ripristina(ids) {
   if (items.length !== ids.length)
     throw new HttpError(404, "Elemento non trovato nel cestino");
   items.sort(
-    (a, b) =>
-      (PRIORITA[a.tipo] ?? 3) - (PRIORITA[b.tipo] ?? 3) || a.id - b.id,
+    (a, b) => (PRIORITA[a.tipo] ?? 3) - (PRIORITA[b.tipo] ?? 3) || a.id - b.id,
   );
   const ok = [];
   const errori = [];
