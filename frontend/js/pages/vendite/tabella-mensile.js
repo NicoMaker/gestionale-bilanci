@@ -16,9 +16,7 @@
           "Azzera",
         )
       )
-        S.clearVendite({ anni: [a] })
-          .then(() => GB.toast("Vendite azzerate"))
-          .catch(() => {});
+        S.clearVendite({ anni: [a] }).catch(() => {});
     };
     const table = h("table", { class: "fin" });
     table.append(

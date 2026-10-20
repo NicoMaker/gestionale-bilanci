@@ -21,7 +21,7 @@
     if (!d.ha_dati) {
       if (
         !(await GB.confirm(
-          `“${c.ragione_sociale}” non contiene dati. Eliminare il cliente?`,
+          `“${c.ragione_sociale}” non contiene dati. Spostare il cliente nel cestino? (ripristinabile per 15 giorni)`,
         ))
       )
         return;
@@ -36,13 +36,13 @@
         h(
           "p",
           null,
-          `⚠️ “${c.ragione_sociale}” contiene ${d.totale} dati inseriti. Eliminandolo si perdono definitivamente:`,
+          `⚠️ “${c.ragione_sociale}” contiene ${d.totale} dati inseriti. Verrà spostato nel cestino e potrai ripristinarlo, con tutti i suoi dati, entro 15 giorni:`,
         ),
         GB.riepilogoDati(d),
         h(
           "p",
           { class: "small muted" },
-          "Consiglio: scarica prima il database come backup.",
+          "Passati 15 giorni il cliente e i suoi dati vengono eliminati definitivamente.",
         ),
         h(
           "div",
@@ -58,7 +58,7 @@
           buttons: [
             { label: "Annulla", value: false },
             {
-              label: "Elimina definitivamente",
+              label: "Sposta nel cestino",
               kind: "danger",
               value: true,
             },
@@ -75,7 +75,7 @@
       await S.loadClienti();
       if (S.clienteId === c.id)
         await S.select(S.clienti[0] ? S.clienti[0].id : null);
-      GB.toast("Cliente eliminato");
+      GB.deleted(`Cliente «${c.ragione_sociale}» eliminato`);
     } catch (e) {
       GB.toast(e.message, "err");
     }

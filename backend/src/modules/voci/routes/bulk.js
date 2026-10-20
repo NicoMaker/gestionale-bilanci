@@ -6,6 +6,7 @@ const db = require("../../../core/db");
 const { HttpError, wrap } = require("../../../core/http");
 const { toId, toIds, toYear } = require("../../../core/validators");
 const { getCliente } = require("../../clienti/service");
+const C = require("../../cestino/service");
 
 const router = express.Router();
 
@@ -27,6 +28,13 @@ router.post(
     const ids = toIds(req.body.ids, 2000, "elemento");
     righeDelCliente(c.id, ids);
     db.tx(() => {
+      const snapshot = C.snapVoci(ids);
+      C.sposta({
+        tipo: "voci",
+        cliente: c,
+        ...C.etichettaVoci(snapshot.voci),
+        snapshot,
+      });
       for (const t of ["valori", "budget_var", "cashflow"])
         db.run(`DELETE FROM ${t} WHERE voce_id IN (${marks(ids)})`, ids);
       db.run(`DELETE FROM voci WHERE id IN (${marks(ids)})`, ids);
@@ -45,13 +53,29 @@ router.post(
       req.body.cosa
     ];
     if (!tabella) throw new HttpError(400, "Tipo di dati non valido");
-    if (tabella === "valori")
-      db.run(`DELETE FROM valori WHERE voce_id IN (${marks(ids)})`, ids);
-    else
-      db.run(
-        `DELETE FROM ${tabella} WHERE anno=? AND voce_id IN (${marks(ids)})`,
-        [toYear(req.body.anno), ...ids],
-      );
+    const anno = tabella === "valori" ? null : toYear(req.body.anno);
+    const filtro = anno === null ? "" : "anno=? AND ";
+    const par = anno === null ? ids : [anno, ...ids];
+    const cancellati = db.all(
+      `SELECT * FROM ${tabella} WHERE ${filtro}voce_id IN (${marks(ids)})`,
+      par,
+    );
+    db.tx(() => {
+      if (cancellati.length) {
+        const nomi = db
+          .all(`SELECT descrizione FROM voci WHERE id IN (${marks(ids)})`, ids)
+          .map((r) => r.descrizione || "(senza nome)");
+        const cosa = { valori: "Valori", cashflow: "Cash flow", budget_var: "Variazioni budget" }[tabella];
+        C.sposta({
+          tipo: "azzera_valori",
+          cliente: c,
+          etichetta: `${cosa} azzerati${anno ? " " + anno : ""}: ${C.elencoNomi(nomi)}`,
+          dettaglio: `${nomi.length} righe svuotate`,
+          snapshot: { [tabella]: cancellati },
+        });
+      }
+      db.run(`DELETE FROM ${tabella} WHERE ${filtro}voce_id IN (${marks(ids)})`, par);
+    });
     res.json({ ok: true });
   }),
 );

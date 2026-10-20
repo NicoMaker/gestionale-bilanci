@@ -18,6 +18,7 @@
     ["n", "investimenti", "Investimenti"],
     ["f", "cashflow", "Cash Flow"],
     ["o", "report", "Report completo"],
+    ["x", "cestino", "Cestino"],
   ];
   const GENERALI = [
     [["Ctrl", "K"], "Vai a… (pagine, clienti, azioni)"],

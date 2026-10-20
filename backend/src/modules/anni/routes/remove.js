@@ -4,6 +4,7 @@ const db = require("../../../core/db");
 const { HttpError, wrap } = require("../../../core/http");
 const { toId, toYear } = require("../../../core/validators");
 const { getCliente, datiCliente } = require("../../clienti/service");
+const C = require("../../cestino/service");
 
 const router = express.Router();
 
@@ -37,6 +38,13 @@ router.delete(
       });
     }
     db.tx(() => {
+      C.sposta({
+        tipo: "anno",
+        cliente: c,
+        etichetta: `Esercizio ${anno}`,
+        dettaglio: dAnno && dAnno.totale ? `${dAnno.totale} dati inseriti` : "senza dati",
+        snapshot: Object.assign(C.snapAnno(c.id, anno), { anno }),
+      });
       const sub = "SELECT id FROM voci WHERE cliente_id=?";
       db.run(`DELETE FROM valori WHERE anno=? AND voce_id IN (${sub})`, [
         anno,

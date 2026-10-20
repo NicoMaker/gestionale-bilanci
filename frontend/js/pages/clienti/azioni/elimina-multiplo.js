@@ -39,7 +39,7 @@
         body: h(
           "div",
           null,
-          h("p", null, `Nessuno dei ${n} clienti contiene dati. Eliminarli?`),
+          h("p", null, `Nessuno dei ${n} clienti contiene dati. Spostarli nel cestino? (ripristinabili per 15 giorni)`),
           elenco(ids.map(nomeDi)),
         ),
         buttons: [
@@ -59,7 +59,7 @@
         h(
           "p",
           null,
-          `⚠️ ${prev.con_dati.length} su ${n} clienti contengono dati inseriti. Eliminandoli si perdono definitivamente:`,
+          `⚠️ ${prev.con_dati.length} su ${n} clienti contengono dati inseriti. Verranno spostati nel cestino e potrai ripristinarli entro 15 giorni:`,
         ),
         elenco(
           prev.con_dati.map((c) => `${c.ragione_sociale} (${c.totale} dati)`),
@@ -74,7 +74,7 @@
         h(
           "p",
           { class: "small muted" },
-          "Consiglio: scarica prima il database come backup.",
+          "Passati 15 giorni i clienti e i loro dati vengono eliminati definitivamente.",
         ),
         h(
           "div",
@@ -89,7 +89,7 @@
           body: contenuto,
           buttons: [
             { label: "Annulla", value: false },
-            { label: "Elimina definitivamente", kind: "danger", value: true },
+            { label: "Sposta nel cestino", kind: "danger", value: true },
           ],
         });
         if (!r) return;
@@ -105,7 +105,7 @@
       await S.loadClienti();
       if (S.clienteId && !S.clienti.some((c) => c.id === S.clienteId))
         await S.select(S.clienti[0] ? S.clienti[0].id : null);
-      GB.toast(`${r.eliminati} client${r.eliminati === 1 ? "e eliminato" : "i eliminati"}`);
+      GB.deleted(`${r.eliminati} client${r.eliminati === 1 ? "e eliminato" : "i eliminati"}`);
     } catch (e) {
       GB.toast(e.message, "err");
     }

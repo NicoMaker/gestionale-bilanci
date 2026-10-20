@@ -152,12 +152,11 @@
           const n = tuttiDati(ids);
           const msg =
             ids.length === 1
-              ? `Eliminare la riga selezionata${n ? ` e i suoi ${n} valori` : ""}?`
-              : `Eliminare ${ids.length} righe${n ? ` e i ${n} valori che contengono` : ""}? L'operazione non si può annullare.`;
+              ? `Eliminare la riga selezionata${n ? ` e i suoi ${n} valori` : ""}? Finisce nel cestino e la puoi ripristinare entro 15 giorni.`
+              : `Eliminare ${ids.length} righe${n ? ` e i ${n} valori che contengono` : ""}? Finiscono nel cestino e le puoi ripristinare entro 15 giorni.`;
           if (!(await GB.confirm(msg + extra))) return false;
           try {
             await S.deleteVoci(ids);
-            GB.toast(plural(ids.length, "riga eliminata", "righe eliminate"));
           } catch (e) {
             return false;
           }
@@ -171,14 +170,13 @@
           }
           if (
             !(await GB.confirm(
-              `Cancellare ${plural(n, "valore", "valori")} in ${plural(ids.length, "riga", "righe")}? Le righe restano al loro posto.`,
+              `Cancellare ${plural(n, "valore", "valori")} in ${plural(ids.length, "riga", "righe")}? Le righe restano al loro posto e i valori si possono ripristinare dal cestino entro 15 giorni.`,
               "Azzera",
             ))
           )
             return false;
           try {
             await S.clearVoci(ids, cosa, anno);
-            GB.toast("Valori azzerati");
           } catch (e) {
             return false;
           }
@@ -208,7 +206,6 @@
             return false;
           try {
             await S.clearVendite({ mesi });
-            GB.toast("Vendite azzerate");
           } catch (e) {
             return false;
           }

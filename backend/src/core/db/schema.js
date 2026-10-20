@@ -1,4 +1,4 @@
-/* Schema delle tabelle SQLite (clienti, parametri_anno, voci, valori, budget_var, vendite, cashflow). */
+/* Schema delle tabelle SQLite (clienti, parametri_anno, voci, valori, budget_var, vendite, cashflow, cestino). */
 const SCHEMA = `
 PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS clienti (
@@ -66,6 +66,19 @@ CREATE TABLE IF NOT EXISTS cashflow (
   PRIMARY KEY (voce_id, anno, mese),
   FOREIGN KEY (voce_id) REFERENCES voci(id) ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS cestino (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tipo TEXT NOT NULL,            -- cliente | anno | voci | azzera_valori | azzera_vendite | azzera_parametri
+  cliente_id INTEGER,            -- senza FOREIGN KEY: la voce resta nel cestino anche se il cliente è stato eliminato
+  cliente_nome TEXT,
+  etichetta TEXT NOT NULL,       -- cosa è stato eliminato (testo per l'elenco)
+  dettaglio TEXT,
+  n_dati INTEGER DEFAULT 0,      -- quanti valori contiene la copia
+  dati_json TEXT NOT NULL,       -- copia dei dati eliminati, usata per il ripristino
+  data_eliminazione TEXT NOT NULL,
+  scade_il TEXT NOT NULL         -- dopo questa data viene eliminata definitivamente (15 giorni)
+);
+CREATE INDEX IF NOT EXISTS idx_cestino_scadenza ON cestino(scade_il);
 `;
 
 module.exports = { SCHEMA };

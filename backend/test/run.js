@@ -11,6 +11,7 @@ const SUITES = [
   "calcoli/budget",
   "calcoli/valori",
   "dati/voci",
+  "dati/cestino",
   "dati/parametri-anni",
   "calcoli/rating",
   "dati/database",

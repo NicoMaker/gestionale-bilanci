@@ -1,0 +1,51 @@
+/* Pagina Cestino e contatore nel menu. */
+.cest-barra {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin-bottom: 12px;
+}
+.cest-barra .grow {
+  flex: 1;
+}
+.cest-filtro,
+.cest-cerca {
+  background: var(--s0);
+  border: 1px solid var(--b1);
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  font: inherit;
+  color: inherit;
+}
+.cest-cerca {
+  min-width: 220px;
+}
+.cest-filtro:focus,
+.cest-cerca:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: var(--shadow-glow);
+}
+table.cest-tab td.l {
+  white-space: normal;
+  vertical-align: middle;
+}
+.cest-nome {
+  font-weight: 600;
+}
+.cest-tipo {
+  white-space: nowrap;
+}
+.nav-badge {
+  margin-left: auto;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}

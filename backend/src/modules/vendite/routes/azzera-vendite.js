@@ -5,6 +5,8 @@ const db = require("../../../core/db");
 const { HttpError, wrap } = require("../../../core/http");
 const { toId, toYear, toMonth } = require("../../../core/validators");
 const { getCliente } = require("../../clienti/service");
+const C = require("../../cestino/service");
+const T = require("../../../../../shared/template");
 
 const router = express.Router();
 
@@ -32,7 +34,21 @@ router.post(
       sql += ` AND anno IN (${anni.map(() => "?").join(",")})`;
       p.push(...anni);
     }
-    db.run(sql, p);
+    db.tx(() => {
+      const cancellate = db.all(sql.replace("DELETE", "SELECT *"), p);
+      if (cancellate.length)
+        C.sposta({
+          tipo: "azzera_vendite",
+          cliente: c,
+          etichetta:
+            "Vendite azzerate" +
+            (mesi ? ": " + mesi.map((m) => T.MESI_BREVI[m - 1]).join(", ") : "") +
+            (anni ? " · esercizi " + anni.join(", ") : ""),
+          dettaglio: `${cancellate.length} importi mensili`,
+          snapshot: { vendite: cancellate },
+        });
+      db.run(sql, p);
+    });
     res.json({ ok: true });
   }),
 );

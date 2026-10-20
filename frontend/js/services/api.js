@@ -21,6 +21,9 @@
     }
     if (!res.ok)
       throw new Error((data && data.error) || "Errore " + res.status);
+    // eliminazioni e azzeramenti finiscono nel cestino: aggiorna il contatore nel menu
+    if ((method === "POST" || method === "DELETE") && GB.cestino)
+      GB.cestino.refresh();
     return data;
   }
   GB.api = {

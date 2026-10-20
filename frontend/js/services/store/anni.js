@@ -24,6 +24,7 @@
       );
       S.anno = null;
       await S.select(S.clienteId, null);
+      GB.deleted(`Esercizio ${anno} eliminato`);
     },
   });
 })();

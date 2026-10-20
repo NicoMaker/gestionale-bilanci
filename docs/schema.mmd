@@ -6,6 +6,7 @@ erDiagram
     voci ||--o{ valori : "importo per anno"
     voci ||--o{ budget_var : "variazione budget per anno"
     voci ||--o{ cashflow : "importo per anno e mese"
+    clienti ||--o{ cestino : "elementi eliminati (senza vincolo: restano anche se il cliente viene eliminato)"
 
     clienti {
         INTEGER id PK "AUTOINCREMENT"
@@ -13,6 +14,7 @@ erDiagram
         TEXT partita_iva
         TEXT note
         INTEGER anno_base "NOT NULL - ultimo esercizio chiuso"
+        INTEGER anno_sync "ultimo esercizio creato in automatico"
         TEXT created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
@@ -37,7 +39,7 @@ erDiagram
         TEXT descrizione
         TEXT tipo "solo CE: IP I P O Z V F"
         INTEGER ordine "DEFAULT 0"
-        INTEGER fissa "1 = riga non eliminabile"
+        INTEGER fissa "1 = riga a sezione singola (rimanenze, imposte) - eliminabile e ricreabile"
     }
 
     valori {
@@ -64,4 +66,17 @@ erDiagram
         INTEGER anno PK "anno di riferimento: il cash flow e dell'anno + 1"
         INTEGER mese PK "1..12"
         REAL importo
+    }
+
+    cestino {
+        INTEGER id PK "AUTOINCREMENT"
+        TEXT tipo "cliente | anno | voci | azzera_valori | azzera_vendite | azzera_parametri"
+        INTEGER cliente_id "senza FK: sopravvive al cliente"
+        TEXT cliente_nome
+        TEXT etichetta "NOT NULL - cosa e stato eliminato"
+        TEXT dettaglio
+        INTEGER n_dati "DEFAULT 0 - valori contenuti nella copia"
+        TEXT dati_json "NOT NULL - copia dei dati per il ripristino"
+        TEXT data_eliminazione "NOT NULL"
+        TEXT scade_il "NOT NULL - dopo 15 giorni eliminazione definitiva"
     }

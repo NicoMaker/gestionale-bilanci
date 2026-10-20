@@ -35,6 +35,9 @@
         },
         h("span", { class: "nav-icon" }, icon),
         label,
+        extra && extra.badge
+          ? h("span", { class: "nav-badge" }, String(extra.badge))
+          : null,
       );
     nav.replaceChildren(
       item("home", "🏠", "Panoramica studio"),
@@ -50,6 +53,7 @@
       ),
       h("div", { class: "nav-sep" }),
       item("report", "🖨️", "Report completo", { disabled: !hasC }),
+      item("cestino", "🗑️", "Cestino", { badge: GB.cestino.n || 0 }),
       h(
         "a",
         { class: "nav-item", href: "/api/download-db", download: "" },

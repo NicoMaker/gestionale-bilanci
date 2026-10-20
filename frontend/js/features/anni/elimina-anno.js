@@ -21,7 +21,7 @@
     if (!d.ha_dati) {
       if (
         await GB.confirm(
-          `L'anno ${anno} non contiene dati. Rimuoverlo dall'elenco?`,
+          `L'anno ${anno} non contiene dati. Rimuoverlo dall'elenco? (finisce nel cestino per 15 giorni)`,
           "Rimuovi",
         )
       )
@@ -34,13 +34,13 @@
       h(
         "p",
         null,
-        `⚠️ L'anno ${anno} contiene ${d.totale} dati inseriti (bilancio, vendite, budget, cash flow). Eliminandolo si perdono definitivamente:`,
+        `⚠️ L'anno ${anno} contiene ${d.totale} dati inseriti (bilancio, vendite, budget, cash flow). Verrà spostato nel cestino e potrai ripristinarlo entro 15 giorni:`,
       ),
       GB.riepilogoDati(d),
       h(
         "p",
         { class: "small muted" },
-        "Consiglio: scarica prima il database come backup.",
+        "Passati 15 giorni l'esercizio viene eliminato definitivamente.",
       ),
     );
     const r = await GB.modal({
@@ -48,7 +48,7 @@
       body,
       buttons: [
         { label: "Annulla", value: false },
-        { label: "Elimina con i dati", kind: "danger", value: true },
+        { label: "Sposta nel cestino", kind: "danger", value: true },
       ],
     });
     if (r) S.deleteAnno(anno, true).catch(() => {});

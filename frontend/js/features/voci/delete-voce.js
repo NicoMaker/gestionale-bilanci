@@ -15,7 +15,7 @@
     if (n === 0) return S.deleteVoce(v.id).catch(() => {});
     if (
       await GB.confirm(
-        `La riga “${v.descrizione || "(senza nome)"}” contiene ${n} valori inseriti. Eliminarla insieme ai suoi dati?${extra}`,
+        `La riga “${v.descrizione || "(senza nome)"}” contiene ${n} valori inseriti. Eliminarla insieme ai suoi dati? Finisce nel cestino e la puoi ripristinare entro 15 giorni.${extra}`,
       )
     )
       S.deleteVoce(v.id).catch(() => {});

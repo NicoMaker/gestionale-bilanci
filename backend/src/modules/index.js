@@ -22,6 +22,7 @@ router.use(autoSync);
   "parametri/routes",
   "demo/routes",
   "database/routes",
+  "cestino/routes",
 ].forEach((m) => router.use(require("./" + m)));
 
 router.use(notFound);
