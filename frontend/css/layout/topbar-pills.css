@@ -1,11 +1,10 @@
-/* Pillole in alto a destra: «Vai a… Ctrl K», «⌨ ?», tema. Finestra di ricerca rapida e guida dei tasti. */
+/* Pillole in alto a destra: «⌨ ?», tema. Finestra di ricerca rapida e guida dei tasti. */
 .topbar-pills {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
 }
-.cmdk-trigger,
 .kb-trigger {
   display: inline-flex;
   align-items: center;
@@ -22,16 +21,10 @@
     border-color 0.2s,
     color 0.2s;
 }
-.cmdk-trigger {
-  padding-right: 8px;
-  gap: 10px;
-}
-.cmdk-trigger:hover,
 .kb-trigger:hover {
   border-color: var(--accent);
   color: var(--t0);
 }
-.cmdk-trigger:focus-visible,
 .kb-trigger:focus-visible {
   outline: none;
   border-color: var(--accent);
@@ -212,16 +205,6 @@ kbd {
 @media (max-width: 900px) {
   .topbar-pills {
     order: 2;
-  }
-  .cmdk-trigger span,
-  .cmdk-trigger kbd {
-    display: none;
-  }
-  .cmdk-trigger {
-    padding: 8px 10px;
-  }
-  .cmdk-trigger::before {
-    content: "🔍";
   }
 }
 @media (max-width: 700px) {

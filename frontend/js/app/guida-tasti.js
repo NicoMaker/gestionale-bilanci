@@ -21,7 +21,6 @@
     ["x", "cestino", "Cestino"],
   ];
   const GENERALI = [
-    [["Ctrl", "K"], "Vai a… (pagine, clienti, azioni)"],
     [["?"], "Apri / chiudi questa guida"],
     [["t"], "Cambia tema chiaro / scuro"],
     [["/"], "Cerca nell'elenco clienti"],
@@ -57,7 +56,7 @@
     if (e.key === "Escape" && !ov.hidden) return chiudi();
     if (e.ctrlKey || e.metaKey || e.altKey || inCampo(e.target)) return;
     if (
-      document.querySelector(".modal-overlay.open, .cmdk-overlay:not([hidden])")
+      document.querySelector(".modal-overlay.open")
     )
       return;
     const k = e.key;
