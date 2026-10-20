@@ -46,4 +46,22 @@ module.exports = async function ({ demo, raw }) {
       );
     },
   );
+
+  await t("statistiche per anno: solo i dati dell'esercizio scelto", async () => {
+    const tutti = (await api("GET", "/statistiche")).body;
+    assert.ok(tutti.anni_disponibili.length > 0);
+    const anno = tutti.anni_disponibili[tutti.anni_disponibili.length - 1]; // il più vecchio
+    const r = await api("GET", `/statistiche?anno=${anno}`);
+    assert.equal(r.status, 200);
+    assert.equal(r.body.anno, anno);
+    for (const c of r.body.clienti)
+      assert.ok(c.anno === null || c.anno === anno);
+    const rows = Calc.riepilogo(Calc.buildDs(await raw()));
+    const rigaDemo = r.body.clienti.find((c) => c.id === demo.id);
+    near(rigaDemo.ricavi, rows.find((x) => x.anno === anno).ricavi, 0.01);
+    // anno senza dati per nessun cliente
+    const vuoto = await api("GET", "/statistiche?anno=2099");
+    assert.equal(vuoto.body.totali.clienti_con_dati, 0);
+    assert.equal((await api("GET", "/statistiche?anno=abc")).status, 400);
+  });
 };

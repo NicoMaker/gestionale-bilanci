@@ -3,7 +3,7 @@ const express = require("express");
 const db = require("../../../core/db");
 const { wrap } = require("../../../core/http");
 const { toId, norm } = require("../../../core/validators");
-const { getCliente, datiCliente } = require("../service");
+const { getCliente, datiCliente, eliminaCliente } = require("../service");
 
 const router = express.Router();
 
@@ -21,25 +21,7 @@ router.delete(
         dati: d,
       });
     }
-    db.tx(() => {
-      // eliminazione esplicita (non ci affidiamo solo al CASCADE)
-      db.run(
-        "DELETE FROM valori WHERE voce_id IN (SELECT id FROM voci WHERE cliente_id=?)",
-        [c.id],
-      );
-      db.run(
-        "DELETE FROM budget_var WHERE voce_id IN (SELECT id FROM voci WHERE cliente_id=?)",
-        [c.id],
-      );
-      db.run(
-        "DELETE FROM cashflow WHERE voce_id IN (SELECT id FROM voci WHERE cliente_id=?)",
-        [c.id],
-      );
-      db.run("DELETE FROM voci WHERE cliente_id=?", [c.id]);
-      db.run("DELETE FROM vendite WHERE cliente_id=?", [c.id]);
-      db.run("DELETE FROM parametri_anno WHERE cliente_id=?", [c.id]);
-      db.run("DELETE FROM clienti WHERE id=?", [c.id]);
-    });
+    db.tx(() => eliminaCliente(c.id));
     res.json({ ok: true });
   }),
 );

@@ -94,6 +94,7 @@
   }
 
   function avvisi(st) {
+    const periodo = st.anno ? "nell'esercizio " + st.anno : "nell'ultimo esercizio";
     const out = [];
     const lista = (arr) =>
       arr
@@ -124,8 +125,8 @@
     add(
       "red",
       perdita.length === 1
-        ? "cliente in perdita nell'ultimo esercizio"
-        : "clienti in perdita nell'ultimo esercizio",
+        ? "cliente in perdita " + periodo
+        : "clienti in perdita " + periodo,
       perdita,
     );
     add(
@@ -138,7 +139,39 @@
     return out;
   }
 
-  function disegna(st) {
+  /* Selettore dell'anno: «ultimo esercizio» oppure uno degli anni presenti nei clienti. */
+  function selettoreAnno(st, ricarica) {
+    if (!st.anni_disponibili || !st.anni_disponibili.length) return null;
+    const sel = h(
+      "select",
+      {
+        "aria-label": "Esercizio da visualizzare",
+        onchange: (e) => {
+          GB.homeAnno = e.target.value ? Number(e.target.value) : null;
+          ricarica();
+        },
+      },
+      h("option", { value: "", selected: !st.anno || null }, "Ultimo esercizio di ogni cliente"),
+      ...st.anni_disponibili.map((a) =>
+        h("option", { value: a, selected: a === st.anno || null }, String(a)),
+      ),
+    );
+    return h(
+      "div",
+      { class: "studio-anno no-print" },
+      h("label", null, "Esercizio"),
+      sel,
+      st.anno
+        ? h(
+            "span",
+            { class: "small muted" },
+            `${st.clienti.filter((c) => c.anno === st.anno).length} di ${st.totali.clienti} clienti hanno l'esercizio ${st.anno}`,
+          )
+        : null,
+    );
+  }
+
+  function disegna(st, ricarica) {
     const t = st.totali;
     if (!t.clienti)
       return [
@@ -180,6 +213,7 @@
     const labels = ORDINE_RATING.filter((r) => st.rating[r]);
     const anni = Object.keys(st.per_anno).sort();
     return [
+      selettoreAnno(st, ricarica),
       GB.parts.studio.kpi(st, false),
       ...avvisi(st),
       h(
@@ -274,8 +308,11 @@
           h(
             "span",
             { class: "small muted no-print" },
-            "clicca sulle intestazioni per ordinare · dati dell'ultimo esercizio" +
-              (anni.length ? " (" + anni.join(", ") + ")" : ""),
+            "clicca sulle intestazioni per ordinare · " +
+              (st.anno
+                ? "dati dell'esercizio " + st.anno
+                : "dati dell'ultimo esercizio" +
+                  (anni.length ? " (" + anni.join(", ") + ")" : "")),
           ),
         ),
         h(
@@ -300,7 +337,9 @@
         GB.printHead("Panoramica studio", "Totali di tutti i clienti"),
         box,
       );
-      GB.parts.studio.carica(box, disegna);
+      const ricarica = () =>
+        GB.parts.studio.carica(box, (st) => disegna(st, ricarica), GB.homeAnno);
+      ricarica();
       return { update() {} };
     },
   };

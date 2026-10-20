@@ -3,6 +3,18 @@
   const GB = window.GB;
   const { h, fmt } = GB;
 
+  // 2023, 2024, 2025, 2027 → «2023–2025, 2027»
+  const intervalli = (anni) => {
+    const out = [];
+    for (let i = 0; i < anni.length; i++) {
+      let j = i;
+      while (j + 1 < anni.length && anni[j + 1] === anni[j] + 1) j++;
+      out.push(j - i >= 2 ? `${anni[i]}–${anni[j]}` : anni.slice(i, j + 1).join(", "));
+      i = j;
+    }
+    return out.join(", ");
+  };
+
   GB.parts.clienti.righe = function ({
     S,
     input,
@@ -12,6 +24,7 @@
     hay,
     hl,
     plain,
+    sel,
   }) {
     const { apri, modifica, elimina } = GB.parts.clienti.azioni;
     function paintRows() {
@@ -28,9 +41,25 @@
               h(
                 "tr",
                 {
-                  class: "line",
+                  class: "line" + (sel.ids.has(c.id) ? " selected" : ""),
                   style: { fontWeight: c.id === S.clienteId ? 700 : 400 },
                 },
+                h(
+                  "td",
+                  { class: "sel-col no-print" },
+                  h("input", {
+                    type: "checkbox",
+                    class: "sel-chk",
+                    checked: sel.ids.has(c.id),
+                    "aria-label": "Seleziona " + c.ragione_sociale,
+                    onchange: (e) => {
+                      if (e.target.checked) sel.ids.add(c.id);
+                      else sel.ids.delete(c.id);
+                      e.target.closest("tr").classList.toggle("selected", e.target.checked);
+                      sel.sincronizza(rows);
+                    },
+                  }),
+                ),
                 h(
                   "td",
                   { class: "l client-name" },
@@ -54,7 +83,13 @@
                   c.partita_iva ? hl(c.partita_iva, toks) : "—",
                 ),
                 h("td", { class: "n" }, String(c.anno_base)),
-                h("td", { class: "l" }, (c.anni || []).join(", ")),
+                h(
+                  "td",
+                  { class: "l" },
+                  (c.anni || []).length
+                    ? `${c.anni.length} · ${intervalli(c.anni)}`
+                    : "—",
+                ),
                 h("td", { class: "l" }, fmt.data(c.created_at)),
                 h(
                   "td",
@@ -92,7 +127,7 @@
                 { class: "no-results" },
                 h(
                   "td",
-                  { colspan: 6 },
+                  { colspan: 7 },
                   `Nessun cliente trovato per “${q.trim()}”`,
                 ),
               ),
@@ -101,6 +136,7 @@
       count.textContent = toks.length
         ? `${rows.length} di ${S.clienti.length} clienti`
         : `${S.clienti.length} client${S.clienti.length === 1 ? "e" : "i"}`;
+      sel.sincronizza(rows);
       return rows;
     }
     return paintRows;

@@ -1,8 +1,12 @@
 /* Assembla le API: ogni cartella di modules/ è una funzionalità indipendente. */
 const express = require("express");
 const { notFound, errorHandler } = require("../core/http");
+const { autoSync } = require("./anni/service");
 
 const router = express.Router();
+
+// aggiorna automaticamente gli esercizi di ogni cliente quando cambia l'anno
+router.use(autoSync);
 
 [
   "health/routes",

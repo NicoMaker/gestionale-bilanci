@@ -65,7 +65,7 @@
             ? h(
                 "div",
                 { class: "hint" },
-                "Il bilancio mostra tutti gli esercizi (almeno anno−2 … anno) e il budget dell'anno successivo.",
+                "Gli esercizi vengono creati in automatico dall'anno impostato fino all'ultimo anno chiuso e si aggiornano da soli ogni anno. Il budget è quello dell'anno successivo.",
               )
             : null,
         ),

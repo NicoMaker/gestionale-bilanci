@@ -18,6 +18,9 @@ const SUITES = [
   "dati/elimina-anno",
   "clienti/elimina-cliente",
   "clienti/elimina-demo",
+  "anni/esercizi-automatici",
+  "anni/crea-multiplo",
+  "clienti/elimina-multiplo",
 ];
 
 (async () => {

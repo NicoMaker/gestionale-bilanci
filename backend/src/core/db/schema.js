@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS clienti (
   partita_iva TEXT,
   note TEXT,
   anno_base INTEGER NOT NULL,
+  anno_sync INTEGER,             -- ultimo esercizio creato in automatico (vedi modules/anni/service/sincronizza.js)
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE IF NOT EXISTS parametri_anno (

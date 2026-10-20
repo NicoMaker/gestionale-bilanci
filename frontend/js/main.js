@@ -10,6 +10,17 @@
       .addEventListener("click", () =>
         document.body.classList.toggle("nav-open"),
       );
+    // menu mobile: si chiude toccando fuori dal menu o con Esc
+    document.addEventListener("click", (e) => {
+      if (
+        document.body.classList.contains("nav-open") &&
+        !e.target.closest(".sidebar, #menu-btn")
+      )
+        document.body.classList.remove("nav-open");
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") document.body.classList.remove("nav-open");
+    });
     try {
       await S.loadClienti();
       const saved = Number(localStorage.getItem("gb.cliente"));

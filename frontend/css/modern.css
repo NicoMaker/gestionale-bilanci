@@ -1,0 +1,504 @@
+/* Look moderno e responsive: caricato dopo gli altri stili, ridefinisce solo l'aspetto (nessuna logica). */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+::selection {
+  background: var(--accent-b);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--b1) transparent;
+}
+
+/* ── titoli e etichette: frase normale, niente maiuscolo forzato ── */
+.nav-group,
+.kpi .l,
+.topbar-ctl label,
+.field label,
+.sel-field label,
+.studio-anno label,
+.cmdk-list li.grp,
+.kb-guida h3,
+table.fin thead th {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.page-title,
+.card-h h3,
+.modal-h,
+.empty h2 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── barra laterale ── */
+.sidebar {
+  box-shadow: none;
+  width: var(--sidebar-w);
+}
+.logo {
+  border-bottom: 0;
+  padding: 22px 18px 12px;
+}
+.logo-icon {
+  border-radius: 12px;
+  box-shadow: 0 6px 16px var(--accent-glow);
+}
+.logo-main {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.logo-sub {
+  font-family: var(--sans);
+  font-size: 12px;
+}
+.nav {
+  padding: 6px 10px;
+}
+.nav-group {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 16px 12px 6px;
+}
+.nav-item,
+.theme-toggle {
+  width: 100%;
+  margin: 2px 0;
+  padding: 9px 12px;
+  border-left: 0;
+  border-radius: 10px;
+  font-weight: 500;
+}
+.theme-toggle {
+  width: calc(100% - 20px);
+  margin: 2px 10px;
+}
+.nav-item.active {
+  background: var(--accent-d);
+  color: var(--accent);
+  font-weight: 650;
+  box-shadow: inset 0 0 0 1px var(--accent-b);
+}
+.nav-sep {
+  margin: 8px 12px;
+}
+
+/* ── barra superiore ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  padding: 10px 28px;
+  border-bottom: 1px solid var(--b0);
+}
+.page-title {
+  font-size: 20px;
+}
+.topbar-ctl label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.cmdk-trigger,
+.kb-trigger {
+  border-radius: 10px;
+  background: var(--s0);
+}
+.menu-btn {
+  border-radius: 10px;
+  background: var(--s0);
+  min-width: 40px;
+  min-height: 40px;
+}
+
+/* ── contenuto ── */
+.content {
+  background-image: none;
+  padding: 28px;
+}
+.page {
+  max-width: 1480px;
+}
+
+/* ── card, KPI, note ── */
+.card,
+.kpi,
+.tbl-wrap {
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+.card-h {
+  padding: 16px 20px;
+}
+.card-b {
+  padding: 18px 20px;
+}
+.kpis {
+  gap: 16px;
+}
+.kpi {
+  padding: 16px 18px;
+}
+.kpi .l {
+  font-size: 12.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kpi .v {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-top: 8px;
+}
+.studio-kpi .l .ico {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  border-radius: 9px;
+  background: var(--accent-d);
+  font-size: 15px;
+}
+.note {
+  border-left: 0;
+  border-radius: var(--radius);
+  background: var(--accent-d);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.studio-avviso.warn {
+  background: var(--yellow-d);
+  box-shadow: inset 3px 0 0 var(--yellow);
+}
+.studio-avviso.red {
+  background: var(--red-d);
+  box-shadow: inset 3px 0 0 var(--red);
+}
+
+/* Panoramica: 8 schede = due file da 4 */
+.studio-box > .studio-kpis {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 1100px) {
+  .studio-box > .studio-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── pulsanti e campi ── */
+.btn {
+  border-radius: 10px;
+  padding: 9px 15px;
+  box-shadow: var(--shadow-xs);
+}
+.btn.sm {
+  padding: 5px 11px;
+  border-radius: 8px;
+}
+.btn.primary {
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+[data-theme="dark"] .btn.primary,
+[data-theme="dark"] table.fin tr.title td {
+  color: #04211c;
+}
+.input,
+.select,
+.field input,
+.field select,
+.field textarea,
+.topbar select,
+.sel-anno,
+.studio-anno select {
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+.list-search {
+  border-radius: 12px;
+}
+
+/* ── tabelle ── */
+table.fin th,
+table.fin td {
+  padding: 6px 12px;
+}
+table.fin thead th {
+  background: var(--s1);
+  color: var(--t2);
+  font-size: 12px;
+  font-weight: 600;
+}
+table.fin tr.line {
+  transition: background var(--duration-fast);
+}
+table.fin tr.line:hover td {
+  background: var(--accent-d);
+}
+table.fin tr.title td {
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.pill,
+.rating {
+  border-radius: 999px;
+}
+.rating {
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+/* ── finestre e notifiche ── */
+.overlay {
+  background: rgba(8, 14, 20, 0.52);
+  backdrop-filter: blur(6px);
+}
+.modal {
+  border-radius: 18px;
+  animation: modal-in 0.22s var(--ease-out);
+}
+.modal-f {
+  border-top: 1px solid var(--b0);
+  padding-top: 14px;
+}
+.toast {
+  border-radius: 12px;
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+.cmdk,
+.kb-guida {
+  border-radius: 18px;
+}
+.cmdk-list li.on {
+  color: #04211c;
+}
+
+/* ── selezione multipla ── */
+.sel-bar {
+  border-radius: 14px;
+  border-color: var(--accent-b);
+  background: var(--s0);
+  box-shadow: var(--shadow-md);
+}
+
+/* ═════════ RESPONSIVE ═════════ */
+@media (max-width: 1100px) {
+  .content {
+    padding: 20px;
+  }
+  .topbar {
+    padding: 10px 20px;
+  }
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* tablet e telefono: menu a scomparsa */
+@media (max-width: 900px) {
+  .sidebar {
+    width: min(86vw, 300px);
+    z-index: 300;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  body.nav-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    background: rgba(8, 14, 20, 0.5);
+    backdrop-filter: blur(3px);
+  }
+  .menu-btn {
+    display: inline-grid;
+    place-items: center;
+  }
+  .topbar {
+    padding: 10px 14px;
+    gap: 10px;
+  }
+  .page-title {
+    font-size: 18px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* selettori cliente/anno su una riga propria, scorrevole */
+  #ctl {
+    order: 3;
+    width: 100%;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  #ctl > * {
+    flex-shrink: 0;
+  }
+  .content {
+    padding: 14px calc(14px + env(safe-area-inset-right))
+      calc(20px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
+  }
+}
+
+/* telefono */
+@media (max-width: 720px) {
+  .kpis,
+  .studio-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .kpi {
+    padding: 12px 14px;
+  }
+  .kpi .v {
+    font-size: 21px;
+  }
+  .studio-kpi .l .ico {
+    width: 26px;
+    height: 26px;
+  }
+  .card-h,
+  .card-b {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  /* campi a 16px: iOS non zooma al tocco; bersagli da almeno 40px */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  .btn {
+    min-height: 40px;
+  }
+  .btn.sm {
+    min-height: 36px;
+  }
+  .nav-item {
+    padding: 12px;
+  }
+  /* elenco clienti: solo le colonne essenziali, azioni a icona */
+  .clienti-tab :is(th, td):nth-child(3),
+  .clienti-tab :is(th, td):nth-child(4),
+  .clienti-tab :is(th, td):nth-child(6) {
+    display: none;
+  }
+  .clienti-tab td .btn {
+    font-size: 0;
+    padding: 8px 11px;
+  }
+  .clienti-tab td .btn .btn-ico {
+    font-size: 15px;
+    margin: 0;
+  }
+  table.fin td.client-name {
+    white-space: normal;
+    min-width: 140px;
+    line-height: 1.3;
+  }
+  .clienti-tab td:last-child {
+    padding-left: 4px;
+    padding-right: 8px;
+  }
+  /* barra di selezione fissa in basso, a portata di pollice */
+  .sel-bar {
+    position: sticky;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    z-index: 60;
+    gap: 8px;
+  }
+  .sel-field {
+    flex: 1 1 100%;
+  }
+  .sel-anno {
+    flex: 1;
+  }
+  .list-tools {
+    flex-wrap: wrap;
+  }
+  /* finestre come «foglio» dal basso */
+  .overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal {
+    max-width: 100%;
+    border-radius: 18px 18px 0 0;
+    max-height: 90vh;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .modal-f {
+    flex-wrap: wrap;
+  }
+  .modal-f .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+  #toasts {
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .studio-anno select {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .clienti-tab :is(th, td):nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .kpis,
+  .studio-kpis {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* portatili (901–1400 px): barra in alto su una sola riga */
+@media (min-width: 901px) and (max-width: 1400px) {
+  .kb-trigger:not(.theme-top),
+  .cmdk-trigger kbd {
+    display: none;
+  }
+  .topbar-pills {
+    gap: 8px;
+  }
+  /* elenco clienti: la colonna «Creato il» cede il posto ai pulsanti */
+  .clienti-tab :is(th, td):nth-child(6) {
+    display: none;
+  }
+}

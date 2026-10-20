@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const initSqlJs = require("sql.js");
 const { SCHEMA } = require("./schema");
+const { migra } = require("./migrazioni");
 
 const DB_DIR =
   process.env.DB_DIR || path.join(__dirname, "..", "..", "..", "db");
@@ -26,6 +27,7 @@ async function init() {
     console.log("🆕 Nuovo database:", DB_PATH);
   }
   db.exec(SCHEMA);
+  migra(db); // aggiorna i database creati con versioni precedenti
   db.exec("PRAGMA foreign_keys = ON;");
   flush();
   return db;

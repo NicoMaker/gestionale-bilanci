@@ -50,7 +50,7 @@
     });
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta)
-      meta.setAttribute("content", t === "dark" ? "#10131a" : "#f7f5f1");
+      meta.setAttribute("content", t === "dark" ? "#0b1016" : "#f4f6f8");
   }
   const toggleTheme = () =>
     applyTheme(currentTheme() === "dark" ? "light" : "dark", true, true);

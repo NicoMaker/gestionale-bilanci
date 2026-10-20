@@ -1,4 +1,4 @@
-/* Clienti: elenco con ricerca, creazione, modifica, eliminazione e caricamento dei clienti demo. */
+/* Clienti: elenco con ricerca, selezione multipla (crea esercizio / elimina), creazione, modifica, eliminazione e caricamento dei clienti demo. */
 (function () {
   const GB = window.GB;
   const { h, fmt } = GB;
@@ -19,10 +19,30 @@
         container.append(head, PT.vuoto());
         return { update() {} };
       }
-      const { table, tb } = PT.tabella();
+      const { table, tb, chkAll } = PT.tabella();
+      const sel = PT.selezione(S);
+      sel.chkAll = chkAll;
       const { plain, hay, hl } = PT.ricerca(S);
       const { input, clear, wrap, count, tools } = PT.barraRicerca();
-      const paintRows = PT.righe({ S, input, wrap, tb, count, hay, hl, plain });
+      const paintRows = PT.righe({
+        S,
+        input,
+        wrap,
+        tb,
+        count,
+        hay,
+        hl,
+        plain,
+        sel,
+      });
+      sel.ridisegna = paintRows;
+      // «seleziona tutti» agisce sui clienti visibili (filtrati dalla ricerca)
+      chkAll.addEventListener("change", () => {
+        const attiva = chkAll.checked; // paintRows() riaggiorna la casella: si legge prima
+        for (const c of paintRows())
+          attiva ? sel.ids.add(c.id) : sel.ids.delete(c.id);
+        paintRows();
+      });
       PT.eventiRicerca({ input, clear, paintRows });
       paintRows();
 
@@ -33,6 +53,7 @@
         head,
         strip,
         tools,
+        sel.bar,
         h("div", { class: "tbl-wrap free" }, table),
       );
       if (GB.clientiQuery) {

@@ -1,92 +1,90 @@
 /* ═══════════════════════════════════════════════════════════════
-   GESTIONALE FISCALE — Design Tokens
-   Identità "Ledger": inchiostro su carta.
-   Giorno → blu ink profondo su carta calda. Notte → oro/ottone su
-   inchiostro blu notte. Stessa metafora, due momenti della giornata
-   di uno studio commercialista.
+   GESTIONALE BILANCI — Design Tokens
+   Interfaccia moderna: superfici fredde e pulite, un solo colore
+   di marca (verde petrolio), angoli morbidi, ombre leggere.
    ═══════════════════════════════════════════════════════════════ */
 
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
 
 /* ─── DESIGN TOKENS ──────────────────────────────────────────── */
 :root {
   color-scheme: light;
 
   /* Backgrounds — carta calda, non slate freddo */
-  --bg: #f7f5f1;
+  --bg: #f4f6f8;
   --s0: #ffffff;
-  --s1: #f1eee7;
-  --s2: #e8e3d8;
-  --s3: #ddd6c6;
+  --s1: #f1f4f7;
+  --s2: #e8edf2;
+  --s3: #dbe2ea;
 
   /* Borders */
-  --b0: #e6e1d5;
-  --b1: #d1c9b6;
-  --b2: #a89f88;
+  --b0: #e3e8ee;
+  --b1: #cfd7e1;
+  --b2: #a3aebd;
 
   /* Accent — ink navy (diurno) */
-  --accent: #1e3a5f;
-  --accent-d: rgba(30, 58, 95, 0.08);
-  --accent-b: rgba(30, 58, 95, 0.18);
-  --accent-hov: #16293f;
-  --accent-glow: rgba(30, 58, 95, 0.25);
-  --accent-gradient: linear-gradient(135deg, #2c567f 0%, #1e3a5f 100%);
+  --accent: #0f766e;
+  --accent-d: rgba(15, 118, 110, 0.09);
+  --accent-b: rgba(15, 118, 110, 0.22);
+  --accent-hov: #0b5d57;
+  --accent-glow: rgba(15, 118, 110, 0.22);
+  --accent-gradient: linear-gradient(135deg, #14998a 0%, #0f766e 100%);
 
   /* Semantic colours — inchiostri (verde ramarro, rosso vermiglio,
      ottone, prugna, petrolio, terracotta) */
-  --green: #1f7a4d;
+  --green: #16794a;
   --green-d: rgba(31, 122, 77, 0.1);
-  --red: #b3261e;
+  --red: #c4372e;
   --red-d: rgba(179, 38, 30, 0.08);
-  --yellow: #b3811b;
+  --yellow: #a8730f;
   --yellow-d: rgba(179, 129, 27, 0.09);
-  --purple: #6b4c9a;
+  --purple: #6b4fc2;
   --purple-d: rgba(107, 76, 154, 0.08);
-  --cyan: #0e7c86;
+  --cyan: #0e7490;
   --cyan-d: rgba(14, 124, 134, 0.08);
-  --orange: #b3591b;
+  --orange: #c2570c;
   --orange-d: rgba(179, 89, 27, 0.08);
 
   /* Text scale — inchiostro caldo, non blu-grigio */
-  --t0: #1c1b18;
-  --t1: #34322c;
-  --t2: #6b675c;
-  --t3: #99947f;
+  --t0: #0e1a25;
+  --t1: #2a3846;
+  --t2: #5b6a7a;
+  --t3: #8593a3;
 
   /* Typography */
-  --sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  --sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: var(--sans);
   --mono: "JetBrains Mono", "Fira Code", monospace;
 
   /* Radii — squadrati: celle di un foglio di calcolo, non chip
      consumer. --r-full resta per gli elementi che devono restare
      davvero rotondi (dot di stato, avatar). */
-  --radius: 6px;
-  --r-sm: 4px;
-  --r-xs: 3px;
-  --r-lg: 8px;
-  --r-xl: 10px;
+  --radius: 10px;
+  --r-sm: 8px;
+  --r-xs: 6px;
+  --r-lg: 14px;
+  --r-xl: 18px;
   --r-full: 9999px;
 
   /* Shadows — tinta calda (non slate) */
-  --shadow-xs: 0 1px 2px rgba(28, 25, 19, 0.05);
+  --shadow-xs: 0 1px 2px rgba(14, 26, 37, 0.05);
   --shadow-sm:
-    0 1px 3px rgba(28, 25, 19, 0.08), 0 1px 2px rgba(28, 25, 19, 0.05);
+    0 1px 3px rgba(14, 26, 37, 0.07), 0 1px 2px rgba(14, 26, 37, 0.04);
   --shadow-md:
-    0 4px 16px rgba(28, 25, 19, 0.09), 0 2px 4px rgba(28, 25, 19, 0.05);
+    0 6px 18px rgba(14, 26, 37, 0.08), 0 2px 4px rgba(14, 26, 37, 0.04);
   --shadow-lg:
-    0 12px 32px rgba(28, 25, 19, 0.12), 0 4px 8px rgba(28, 25, 19, 0.05);
+    0 14px 34px rgba(14, 26, 37, 0.12), 0 4px 8px rgba(14, 26, 37, 0.05);
   --shadow-xl:
-    0 24px 48px rgba(28, 25, 19, 0.14), 0 8px 16px rgba(28, 25, 19, 0.07);
+    0 28px 56px rgba(14, 26, 37, 0.16), 0 8px 16px rgba(14, 26, 37, 0.07);
   --shadow-glow: 0 0 0 3px var(--accent-glow);
 
   /* Layout */
-  --sidebar-w: 252px;
+  --sidebar-w: 264px;
   --sidebar-w-collapsed: 68px;
-  --topbar-h: 64px;
+  --topbar-h: 60px;
 
   /* Glass */
-  --glass-bg: rgba(247, 245, 241, 0.78);
+  --glass-bg: rgba(244, 246, 248, 0.82);
   --glass-border: rgba(255, 255, 255, 0.5);
   --glass-blur: blur(16px);
 
@@ -99,13 +97,7 @@
 
   /* Ledger rule — texture sottilissima a righe orizzontali, come
      carta millimetrata/contabile. Usata su sfondi ampi. */
-  --ledger-rule: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 27px,
-    var(--b0) 27px,
-    var(--b0) 28px
-  );
+  --ledger-rule: none;
 
   /* Legacy aliases (compatibilità con selettori esistenti) */
   --surface: var(--s1);
@@ -142,42 +134,42 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  /* Backgrounds — inchiostro notturno */
-  --bg: #10131a;
-  --s0: #1a1f29;
-  --s1: #212734;
-  --s2: #272e3d;
-  --s3: #313a4d;
+  /* Backgrounds — notte */
+  --bg: #0b1016;
+  --s0: #121a22;
+  --s1: #18212b;
+  --s2: #1f2a36;
+  --s3: #2a3745;
 
-  --b0: #2a3140;
-  --b1: #3a4356;
-  --b2: #4e5a70;
+  --b0: #202b37;
+  --b1: #304050;
+  --b2: #4a5b6e;
 
-  /* Accent — oro/ottone (notturno) */
-  --accent: #d4a24c;
-  --accent-d: rgba(212, 162, 76, 0.12);
-  --accent-b: rgba(212, 162, 76, 0.24);
-  --accent-hov: #e3b563;
-  --accent-glow: rgba(212, 162, 76, 0.3);
-  --accent-gradient: linear-gradient(135deg, #e3b563 0%, #d4a24c 100%);
+  /* Accent — verde petrolio chiaro */
+  --accent: #3fc7b3;
+  --accent-d: rgba(63, 199, 179, 0.12);
+  --accent-b: rgba(63, 199, 179, 0.26);
+  --accent-hov: #66d8c7;
+  --accent-glow: rgba(63, 199, 179, 0.28);
+  --accent-gradient: linear-gradient(135deg, #5fd8c6 0%, #34b3a0 100%);
 
-  --green: #4cae7f;
+  --green: #4cbf88;
   --green-d: rgba(76, 174, 127, 0.14);
-  --red: #e2665d;
+  --red: #ef6f66;
   --red-d: rgba(226, 102, 93, 0.14);
-  --yellow: #e0aa4e;
+  --yellow: #e3ae52;
   --yellow-d: rgba(224, 170, 78, 0.14);
-  --purple: #a98fd1;
+  --purple: #a99be0;
   --purple-d: rgba(169, 143, 209, 0.14);
-  --cyan: #4fc1c9;
+  --cyan: #4fc3d6;
   --cyan-d: rgba(79, 193, 201, 0.14);
-  --orange: #e08a4c;
+  --orange: #ec935a;
   --orange-d: rgba(224, 138, 76, 0.14);
 
-  --t0: #f0ede4;
-  --t1: #d8d4c8;
-  --t2: #9b9689;
-  --t3: #6e6a5f;
+  --t0: #eef3f7;
+  --t1: #d2dae2;
+  --t2: #93a1b0;
+  --t3: #66758a;
 
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -185,7 +177,7 @@
   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2);
   --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.5), 0 8px 16px rgba(0, 0, 0, 0.25);
 
-  --glass-bg: rgba(26, 31, 41, 0.82);
+  --glass-bg: rgba(11, 16, 22, 0.8);
   --glass-border: rgba(255, 255, 255, 0.06);
 
   --surface: var(--s1);

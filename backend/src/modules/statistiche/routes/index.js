@@ -1,7 +1,9 @@
-/* GET /statistiche — totali di tutto lo studio: clienti, esercizi, ricavi, utile, rating, avvisi. */
+/* GET /statistiche[?anno=YYYY] — totali di tutto lo studio: clienti, esercizi, ricavi, utile, rating, avvisi.
+   Senza anno: ultimo esercizio di ogni cliente. Con anno: i dati di quell'esercizio. */
 const express = require("express");
 const db = require("../../../core/db");
 const { wrap } = require("../../../core/http");
+const { toYear } = require("../../../core/validators");
 const Calc = require("../../../../../shared/calc");
 const { loadRaw } = require("../../dataset/service");
 
@@ -17,6 +19,10 @@ function ultimaRiga(rows) {
 router.get(
   "/statistiche",
   wrap((req, res) => {
+    const annoSel =
+      req.query.anno === undefined || req.query.anno === ""
+        ? null
+        : toYear(req.query.anno);
     const clienti = db.all(
       "SELECT id, ragione_sociale, partita_iva, anno_base, created_at FROM clienti ORDER BY ragione_sociale COLLATE NOCASE",
     );
@@ -35,6 +41,7 @@ router.get(
     };
     const rating = {};
     const dettaglio = [];
+    const anniDisponibili = new Set();
 
     for (const c of clienti) {
       let rows = [];
@@ -44,7 +51,8 @@ router.get(
         rows = [];
       }
       tot.esercizi += rows.length;
-      const u = ultimaRiga(rows);
+      rows.forEach((r) => anniDisponibili.add(r.anno));
+      const u = annoSel ? rows.find((r) => r.anno === annoSel) : ultimaRiga(rows);
       const riga = {
         id: c.id,
         ragione_sociale: c.ragione_sociale,
@@ -82,7 +90,14 @@ router.get(
       if (d && d.anno != null) per_anno[d.anno] = (per_anno[d.anno] || 0) + 1;
     }
 
-    res.json({ totali: tot, rating, per_anno, clienti: dettaglio });
+    res.json({
+      anno: annoSel,
+      anni_disponibili: [...anniDisponibili].sort((a, b) => b - a),
+      totali: tot,
+      rating,
+      per_anno,
+      clienti: dettaglio,
+    });
   }),
 );
 

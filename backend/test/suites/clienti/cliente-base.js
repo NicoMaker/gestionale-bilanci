@@ -12,9 +12,13 @@ module.exports = async function () {
     assert.equal(r.status, 201);
     const ds = await api("GET", `/clienti/${r.body.id}/dataset`);
     assert.ok(ds.body.voci.length >= 80);
+    // esercizi automatici: dall'anno impostato fino all'ultimo esercizio chiuso (anno corrente − 1)
+    const attesi = [];
+    for (let a = 2024; a <= Math.max(2024, new Date().getFullYear() - 1); a++)
+      attesi.push(a);
     assert.deepEqual(
       ds.body.parametri.map((p) => p.anno),
-      [2024],
+      attesi,
     );
   });
   await t("validazioni", async () => {

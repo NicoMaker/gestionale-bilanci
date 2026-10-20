@@ -4,7 +4,14 @@
   const { h, fmt } = GB;
 
   GB.parts.clienti.tabella = function () {
-    const table = h("table", { class: "fin" });
+    const table = h("table", { class: "fin clienti-tab" });
+    // casella «seleziona tutti» (righe visibili, cioè quelle filtrate dalla ricerca)
+    const chkAll = h("input", {
+      type: "checkbox",
+      class: "sel-chk",
+      title: "Seleziona / deseleziona tutti i clienti visibili",
+      "aria-label": "Seleziona tutti i clienti visibili",
+    });
     table.append(
       h(
         "thead",
@@ -12,6 +19,7 @@
         h(
           "tr",
           null,
+          h("th", { class: "sel-col no-print" }, chkAll),
           h("th", { class: "l" }, "Ragione sociale"),
           h("th", { class: "l" }, "P.IVA"),
           h("th", null, "Anno base"),
@@ -23,6 +31,6 @@
     );
     const tb = h("tbody");
     table.append(tb);
-    return { table, tb };
+    return { table, tb, chkAll };
   };
 })();

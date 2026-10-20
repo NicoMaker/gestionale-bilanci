@@ -19,4 +19,12 @@ const toMonth = (v) => {
   return x;
 };
 
-module.exports = { toId, toYear, toMonth };
+/* Elenco di id (senza duplicati, da 1 a max elementi). */
+const toIds = (v, max = 1000) => {
+  if (!Array.isArray(v) || !v.length)
+    throw new HttpError(400, "Seleziona almeno un cliente");
+  if (v.length > max) throw new HttpError(400, "Troppi clienti selezionati");
+  return [...new Set(v.map(toId))];
+};
+
+module.exports = { toId, toIds, toYear, toMonth };

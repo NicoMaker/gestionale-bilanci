@@ -49,7 +49,11 @@
         "💶",
         "Ricavi totali",
         eurK(t.ricavi),
-        annoMax ? "ultimo esercizio di ogni cliente" : "",
+        st.anno
+          ? "esercizio " + st.anno
+          : annoMax
+            ? "ultimo esercizio di ogni cliente"
+            : "",
       ),
       kpi(
         "📈",
@@ -106,15 +110,18 @@
     return h("div", { class: "kpis studio-kpis" }, ...base);
   };
 
-  /* Carica i dati dal server e li disegna dentro `box` tramite draw(stats). */
-  GB.parts.studio.carica = async function (box, draw) {
+  /* Carica i dati dal server e li disegna dentro `box` tramite draw(stats).
+     anno (facoltativo): mostra i dati di quell'esercizio invece dell'ultimo di ogni cliente. */
+  GB.parts.studio.carica = async function (box, draw, anno) {
     box.replaceChildren(
       h("div", { class: "muted small" }, "Calcolo dei totali…"),
     );
     try {
-      const st = await GB.api.get("/statistiche");
+      const st = await GB.api.get(
+        "/statistiche" + (anno ? "?anno=" + encodeURIComponent(anno) : ""),
+      );
       if (!box.isConnected) return;
-      box.replaceChildren(...[].concat(draw(st)));
+      box.replaceChildren(...[].concat(draw(st)).filter(Boolean));
     } catch (e) {
       if (box.isConnected)
         box.replaceChildren(

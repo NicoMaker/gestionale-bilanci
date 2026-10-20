@@ -3,5 +3,12 @@ const { getCliente } = require("./get-cliente");
 const { datiCliente } = require("./dati-cliente");
 const { validaCliente } = require("./valida-cliente");
 const { PARAM_DEFAULT } = require("./param-default");
+const { eliminaCliente } = require("./elimina-cliente");
 
-module.exports = { getCliente, datiCliente, validaCliente, PARAM_DEFAULT };
+module.exports = {
+  getCliente,
+  datiCliente,
+  validaCliente,
+  eliminaCliente,
+  PARAM_DEFAULT,
+};
