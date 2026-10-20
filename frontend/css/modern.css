@@ -502,3 +502,7 @@ table.fin tr.title td {
     display: none;
   }
 }
+
+#cmdk-btn{
+  display:none;
+}
