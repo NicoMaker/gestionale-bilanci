@@ -51,7 +51,7 @@
     );
 
     function draw() {
-      const E = S.M || [];
+      const E = [...(S.M || [])].reverse(); // dal più recente al più vecchio
       const groups = E.map((e) => ({
         e,
         subs: cfg.subs ? cfg.subs(e) : [{ label: null, v: null }],

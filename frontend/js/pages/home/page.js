@@ -217,7 +217,7 @@
       ];
 
     const labels = ORDINE_RATING.filter((r) => st.rating[r]);
-    const anni = Object.keys(st.per_anno).sort();
+    const anni = Object.keys(st.per_anno).sort().reverse();
     return [
       selettoreAnno(st, ricarica),
       GB.parts.studio.kpi(st, false),

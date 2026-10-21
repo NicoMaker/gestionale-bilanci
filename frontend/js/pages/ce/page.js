@@ -8,7 +8,7 @@
     icon: "📈",
     render(container, ro) {
       const S = GB.store;
-      const years = S.R.tutti; // tutti gli esercizi in colonna (si scorre in orizzontale)
+      const years = [...S.R.tutti].reverse(); // tutti gli esercizi in colonna (si scorre in orizzontale)
       container.classList.add("fit");
       const tbl = GB.fin.build(
         {

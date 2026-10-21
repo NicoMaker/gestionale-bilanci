@@ -151,7 +151,7 @@
       const c = h("td", { class: "n" });
       tot.append(c);
       live.add(c, (e) => {
-        e.textContent = fmt.num(V().tot[i]);
+        e.textContent = fmt.num(V().tot[V().years.indexOf(a)]);
       });
     });
     const t1 = h("td", { class: "n" }),

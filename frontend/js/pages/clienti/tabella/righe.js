@@ -3,18 +3,18 @@
   const GB = window.GB;
   const { h, fmt } = GB;
 
-  // 2023, 2024, 2025, 2027 → «2023–2025, 2027»
+  // 2023, 2024, 2025, 2027 → «2027, 2023–2025»
   const intervalli = (anni) => {
     const out = [];
     for (let i = 0; i < anni.length; i++) {
       let j = i;
       while (j + 1 < anni.length && anni[j + 1] === anni[j] + 1) j++;
       out.push(
-        j - i >= 2 ? `${anni[i]}–${anni[j]}` : anni.slice(i, j + 1).join(", "),
+        j - i >= 2 ? `${anni[i]}–${anni[j]}` : anni.slice(i, j + 1).reverse().join(", "),
       );
       i = j;
     }
-    return out.join(", ");
+    return out.reverse().join(", "); // dal più recente al più vecchio
   };
 
   GB.parts.clienti.righe = function ({

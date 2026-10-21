@@ -34,7 +34,7 @@
     );
     const tb = h("tbody");
     table.append(tb);
-    rows.forEach((r) => {
+    [...rows].reverse().forEach((r) => {
       const m = S.M.find((x) => x.anno === r.anno);
       const tr = h(
         "tr",

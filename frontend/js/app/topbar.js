@@ -46,7 +46,7 @@
         const selY = h(
           "select",
           { onchange: (e) => S.setYear(e.target.value) },
-          S.anni.map((a) =>
+          [...S.anni].reverse().map((a) =>
             h(
               "option",
               { value: a, selected: a === S.anno || null },

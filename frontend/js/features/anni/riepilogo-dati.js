@@ -38,7 +38,8 @@
         h(
           "tbody",
           null,
-          anni
+          [...anni]
+            .reverse()
             .filter((a) => a.totale)
             .map((a) =>
               h(

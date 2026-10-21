@@ -8,10 +8,10 @@
     icon: "📐",
     render(container) {
       const S = GB.store;
-      const years = S.R.tutti; // tutti gli esercizi in colonna (si scorre in orizzontale)
+      const years = [...S.R.tutti].reverse(); // tutti gli esercizi in colonna (si scorre in orizzontale)
       const live = GB.live();
       const table = GB.parts.indicatori.tabella(years, live);
-      const grafico = GB.parts.indicatori.grafico(years);
+      const grafico = GB.parts.indicatori.grafico([...years].reverse());
       container.append(
         GB.printHead(
           "Indicatori di performance",

@@ -9,7 +9,7 @@
     render(container, ro) {
       const S = GB.store;
       const P = GB.parts.vendite;
-      const years = S.R.years;
+      const years = [...S.R.years].reverse(); // dal più recente al più vecchio
       const live = GB.live();
       const V = () => S.R.vend;
       const table = P.tabella({ years, ro, live, V });

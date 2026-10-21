@@ -9,7 +9,7 @@
     render(container) {
       const S = GB.store;
       const P = GB.parts.rating;
-      const years = S.R.tutti; // tutti gli esercizi in colonna (si scorre in orizzontale)
+      const years = [...S.R.tutti].reverse(); // tutti gli esercizi in colonna (si scorre in orizzontale)
       container.classList.add("fit");
       const live = GB.live();
       const R = (a) => S.R.anni[a].rating;
