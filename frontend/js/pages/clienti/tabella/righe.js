@@ -10,7 +10,12 @@
       let j = i;
       while (j + 1 < anni.length && anni[j + 1] === anni[j] + 1) j++;
       out.push(
-        j - i >= 2 ? `${anni[i]}–${anni[j]}` : anni.slice(i, j + 1).reverse().join(", "),
+        j - i >= 2
+          ? `${anni[i]}–${anni[j]}`
+          : anni
+              .slice(i, j + 1)
+              .reverse()
+              .join(", "),
       );
       i = j;
     }
