@@ -1254,7 +1254,9 @@
       case "reset":
         return ripristinaTutto();
       case "guida":
-        return window.GB && window.GB.apriGuidaTasti && window.GB.apriGuidaTasti();
+        return (
+          window.GB && window.GB.apriGuidaTasti && window.GB.apriGuidaTasti()
+        );
       case "manuale":
         return apriGuidaPdf();
       case "home":

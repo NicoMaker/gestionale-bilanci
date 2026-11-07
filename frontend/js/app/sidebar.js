@@ -77,11 +77,17 @@
         "Scarica database",
       ),
       h("div", { class: "nav-sep" }),
-      azione("🎨", "Personalizza", "Personalizza colori, temi e misure (d)", () =>
-        window.togglePersonalizza && window.togglePersonalizza(),
+      azione(
+        "🎨",
+        "Personalizza",
+        "Personalizza colori, temi e misure (d)",
+        () => window.togglePersonalizza && window.togglePersonalizza(),
       ),
-      azione("📖", "Guida", "Apri la guida del programma (PDF)", () =>
-        window.apriGuida && window.apriGuida(),
+      azione(
+        "📖",
+        "Guida",
+        "Apri la guida del programma (PDF)",
+        () => window.apriGuida && window.apriGuida(),
       ),
     );
   }
