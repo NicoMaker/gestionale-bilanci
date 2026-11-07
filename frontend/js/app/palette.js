@@ -55,6 +55,18 @@
       },
       {
         gruppo: "Azioni",
+        icona: "🎨",
+        label: "Personalizza (temi, colori, testo)",
+        vai: () => window.apriPersonalizza?.(),
+      },
+      {
+        gruppo: "Azioni",
+        icona: "📖",
+        label: "Guida del programma (PDF)",
+        vai: () => window.apriGuida?.(),
+      },
+      {
+        gruppo: "Azioni",
         icona: "⌨️",
         label: "Guida tasti da tastiera",
         vai: () => window.GB.apriGuidaTasti?.(),

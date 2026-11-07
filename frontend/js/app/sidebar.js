@@ -39,6 +39,22 @@
           ? h("span", { class: "nav-badge" }, String(extra.badge))
           : null,
       );
+    // bottone del menu che esegue un'azione (non cambia pagina)
+    const azione = (icon, label, title, fn) =>
+      h(
+        "button",
+        {
+          type: "button",
+          class: "nav-item nav-azione",
+          title,
+          onclick: () => {
+            document.body.classList.remove("nav-open");
+            fn();
+          },
+        },
+        h("span", { class: "nav-icon" }, icon),
+        label,
+      );
     nav.replaceChildren(
       item("home", "🏠", "Panoramica studio"),
       item("clienti", "👥", "Clienti"),
@@ -59,6 +75,13 @@
         { class: "nav-item", href: "/api/download-db", download: "" },
         h("span", { class: "nav-icon" }, "💾"),
         "Scarica database",
+      ),
+      h("div", { class: "nav-sep" }),
+      azione("🎨", "Personalizza", "Personalizza colori, temi e misure (d)", () =>
+        window.togglePersonalizza && window.togglePersonalizza(),
+      ),
+      azione("📖", "Guida", "Apri la guida del programma (PDF)", () =>
+        window.apriGuida && window.apriGuida(),
       ),
     );
   }

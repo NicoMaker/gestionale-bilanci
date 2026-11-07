@@ -23,6 +23,7 @@
   const GENERALI = [
     [["?"], "Apri / chiudi questa guida"],
     [["t"], "Cambia tema chiaro / scuro"],
+    [["d"], "Apre / chiude «Personalizza» (temi, colori, testo, misure)"],
     [["/"], "Cerca nell'elenco clienti"],
     [["Esc"], "Chiude finestre e ricerca"],
   ];
@@ -32,7 +33,7 @@
   ov.hidden = true;
   const kb = (arr) => arr.map((k) => `<kbd>${k}</kbd>`).join("");
   ov.innerHTML = `<div class="kb-guida" role="dialog" aria-label="Guida tasti">
-    <h2>⌨️ Scorciatoie da tastiera</h2>
+    <div class="kb-az-riga"><h2>⌨️ Scorciatoie da tastiera</h2>${window.GB_PERSONALIZZA ? window.GB_PERSONALIZZA.testoHtml() : ""}</div>
     <p class="kb-sub">Non funzionano mentre stai scrivendo in un campo.</p>
     <h3>Generali</h3>
     ${GENERALI.map(([k, d]) => `<div class="kb-riga"><span class="k">${kb(k)}</span><span>${d}</span></div>`).join("")}
@@ -75,6 +76,7 @@
     }
     if (k === "g") attesaG = Date.now();
     else if (k === "t") GB.theme.toggle();
+    else if (k === "d") window.togglePersonalizza?.();
     else if (k === "/") {
       const q = document.querySelector(
         "#content input[type=search], #content .client-search input",
