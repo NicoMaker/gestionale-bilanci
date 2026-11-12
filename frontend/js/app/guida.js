@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  const URL_GUIDA = "/manuale-utente-gestionale.pdf";
+  const URL_GUIDA = "manuale-utente-gestionale.pdf";
 
   // Se hai ingrandito il testo (Personalizza → Testo), il PDF si apre con lo
   // stesso zoom (#zoom=… è riconosciuto da Chrome, Edge e Firefox).
