@@ -5,7 +5,6 @@
 
   // g + lettera → pagina
   const NAV = [
-    ["d", "hub", "Dashboard"],
     ["h", "home", "Panoramica studio"],
     ["c", "clienti", "Clienti"],
     ["r", "dashboard", "Riepilogo cliente"],

@@ -9,8 +9,8 @@
   function routeKey() {
     const k = (location.hash || "").replace(/^#\//, "").split("?")[0];
     const p = GB.pages[k];
-    // pagina inesistente, o che richiede un cliente quando non ce n'è uno selezionato → Dashboard
-    if (!p || (!p.noClient && !S.clienteId)) return "hub";
+    // pagina inesistente, o che richiede un cliente quando non ce n'è uno selezionato → Panoramica
+    if (!p || (!p.noClient && !S.clienteId)) return "home";
     return k;
   }
 
@@ -63,7 +63,7 @@
   S.on("clienti", () => {
     GB.app.buildTopbar();
     GB.app.buildNav();
-    if (["clienti", "home", "hub"].includes(routeKey())) render();
+    if (["clienti", "home"].includes(routeKey())) render();
   });
   S.on("calc", () => {
     if (current && current.inst && current.inst.update) current.inst.update();
