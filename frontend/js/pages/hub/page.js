@@ -24,9 +24,7 @@
 
   /* Riga di dati: etichetta + valore (tono = pos/neg per colore). */
   const dato = (l, v, t) =>
-    v == null || v === ""
-      ? null
-      : { l, v, t: t || "" };
+    v == null || v === "" ? null : { l, v, t: t || "" };
 
   /* Dati chiave per ogni pagina del cliente. Ogni funzione ritorna un elenco di righe {l, v, t}
      e non deve mai bloccare la dashboard: gli errori vengono intercettati più sotto. */
@@ -68,7 +66,11 @@
         },
         dato(
           "Punteggio",
-          r.vuoto ? "" : r.punteggio + "/12" + (r.rating_desc ? " · " + r.rating_desc : ""),
+          r.vuoto
+            ? ""
+            : r.punteggio +
+                "/12" +
+                (r.rating_desc ? " · " + r.rating_desc : ""),
         ),
       ];
     },
@@ -98,7 +100,11 @@
         dato("Fatturato di pareggio", eur(R.bud.H.bep_fatturato)),
         dato(
           "Pareggio raggiunto",
-          !d ? "" : d.oltre ? "oltre fine anno" : d.giornoMese + " " + d.mese_nome,
+          !d
+            ? ""
+            : d.oltre
+              ? "oltre fine anno"
+              : d.giornoMese + " " + d.mese_nome,
         ),
       ];
     },
@@ -110,11 +116,7 @@
       const liq = R.cf.liq;
       return [
         dato("Liquidità a fine anno", eur(liq[11]), tono(liq[11])),
-        dato(
-          "Minimo nell'anno",
-          eur(Math.min(...liq)),
-          tono(Math.min(...liq)),
-        ),
+        dato("Minimo nell'anno", eur(Math.min(...liq)), tono(Math.min(...liq))),
       ];
     },
     report: (R, Y) => [
@@ -271,7 +273,10 @@
         tabindex: "0",
         onclick: apri,
         onkeydown: (e) => {
-          if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+          if (
+            e.target === e.currentTarget &&
+            (e.key === "Enter" || e.key === " ")
+          ) {
             e.preventDefault();
             apri();
           }
@@ -306,7 +311,8 @@
       {
         icon: "🗑️",
         title: "Cestino",
-        desc: "Recupera clienti, anni e righe eliminati negli ultimi " +
+        desc:
+          "Recupera clienti, anni e righe eliminati negli ultimi " +
           GB.cestino.giorni +
           " giorni.",
         dato: (GB.cestino.n || 0) + " elementi",
@@ -410,7 +416,11 @@
                   onclick: () => S.select(c.id),
                 },
                 h("span", { class: "hub-cliente-n" }, c.ragione_sociale),
-                h("span", { class: "hub-cliente-s" }, c.partita_iva || "senza P.IVA"),
+                h(
+                  "span",
+                  { class: "hub-cliente-s" },
+                  c.partita_iva || "senza P.IVA",
+                ),
               ),
             )
           : [h("div", { class: "muted small" }, "Nessun cliente trovato.")]),
@@ -463,7 +473,8 @@
                 ? "P.IVA " + S.cliente.partita_iva
                 : "P.IVA non inserita",
               " · ",
-              S.anni.length + (S.anni.length === 1 ? " esercizio" : " esercizi"),
+              S.anni.length +
+                (S.anni.length === 1 ? " esercizio" : " esercizi"),
             ),
           ),
           h(
@@ -506,11 +517,18 @@
         "div",
         { class: "kpis" },
         kpi(`Ricavi ${Y}`, eur(cur.ce.ricavi)),
-        kpi("Utile", eur(cur.ce.utile), cur.ind.roe != null ? "ROE " + fmt.pct(cur.ind.roe, 1) : "", tono(cur.ce.utile)),
+        kpi(
+          "Utile",
+          eur(cur.ce.utile),
+          cur.ind.roe != null ? "ROE " + fmt.pct(cur.ind.roe, 1) : "",
+          tono(cur.ce.utile),
+        ),
         kpi(
           "Rating",
           cur.rating.rating || "n.d.",
-          cur.rating.vuoto ? "nessun dato" : "punteggio " + cur.rating.punteggio + "/12",
+          cur.rating.vuoto
+            ? "nessun dato"
+            : "punteggio " + cur.rating.punteggio + "/12",
         ),
         kpi(
           `Budget ${Y + 1} · utile`,
@@ -529,7 +547,10 @@
     render(container) {
       const hasC = !!S.clienteId && !!S.R;
       container.append(
-        GB.printHead("Dashboard", hasC ? "Funzionalità e dati del cliente" : "Funzionalità dell'app"),
+        GB.printHead(
+          "Dashboard",
+          hasC ? "Funzionalità e dati del cliente" : "Funzionalità dell'app",
+        ),
       );
 
       if (hasC) container.append(...testataCliente());
@@ -547,7 +568,13 @@
         h(
           "div",
           { class: "hub-sez" },
-          h("h2", null, hasC ? "Analisi di " + S.cliente.ragione_sociale : "Analisi del cliente"),
+          h(
+            "h2",
+            null,
+            hasC
+              ? "Analisi di " + S.cliente.ragione_sociale
+              : "Analisi del cliente",
+          ),
           h(
             "p",
             { class: "muted small" },
