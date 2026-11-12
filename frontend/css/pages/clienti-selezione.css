@@ -51,6 +51,9 @@ tr.line.selected td {
   border-radius: var(--r-sm);
   padding: 5px 8px;
 }
+.sel-data {
+  width: 150px;
+}
 .sel-anno:focus {
   border-color: var(--accent);
   outline: none;

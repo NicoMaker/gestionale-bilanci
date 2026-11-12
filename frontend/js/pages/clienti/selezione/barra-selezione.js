@@ -1,4 +1,4 @@
-/* Selezione multipla dei clienti: stato (id selezionati), barra azioni («Crea esercizio» per più clienti, «Elimina selezionati») e aggiornamento della casella «seleziona tutti». */
+/* Selezione multipla dei clienti: stato (id selezionati), barra azioni («Crea esercizio» per più clienti con anno e data di chiusura (vuota = 31/12), «Elimina selezionati») e aggiornamento della casella «seleziona tutti». */
 (function () {
   const GB = window.GB;
   const { h } = GB;
@@ -20,7 +20,34 @@
       "aria-label": "Anno dell'esercizio da creare",
       title: "Anno dell'esercizio da creare per i clienti selezionati",
     });
-    anno.addEventListener("input", () => (GB.clientiSelAnno = anno.value));
+    // data di chiusura dell'esercizio: se resta vuota viene usato il 31/12 dell'anno
+    const data = h("input", {
+      type: "date",
+      value: GB.clientiSelData || "",
+      class: "sel-anno sel-data",
+      "aria-label": "Data di chiusura dell'esercizio (vuota = 31/12)",
+      title: "Data di chiusura dell'esercizio. Se la lasci vuota viene usato il 31/12 dell'anno",
+    });
+    // la data resta nell'anno scelto (se l'anno cambia e la data no, si riporta al 31/12 solo se serve)
+    const limitiData = () => {
+      const a = Number(anno.value);
+      if (Number.isInteger(a) && a >= 1990 && a <= 2100) {
+        data.min = a + "-01-01";
+        data.max = a + "-12-31";
+        if (data.value && data.value.slice(0, 4) !== String(a)) {
+          data.value = "";
+          GB.clientiSelData = "";
+        }
+      } else {
+        data.min = data.max = "";
+      }
+    };
+    anno.addEventListener("input", () => {
+      GB.clientiSelAnno = anno.value;
+      limitiData();
+    });
+    data.addEventListener("input", () => (GB.clientiSelData = data.value));
+    limitiData();
 
     const bar = h(
       "div",
@@ -31,12 +58,16 @@
         { class: "sel-field" },
         h("label", null, "Anno"),
         anno,
+        h("label", null, "Data"),
+        data,
         h(
           "button",
           {
             class: "btn sm primary",
-            title: "Crea l'esercizio di questo anno per tutti i selezionati",
-            onclick: () => A.creaAnnoMultiplo([...ids], Number(anno.value)),
+            title:
+              "Crea l'esercizio di questo anno per tutti i selezionati (data vuota = 31/12)",
+            onclick: () =>
+              A.creaAnnoMultiplo([...ids], Number(anno.value), data.value),
           },
           "＋ Crea esercizio",
         ),

@@ -51,7 +51,17 @@
             .map((a) =>
               h(
                 "option",
-                { value: a, selected: a === S.anno || null },
+                {
+                  value: a,
+                  selected: a === S.anno || null,
+                  title:
+                    "Chiusura " +
+                    ((((S.ds && S.ds.par && S.ds.par[a]) || {}).data_chiusura ||
+                      a + "-12-31")
+                      .split("-")
+                      .reverse()
+                      .join("/")),
+                },
                 String(a),
               ),
             ),

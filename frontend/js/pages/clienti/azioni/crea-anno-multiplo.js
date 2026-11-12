@@ -1,4 +1,5 @@
-/* Azione «Crea esercizio» per più clienti selezionati (stesso anno per tutti; chi lo ha già viene saltato). */
+/* Azione «Crea esercizio» per più clienti selezionati (stesso anno e stessa data di chiusura per tutti; chi lo ha già viene saltato).
+   Senza data l'esercizio chiude il 31/12 dell'anno. */
 (function () {
   const GB = window.GB;
   const { h } = GB;
@@ -15,12 +16,20 @@
     );
   };
 
-  GB.parts.clienti.azioni.creaAnnoMultiplo = async (ids, anno) => {
+  const dataIt = (iso) => iso.split("-").reverse().join("/");
+
+  GB.parts.clienti.azioni.creaAnnoMultiplo = async (ids, anno, data) => {
     if (!ids.length) return;
     if (!Number.isInteger(anno) || anno < 1990 || anno > 2100) {
       GB.toast("Anno non valido (1990–2100)", "err");
       return;
     }
+    data = (data || "").trim();
+    if (data && data.slice(0, 4) !== String(anno)) {
+      GB.toast("La data deve essere nel " + anno, "err");
+      return;
+    }
+    const chiusura = data || anno + "-12-31";
     const ok = await GB.modal({
       title: "Crea esercizio " + anno,
       body: h(
@@ -30,6 +39,13 @@
           "p",
           null,
           `Creare l'esercizio ${anno} per ${ids.length} client${ids.length === 1 ? "e" : "i"}?`,
+        ),
+        h(
+          "p",
+          null,
+          "Data di chiusura: ",
+          h("strong", null, dataIt(chiusura)),
+          data ? "" : " (31/12 in automatico)",
         ),
         h("p", { class: "small muted" }, nomi(ids)),
         h(
@@ -45,7 +61,11 @@
     });
     if (!ok) return;
     try {
-      const r = await GB.api.post("/anni/bulk", { cliente_ids: ids, anno });
+      const r = await GB.api.post("/anni/bulk", {
+        cliente_ids: ids,
+        anno,
+        data_chiusura: data || undefined,
+      });
       GB.clientiSel.clear();
       await S.loadClienti();
       if (S.clienteId) await S.reload();

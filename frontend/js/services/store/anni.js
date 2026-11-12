@@ -8,7 +8,9 @@
   Object.assign(S, {
     async addAnno() {
       const r = await S._save(api.post(`/clienti/${S.clienteId}/anni`, {}));
-      S.ds.par[r.anno] = Object.assign({}, DEF_PAR);
+      S.ds.par[r.anno] = Object.assign({}, DEF_PAR, {
+        data_chiusura: r.data_chiusura || r.anno + "-12-31",
+      });
       S.anno = r.anno;
       localStorage.setItem("gb.anno." + S.clienteId, S.anno);
       S.recompute();

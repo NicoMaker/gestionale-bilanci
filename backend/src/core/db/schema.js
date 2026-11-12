@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS parametri_anno (
   investimento REAL DEFAULT 0,
   aumento_utile REAL DEFAULT 0,
   saldo_iniziale_cf REAL DEFAULT 0,
+  data_chiusura TEXT,            -- data di chiusura dell'esercizio (AAAA-MM-GG); se non indicata il trigger imposta il 31/12
   PRIMARY KEY (cliente_id, anno),
   FOREIGN KEY (cliente_id) REFERENCES clienti(id) ON DELETE CASCADE
 );

@@ -435,6 +435,9 @@ table.fin tr.title td {
   .sel-anno {
     flex: 1;
   }
+  .sel-data {
+    width: auto;
+  }
   .list-tools {
     flex-wrap: wrap;
   }

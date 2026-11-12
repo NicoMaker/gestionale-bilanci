@@ -24,6 +24,58 @@ module.exports = async function () {
     for (const c of [a, b]) await api("DELETE", `/clienti/${c.id}`);
   });
 
+  await t("data di chiusura dell'esercizio: 31/12 se non indicata", async () => {
+    const dataDi = async (cid, anno) =>
+      (await api("GET", `/clienti/${cid}/dataset`)).body.parametri.find(
+        (p) => p.anno === anno,
+      ).data_chiusura;
+    const a = await nuovo("Data A Srl", 2025);
+    const b = await nuovo("Data B Srl", 2025);
+    // senza data: 31/12 dell'anno
+    let r = await api("POST", "/anni/bulk", { cliente_ids: [a.id], anno: 2041 });
+    assert.equal(r.body.data_chiusura, "2041-12-31");
+    assert.equal(await dataDi(a.id, 2041), "2041-12-31");
+    // con data (ISO o GG/MM/AAAA)
+    r = await api("POST", "/anni/bulk", {
+      cliente_ids: [a.id, b.id],
+      anno: 2042,
+      data_chiusura: "2042-06-30",
+    });
+    assert.equal(r.status, 201);
+    assert.equal(await dataDi(a.id, 2042), "2042-06-30");
+    assert.equal(await dataDi(b.id, 2042), "2042-06-30");
+    r = await api("POST", `/clienti/${a.id}/anni`, {
+      anno: 2043,
+      data_chiusura: "30/09/2043",
+    });
+    assert.equal(r.body.data_chiusura, "2043-09-30");
+    // anno aggiunto senza indicazioni e anni creati in automatico: 31/12
+    r = await api("POST", `/clienti/${a.id}/anni`, {});
+    assert.equal(r.body.data_chiusura, `${r.body.anno}-12-31`);
+    assert.equal(await dataDi(a.id, 2025), "2025-12-31");
+    // un anno già presente non viene modificato
+    await api("POST", "/anni/bulk", {
+      cliente_ids: [a.id],
+      anno: 2042,
+      data_chiusura: "2042-03-31",
+    });
+    assert.equal(await dataDi(a.id, 2042), "2042-06-30");
+    // date non valide
+    for (const data_chiusura of ["2042-02-30", "abc", "2043-06-30", "31/13/2042"])
+      assert.equal(
+        (
+          await api("POST", "/anni/bulk", {
+            cliente_ids: [b.id],
+            anno: 2042,
+            data_chiusura,
+          })
+        ).status,
+        400,
+        data_chiusura,
+      );
+    for (const c of [a, b]) await api("DELETE", `/clienti/${c.id}`);
+  });
+
   await t("crea anno multiplo: validazioni e atomicità", async () => {
     const a = await nuovo("Multi C Srl", 2025);
     assert.equal(
