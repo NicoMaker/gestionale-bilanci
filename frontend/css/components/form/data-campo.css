@@ -1,0 +1,188 @@
+/* Campo «data di chiusura» con anno automatico (gg/mm scritto a mano + anno fisso + calendario). */
+.dcamp {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  padding: 0 6px 0 14px;
+  background: var(--s0);
+  border: 1.5px solid var(--b1);
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.dcamp:focus-within {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
+}
+.dcamp.errore {
+  border-color: var(--red);
+}
+.dcamp-in {
+  flex: 0 0 auto;
+  width: 5ch;
+  padding: 11px 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font: inherit;
+  color: inherit;
+}
+.dcamp-in:focus,
+.dcamp-in:focus-visible {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.dcamp-in::placeholder {
+  color: var(--t3);
+  opacity: 0.8;
+}
+.dcamp-anno {
+  flex: 1 1 auto;
+  padding-right: 8px;
+  color: var(--accent);
+  user-select: none;
+  white-space: nowrap;
+}
+.dcamp.vuoto .dcamp-anno {
+  color: var(--t3);
+}
+.dcamp-cal {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--t2);
+  cursor: pointer;
+}
+.dcamp-cal:hover {
+  color: var(--accent);
+  background: var(--accent-d);
+}
+.dcamp-picker {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: 0;
+  padding: 0;
+}
+
+/* versione compatta (barra «Crea esercizio») */
+.dcamp.compatto {
+  width: auto;
+  padding: 0 2px 0 9px;
+  border-width: 1px;
+  border-radius: var(--r-sm);
+  font-size: 15px;
+}
+.dcamp.compatto .dcamp-in {
+  padding: 5px 0 !important;
+  width: 4.7ch;
+}
+.dcamp.compatto .dcamp-anno {
+  padding-right: 4px;
+}
+.dcamp.compatto .dcamp-cal {
+  width: 26px;
+  height: 26px;
+}
+
+/* pulsante «↺ 31/12» */
+.dcamp-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 9px;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-d);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.dcamp-reset:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+.dcamp-reset:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* riga «Data di chiusura  ✎ ........ ↺ 31/12» nella finestra di modifica */
+.dc-labelrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.dc-labelrow .dc-label {
+  margin: 0;
+}
+
+/* finestra con le date di chiusura di tutti gli esercizi */
+.dcm-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.dcm-top p {
+  margin: 0;
+}
+.dcm-grid {
+  display: grid;
+  grid-template-columns: auto minmax(190px, 1fr) auto;
+  align-items: center;
+  gap: 8px 12px;
+}
+.dcm-grid .dcm-anno {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.dcm-grid .dcamp {
+  font-size: 15px;
+}
+.dcm-grid .dcamp-in {
+  padding: 8px 0 !important;
+}
+
+/* barra «Crea esercizio» dei clienti: campo data + reset sulla seconda riga */
+.sel-field > .dcamp-riga {
+  grid-area: 2 / 2 / 3 / 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* anno già visibile altrove (finestre di modifica): nel campo restano solo giorno e mese */
+.dcamp.senza-anno .dcamp-anno {
+  display: none;
+}
+.dcamp.senza-anno .dcamp-in {
+  flex: 1 1 auto;
+  width: auto;
+}

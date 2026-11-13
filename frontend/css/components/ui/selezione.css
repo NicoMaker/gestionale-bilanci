@@ -70,3 +70,29 @@ table.fin tr.sel td {
   font-weight: 700;
   margin-right: 6px;
 }
+
+/* selezione degli anni (caselle nelle intestazioni di S.P. e C.E.) */
+table.fin th.yr .yr-sel {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+table.fin th.yr:hover .yr-sel,
+table.fin th.yr.sel .yr-sel,
+table.fin.multi th.yr .yr-sel:focus-within {
+  opacity: 1;
+}
+table.fin thead th.yr.sel {
+  background: color-mix(in srgb, var(--accent) 16%, var(--s1)) !important;
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+table.fin th.yr .sel-box {
+  margin: 0;
+}
+@media print {
+  .yr-sel {
+    display: none !important;
+  }
+}

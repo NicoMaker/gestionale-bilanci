@@ -33,14 +33,20 @@
       GB.cestino.refresh();
     },
 
-    // ripristina l'ultimo elemento spostato nel cestino
-    async annulla() {
+    // ripristina gli ultimi n elementi spostati nel cestino (di solito 1; più di uno dopo un'eliminazione multipla)
+    async annulla(n = 1) {
       try {
         const l = await GB.api.get("/cestino");
-        const it = l.elementi[0];
-        if (!it) return;
-        await GB.api.post("/cestino/ripristina", { ids: [it.id] });
-        GB.toast("Ripristinato: " + it.etichetta);
+        const its = l.elementi.slice(0, n);
+        if (!its.length) return;
+        await GB.api.post("/cestino/ripristina", {
+          ids: its.map((x) => x.id),
+        });
+        GB.toast(
+          its.length === 1
+            ? "Ripristinato: " + its[0].etichetta
+            : `Ripristinati ${its.length} elementi`,
+        );
         await GB.cestino.dopoRipristino();
       } catch (e) {
         GB.toast(e.message, "err");
@@ -51,9 +57,9 @@
   GB.cestino.refresh(); // contatore iniziale nel menu
 
   // «eliminato»: notifica con Annulla e promemoria dei 15 giorni
-  GB.deleted = (msg) =>
+  GB.deleted = (msg, n = 1) =>
     GB.toast(msg, null, {
       sub: `Nel cestino per ${GB.cestino.giorni} giorni`,
-      action: { label: "Annulla", fn: GB.cestino.annulla },
+      action: { label: "Annulla", fn: () => GB.cestino.annulla(n) },
     });
 })();

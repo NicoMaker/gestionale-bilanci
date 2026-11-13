@@ -4,7 +4,7 @@ const db = require("../../../core/db");
 const { HttpError, wrap } = require("../../../core/http");
 const { toId, toYear } = require("../../../core/validators");
 const { getCliente, datiCliente } = require("../../clienti/service");
-const C = require("../../cestino/service");
+const { anniCliente, eliminaEsercizio } = require("../service/elimina");
 
 const router = express.Router();
 
@@ -20,15 +20,7 @@ router.delete(
     const dAnno = datiCliente(c.id).anni.find((a) => a.anno === anno);
     if (!esiste && !(dAnno && dAnno.totale))
       throw new HttpError(404, "Anno non presente per questo cliente");
-    const nAnni = new Set([
-      ...db
-        .all("SELECT anno FROM parametri_anno WHERE cliente_id=?", [c.id])
-        .map((r) => r.anno),
-      ...datiCliente(c.id)
-        .anni.filter((a) => a.totale)
-        .map((a) => a.anno),
-    ]).size;
-    if (nAnni <= 1)
+    if (anniCliente(c.id).size <= 1)
       throw new HttpError(400, "Il cliente deve avere almeno un anno");
     if (dAnno && dAnno.totale && String(req.query.conferma) !== "1") {
       return res.status(409).json({
@@ -37,36 +29,7 @@ router.delete(
         dati: dAnno,
       });
     }
-    db.tx(() => {
-      C.sposta({
-        tipo: "anno",
-        cliente: c,
-        etichetta: `Esercizio ${anno}`,
-        dettaglio:
-          dAnno && dAnno.totale
-            ? `${dAnno.totale} dati inseriti`
-            : "senza dati",
-        snapshot: Object.assign(C.snapAnno(c.id, anno), { anno }),
-      });
-      const sub = "SELECT id FROM voci WHERE cliente_id=?";
-      db.run(`DELETE FROM valori WHERE anno=? AND voce_id IN (${sub})`, [
-        anno,
-        c.id,
-      ]);
-      db.run(`DELETE FROM budget_var WHERE anno=? AND voce_id IN (${sub})`, [
-        anno,
-        c.id,
-      ]);
-      db.run(`DELETE FROM cashflow WHERE anno=? AND voce_id IN (${sub})`, [
-        anno,
-        c.id,
-      ]);
-      db.run("DELETE FROM vendite WHERE cliente_id=? AND anno=?", [c.id, anno]);
-      db.run("DELETE FROM parametri_anno WHERE cliente_id=? AND anno=?", [
-        c.id,
-        anno,
-      ]);
-    });
+    db.tx(() => eliminaEsercizio(c, anno, dAnno));
     res.json({ ok: true });
   }),
 );

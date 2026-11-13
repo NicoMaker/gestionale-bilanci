@@ -1,4 +1,4 @@
-/* Store: aggiunta ed eliminazione degli esercizi. */
+/* Store: aggiunta ed eliminazione (singola e multipla) degli esercizi. */
 (function () {
   const GB = window.GB;
   const { api } = GB;
@@ -67,6 +67,24 @@
       S.anno = null;
       await S.select(S.clienteId, null);
       GB.deleted(`Esercizio ${anno} eliminato`);
+    },
+    // elimina più esercizi insieme (selezione multipla); conConferma = alcuni contengono dati
+    async deleteAnni(anni, conConferma) {
+      const r = await S._save(
+        api.post(`/clienti/${S.clienteId}/anni/elimina-multiplo`, {
+          anni,
+          conferma: conConferma ? 1 : undefined,
+        }),
+      );
+      S.anno = null;
+      await S.select(S.clienteId, null);
+      GB.deleted(
+        r.eliminati === 1
+          ? `Esercizio ${r.anni[0]} eliminato`
+          : `${r.eliminati} esercizi eliminati (${r.anni.join(", ")})`,
+        r.eliminati,
+      );
+      return r;
     },
   });
 })();

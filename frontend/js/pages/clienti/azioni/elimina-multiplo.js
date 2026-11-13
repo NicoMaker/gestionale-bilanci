@@ -115,6 +115,7 @@
         await S.select(S.clienti[0] ? S.clienti[0].id : null);
       GB.deleted(
         `${r.eliminati} client${r.eliminati === 1 ? "e eliminato" : "i eliminati"}`,
+        r.eliminati,
       );
     } catch (e) {
       GB.toast(e.message, "err");

@@ -3,6 +3,7 @@
 
    GB.sel.voci({ key, ambito|ambiti, cosa, anno, extra })  → contesto per righe di conto (S.P., C.E., Cash Flow, Budget)
    GB.sel.mesi({ years })                                   → contesto per i mesi della pagina Vendite
+   GB.sel.anni()                                            → contesto per gli esercizi (anni) in colonna: elimina più anni insieme
    GB.sel.box(ctx, id)                                      → casella di selezione di una riga
    GB.sel.sezione(ctx, { label, ids })                      → pulsanti «seleziona / azzera / elimina» per l'intestazione di una sezione */
 (function () {
@@ -28,7 +29,9 @@
       const on = state.ctx && state.ids.has(Number(b.dataset.id));
       b.checked = !!on;
       const tr = b.closest("tr");
-      if (tr) tr.classList.toggle("sel", !!on);
+      if (tr && !b.closest("thead")) tr.classList.toggle("sel", !!on); // nelle intestazioni (anni) non si colora la riga
+      const th = b.closest("th");
+      if (th) th.classList.toggle("sel", !!on);
     });
     const b = ensureBar();
     const n = state.ids.size;
@@ -36,37 +39,39 @@
     if (!n) return b.replaceChildren();
     const c = state.ctx;
     b.replaceChildren(
-      h(
-        "span",
-        { class: "selbar-n" },
-        plural(n, c.uno, c.molti) +
-          " selezionat" +
-          (n === 1 ? (c.f ? "a" : "o") : c.f ? "e" : "i"),
-      ),
-      h(
-        "button",
-        { class: "btn sm", onclick: () => GB.sel.set(c, c.all()) },
-        "Seleziona tutt" + (c.f ? "e" : "i"),
-      ),
-      c.azzera
-        ? h(
-            "button",
-            { class: "btn sm", onclick: () => GB.sel.azzeraSel() },
-            c.azzeraLabel || "Azzera valori",
-          )
-        : null,
-      c.elimina
-        ? h(
-            "button",
-            { class: "btn sm danger", onclick: () => GB.sel.eliminaSel() },
-            "Elimina " + (c.f ? "selezionate" : "selezionati"),
-          )
-        : null,
-      h(
-        "button",
-        { class: "btn sm", onclick: () => GB.sel.clear() },
-        "Annulla",
-      ),
+      ...[
+        h(
+          "span",
+          { class: "selbar-n" },
+          plural(n, c.uno, c.molti) +
+            " selezionat" +
+            (n === 1 ? (c.f ? "a" : "o") : c.f ? "e" : "i"),
+        ),
+        h(
+          "button",
+          { class: "btn sm", onclick: () => GB.sel.set(c, c.all()) },
+          "Seleziona tutt" + (c.f ? "e" : "i"),
+        ),
+        c.azzera
+          ? h(
+              "button",
+              { class: "btn sm", onclick: () => GB.sel.azzeraSel() },
+              c.azzeraLabel || "Azzera valori",
+            )
+          : null,
+        c.elimina
+          ? h(
+              "button",
+              { class: "btn sm danger", onclick: () => GB.sel.eliminaSel() },
+              "Elimina " + (c.f ? "selezionate" : "selezionati"),
+            )
+          : null,
+        h(
+          "button",
+          { class: "btn sm", onclick: () => GB.sel.clear() },
+          "Annulla",
+        ),
+      ].filter(Boolean), // i contesti senza «azzera» o «elimina» non lasciano un «null» nella barra
     );
   }
 
@@ -216,6 +221,20 @@
             return false;
           }
           return true;
+        },
+      };
+    },
+
+    /* ── contesto per gli esercizi (anni) del cliente: caselle nelle intestazioni di S.P. e C.E. ── */
+    anni({ key = "anni" } = {}) {
+      return {
+        key,
+        uno: "esercizio",
+        molti: "esercizi",
+        f: false,
+        all: () => [...S.anni],
+        async elimina(anni) {
+          return GB.eliminaAnni(anni);
         },
       };
     },

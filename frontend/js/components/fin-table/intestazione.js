@@ -15,6 +15,7 @@
       h("th", { class: "l stk2" }, cfg.titleCol || "Descrizione"),
     );
     if (ce) hr.append(h("th", null, "Tipo"));
+    const selAnni = GB.sel.anni(); // selezione di più anni per eliminarli insieme
     years.forEach((a) => {
       const canDel = !ro && S.anni.length > 1 && S.anni.includes(a);
       hr.append(
@@ -22,6 +23,18 @@
         h(
           "th",
           { class: "yr" },
+          canDel
+            ? h(
+                "span",
+                { class: "yr-sel" },
+                (() => {
+                  const b = GB.sel.box(selAnni, a);
+                  b.title = `Seleziona l'anno ${a} (per eliminare più anni insieme)`;
+                  b.setAttribute("aria-label", b.title);
+                  return b;
+                })(),
+              )
+            : null,
           h("span", { class: "yr-n" }, String(a)),
           GB.dataTag(a, !ro && S.anni.includes(a)),
           canDel
