@@ -39,101 +39,36 @@
     return svg;
   };
 
-  /* Data sotto l'anno nelle intestazioni di colonna.
-     Con editable: icona penna + clic apre direttamente il calendario (solo giorni dell'anno di riferimento, l'anno non si scrive). */
+  /* Data sotto l'anno nelle intestazioni di colonna: si vede solo «gg/mm» (l'anno è già scritto sopra).
+     Con editable: penna accanto e clic apre la finestra di modifica (campo data scrivibile + calendario, anno bloccato). */
   GB.dataTag = (anno, editable) => {
+    const gm = GB.dataChiusuraIt(anno).slice(0, 5);
     if (!editable)
       return h(
         "span",
-        { class: "dt", title: "Data di chiusura dell'esercizio" },
-        GB.dataChiusuraIt(anno),
+        { class: "dt", title: "Data di chiusura dell'esercizio " + GB.dataChiusuraIt(anno) },
+        gm,
       );
-    // stessa data di sempre (gg/mm/aaaa) con sottolineatura tratteggiata: si scrive a mano oppure si sceglie dal calendario con la penna
-    const ggmm = () => GB.dataChiusuraIt(anno);
-    const inp = h("input", {
-      type: "text",
-      class: "dt-input",
-      inputmode: "numeric",
-      maxlength: 10,
-      value: ggmm(),
-      placeholder: "31/12/" + anno,
-      title: "Data di chiusura dell'esercizio: scrivila (es. 30/06) o scegli dal calendario con la penna. Vuota = 31/12",
-      "aria-label": "Data di chiusura dell'esercizio " + anno + " ",
-    });
-    const cal = h("input", {
-      type: "date",
-      class: "dt-picker",
-      tabindex: "-1",
-      "aria-hidden": "true",
-      value: GB.dataChiusura(anno),
-      min: anno + "-01-01",
-      max: anno + "-12-31",
-    });
-    const salva = async (iso) => {
-      try {
-        const d = await S.saveDataChiusura(anno, iso);
-        GB.toast(`Esercizio ${anno}: chiusura ${dataIt(d)}`);
-      } catch (e) {
-        inp.value = ggmm(); /* toast già mostrato */
-      }
-    };
-    // «gg/mm» (o «gg/mm/aaaa» dello stesso anno) → AAAA-MM-GG; vuoto → ""; non valido → null
-    const leggi = () => {
-      const t = inp.value.trim();
-      if (!t) return "";
-      const m = t.match(/^(\d{1,2})[\/\-.](\d{1,2})(?:[\/\-.](\d{2,4}))?$/);
-      if (!m) return null;
-      const g = Number(m[1]);
-      const mese = Number(m[2]);
-      const aa = m[3] ? (m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3])) : anno;
-      const d = new Date(Date.UTC(aa, mese - 1, g));
-      if (aa !== anno) return null;
-      if (d.getUTCMonth() !== mese - 1 || d.getUTCDate() !== g) return null;
-      return `${aa}-${String(mese).padStart(2, "0")}-${String(g).padStart(2, "0")}`;
-    };
-    const conferma = () => {
-      const iso = leggi();
-      if (iso === null) {
-        GB.toast("Data non valida: scrivi giorno e mese, es. 30/06", "err");
-        inp.value = ggmm();
-        return;
-      }
-      if ((iso || anno + "-12-31") === GB.dataChiusura(anno)) {
-        inp.value = ggmm();
-        return;
-      }
-      salva(iso);
-    };
-    inp.addEventListener("click", (e) => e.stopPropagation());
-    inp.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        inp.blur();
-      } else if (e.key === "Escape") {
-        inp.value = ggmm();
-        inp.blur();
-      }
-    });
-    inp.addEventListener("change", conferma);
-    cal.addEventListener("change", () => cal.value && salva(cal.value));
-    const pen = penna();
-    pen.addEventListener("click", (e) => {
-      e.stopPropagation();
-      cal.value = GB.dataChiusura(anno);
-      try {
-        cal.showPicker();
-      } catch (_) {
-        inp.focus();
-      }
-    });
     return h(
       "span",
-      { class: "dt dt-edit" },
-      inp,
-      pen,
-      cal,
-      // solo per la stampa/PDF: il campo si nasconde e resta il testo
-      h("span", { class: "dt-print" }, GB.dataChiusuraIt(anno)),
+      {
+        class: "dt dt-edit",
+        role: "button",
+        tabindex: "0",
+        title: "Data di chiusura dell'esercizio " + GB.dataChiusuraIt(anno) + ": clic per modificarla",
+        onclick: (e) => {
+          e.stopPropagation();
+          GB.modificaDataChiusura(anno);
+        },
+        onkeydown: (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            e.currentTarget.click();
+          }
+        },
+      },
+      gm,
+      penna(),
     );
   };
 

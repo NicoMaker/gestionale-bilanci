@@ -431,6 +431,7 @@ table.fin tr.title td {
   }
   .sel-field {
     flex: 1 1 100%;
+    grid-template-columns: auto 1fr auto;
   }
   .sel-anno {
     flex: 1;

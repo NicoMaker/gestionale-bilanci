@@ -10,12 +10,18 @@
     [...ids].forEach((id) => esistenti.has(id) || ids.delete(id));
 
     const A = GB.parts.clienti.azioni;
+    // anno proposto in automatico: l'anno successivo all'ultimo esercizio dei clienti selezionati (o di tutti se nessuno)
+    const prossimoAnno = () => {
+      const base = S.clienti.filter((c) => ids.has(c.id));
+      const anniTutti = (base.length ? base : S.clienti).flatMap((c) => c.anni || []);
+      return anniTutti.length ? Math.max(...anniTutti) + 1 : new Date().getFullYear();
+    };
     const conteggio = h("span", { class: "sel-count" });
     const anno = h("input", {
       type: "number",
       min: 1990,
       max: 2100,
-      value: GB.clientiSelAnno || new Date().getFullYear(),
+      value: GB.clientiSelAnno || prossimoAnno(),
       class: "sel-anno",
       "aria-label": "Anno dell'esercizio da creare",
       title: "Anno dell'esercizio da creare per i clienti selezionati",
@@ -93,6 +99,7 @@
     };
     anno.addEventListener("input", () => {
       GB.clientiSelAnno = anno.value;
+      GB.clientiSelAnnoManuale = true; // se l'hai scritto tu non lo cambio più da solo
       limitiData();
     });
     data.addEventListener("input", () => (GB.clientiSelData = data.value));
@@ -161,6 +168,10 @@
       sincronizza(righeVisibili) {
         const n = ids.size;
         bar.hidden = n === 0;
+        if (!GB.clientiSelAnnoManuale && n) {
+          anno.value = GB.clientiSelAnno = prossimoAnno();
+          limitiData();
+        }
         conteggio.textContent = n + (n === 1 ? " selezionato" : " selezionati");
         const c = sel.chkAll;
         if (!c) return;
