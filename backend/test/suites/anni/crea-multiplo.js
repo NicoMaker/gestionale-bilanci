@@ -101,4 +101,26 @@ module.exports = async function () {
     assert.ok(!c.anni.includes(2031));
     await api("DELETE", `/clienti/${a.id}`);
   });
+
+  await t("data di chiusura: modifica di un esercizio esistente", async () => {
+    const c = await nuovo("Data C Srl", 2025);
+    const dataDi = async (anno) =>
+      (await api("GET", `/clienti/${c.id}/dataset`)).body.parametri.find(
+        (p) => p.anno === anno,
+      ).data_chiusura;
+    const url = `/clienti/${c.id}/anni/2025/data-chiusura`;
+    assert.equal(await dataDi(2025), "2025-12-31");
+    let r = await api("PUT", url, { data_chiusura: "30/06/2025" });
+    assert.equal(r.status, 200);
+    assert.equal(await dataDi(2025), "2025-06-30");
+    // vuota = torna al 31/12
+    r = await api("PUT", url, { data_chiusura: "" });
+    assert.equal(r.body.data_chiusura, "2025-12-31");
+    assert.equal(await dataDi(2025), "2025-12-31");
+    // data di un altro anno o non valida: rifiutata
+    for (const data_chiusura of ["2024-06-30", "2025-02-30", "abc"])
+      assert.equal((await api("PUT", url, { data_chiusura })).status, 400);
+    assert.equal(await dataDi(2025), "2025-12-31");
+    await api("DELETE", `/clienti/${c.id}`);
+  });
 };

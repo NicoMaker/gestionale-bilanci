@@ -310,3 +310,55 @@ select.ci {
   border-color: var(--accent);
   background: var(--accent-d);
 }
+
+/* data di chiusura sotto l'anno nelle intestazioni (visibile anche in stampa/PDF) */
+.dt {
+  display: block;
+  margin-top: 2px;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--t3);
+  white-space: nowrap;
+}
+table.fin th.yr .dt {
+  line-height: 1.2;
+}
+td > .dt {
+  display: block;
+  text-align: inherit;
+}
+.dt-edit {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0 3px;
+  margin-left: -3px;
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+.dt-edit:hover {
+  color: var(--accent);
+  background: var(--accent-d);
+}
+.data-chiusura-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 6px 0 4px;
+}
+.data-chiusura-row .inp-data {
+  flex: 1;
+  min-width: 0;
+}
+@media print {
+  .dt {
+    color: #444 !important;
+    font-size: 8px;
+    text-decoration: none;
+  }
+  .dt-edit {
+    background: none !important;
+    text-decoration: none;
+  }
+}

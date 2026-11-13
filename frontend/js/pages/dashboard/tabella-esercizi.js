@@ -44,7 +44,12 @@
           title: "Apri questo esercizio",
           onclick: () => S.setYear(r.anno),
         },
-        h("td", { class: "l" }, String(r.anno) + (r.anno === Y ? "  ◀" : "")),
+        h(
+          "td",
+          { class: "l" },
+          String(r.anno) + (r.anno === Y ? "  ◀" : ""),
+          GB.dataTag(r.anno, false),
+        ),
         ...[r.ricavi, r.ebitda, r.ebit, r.utile, r.attivo, r.pn].map((v) =>
           h("td", { class: "n" + (v < 0 ? " neg" : "") }, fmt.num(v, 0)),
         ),

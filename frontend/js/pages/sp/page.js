@@ -27,7 +27,7 @@
       container.append(
         GB.printHead(
           "Stato Patrimoniale riclassificato",
-          "Esercizi " + years.join(" · "),
+          GB.eserciziTxt(years),
         ),
         h(
           "div",

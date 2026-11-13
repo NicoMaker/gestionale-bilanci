@@ -45,8 +45,11 @@ router.get(
 
     for (const c of clienti) {
       let rows = [];
+      const chiusure = {}; // anno -> data di chiusura dell'esercizio
       try {
-        rows = Calc.riepilogo(Calc.buildDs(loadRaw(c.id)));
+        const raw = loadRaw(c.id);
+        raw.parametri.forEach((p) => (chiusure[p.anno] = p.data_chiusura));
+        rows = Calc.riepilogo(Calc.buildDs(raw));
       } catch (e) {
         rows = [];
       }
@@ -61,6 +64,7 @@ router.get(
         partita_iva: c.partita_iva,
         esercizi: rows.length,
         anno: u ? u.anno : null,
+        data_chiusura: u ? chiusure[u.anno] || `${u.anno}-12-31` : null,
         ricavi: u ? u.ricavi : 0,
         ebitda: u ? u.ebitda : 0,
         utile: u ? u.utile : 0,

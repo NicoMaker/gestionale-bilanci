@@ -16,7 +16,7 @@
     years.forEach((a) =>
       head.append(
         h("th", { class: "gap" }),
-        h("th", null, String(a)),
+        h("th", { class: "yr" }, GB.yearHead(a, false)),
         h("th", null, "%"),
       ),
     );

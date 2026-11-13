@@ -17,7 +17,7 @@
           null,
           h("th", { class: "l stk0" }, "Indicatore"),
           h("th", { class: "l" }, "Formula"),
-          years.map((a) => h("th", null, String(a))),
+          years.map((a) => h("th", { class: "yr" }, GB.yearHead(a, false))),
         ),
       ),
     );

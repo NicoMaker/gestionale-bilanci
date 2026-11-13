@@ -67,7 +67,7 @@
     const fields = campiVoce(v, { codice: true, tipo }).concat(
       years.map((a) => ({
         key: "y" + a,
-        label: "Esercizio " + a,
+        label: "Esercizio " + a + " (" + GB.dataChiusuraIt(a) + ")",
         type: "num",
         value: val(S.ds.val, v.id, a) ?? null,
       })),
@@ -130,7 +130,7 @@
   GB.editMeseVendite = async (m, years) => {
     const fields = years.map((a) => ({
       key: "y" + a,
-      label: "Esercizio " + a,
+      label: "Esercizio " + a + " (" + GB.dataChiusuraIt(a) + ")",
       type: "num",
       value: val(S.ds.vend, a, m) || null,
     }));
@@ -179,7 +179,7 @@
       intro,
       fields: years.map((a) => ({
         key: "y" + a,
-        label: "Esercizio " + a,
+        label: "Esercizio " + a + " (" + GB.dataChiusuraIt(a) + ")",
         type: "num",
         dec,
         value: cur(a),

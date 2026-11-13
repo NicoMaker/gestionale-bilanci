@@ -23,7 +23,7 @@
       container.append(
         GB.printHead(
           "Conto Economico riclassificato",
-          "Esercizi " + years.join(" · "),
+          GB.eserciziTxt(years),
         ),
         GB.parts.ce.notaTipi(),
         ro

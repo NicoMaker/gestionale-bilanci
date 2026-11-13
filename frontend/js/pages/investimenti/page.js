@@ -20,7 +20,9 @@
       container.append(
         GB.printHead(
           `Investimenti — budget ${Y + 1}`,
-          "Incremento di fatturato minimo per coprire i nuovi investimenti",
+          "Base: esercizio " +
+            GB.esercizioTxt(Y) +
+            " — incremento di fatturato minimo per coprire i nuovi investimenti",
         ),
         h(
           "div",

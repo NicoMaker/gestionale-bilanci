@@ -77,6 +77,7 @@
               onclick: pick(g.e),
             },
             cfg.head(g.e),
+            GB.dataTag(g.e.anno, false),
           ),
         ),
       );

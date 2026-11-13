@@ -30,8 +30,9 @@
           years.map((a) =>
             h(
               "th",
-              null,
+              { class: "yr" },
               "ES. " + a,
+              GB.dataTag(a, !ro),
               h(
                 "button",
                 {

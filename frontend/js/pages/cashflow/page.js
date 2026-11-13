@@ -37,7 +37,7 @@
       container.append(
         GB.printHead(
           `Cash Flow ${Y + 1}`,
-          `Piano di tesoreria collegato all'esercizio ${Y}`,
+          `Piano di tesoreria collegato all'esercizio ${GB.esercizioTxt(Y)}`,
         ),
         h(
           "div",

@@ -32,7 +32,7 @@
         h(
           "div",
           { style: { marginTop: "10px" } },
-          `Esercizi ${[...S.R.tutti].reverse().join(" · ")} — Budget ${S.anno + 1}`,
+          GB.eserciziTxt([...S.R.tutti].reverse()) + ` — Budget ${S.anno + 1}`,
         ),
         h(
           "div",

@@ -63,7 +63,18 @@
             "tr",
             { class: "line" },
             h("td", { class: "l client-name" }, c.ragione_sociale),
-            h("td", { class: "n" }, c.anno == null ? "—" : String(c.anno)),
+            h(
+              "td",
+              { class: "n" },
+              c.anno == null ? "—" : String(c.anno),
+              c.anno == null
+                ? null
+                : h(
+                    "span",
+                    { class: "dt", title: "Data di chiusura dell'esercizio" },
+                    GB.dataIt(c.data_chiusura || c.anno + "-12-31"),
+                  ),
+            ),
             h("td", { class: "n" }, c.vuoto ? "—" : fmt.eur(c.ricavi)),
             h("td", { class: "n" }, c.vuoto ? "—" : fmt.eur(c.ebitda)),
             h(

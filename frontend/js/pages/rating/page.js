@@ -19,7 +19,7 @@
       container.append(
         GB.printHead(
           "Rating — indicatori creditizi",
-          "Esercizi " + years.join(" · "),
+          GB.eserciziTxt(years),
         ),
         P.legenda(),
         h("div", { class: "tbl-wrap free" }, table),

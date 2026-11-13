@@ -25,7 +25,7 @@
       container.append(
         GB.printHead(
           `Punto di pareggio — budget ${Y + 1}`,
-          `Base: esercizio ${Y}`,
+          `Base: esercizio ${GB.esercizioTxt(Y)}`,
         ),
         h(
           "div",

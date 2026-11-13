@@ -54,15 +54,9 @@
                 {
                   value: a,
                   selected: a === S.anno || null,
-                  title:
-                    "Chiusura " +
-                    ((((S.ds && S.ds.par && S.ds.par[a]) || {}).data_chiusura ||
-                      a + "-12-31")
-                      .split("-")
-                      .reverse()
-                      .join("/")),
+                  title: "Chiusura " + GB.dataChiusuraIt(a),
                 },
-                String(a),
+                `${a} — ${GB.dataChiusuraIt(a)}`,
               ),
             ),
         );
@@ -80,15 +74,9 @@
               "button",
               {
                 class: "btn sm icon",
-                title: "Aggiungi l'anno successivo",
-                onclick: async () => {
-                  try {
-                    const a = await S.addAnno();
-                    GB.toast("Anno " + a + " aggiunto");
-                  } catch (e) {
-                    /* toast già mostrato */
-                  }
-                },
+                title:
+                  "Aggiungi l'anno successivo (data di chiusura a scelta, altrimenti 31/12)",
+                onclick: () => GB.aggiungiAnno(),
               },
               "＋",
             ),

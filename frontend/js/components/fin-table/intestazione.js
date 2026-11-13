@@ -22,7 +22,8 @@
         h(
           "th",
           { class: "yr" },
-          String(a),
+          h("span", { class: "yr-n" }, String(a)),
+          GB.dataTag(a, !ro && S.anni.includes(a)),
           canDel
             ? h(
                 "button",

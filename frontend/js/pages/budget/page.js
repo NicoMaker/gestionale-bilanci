@@ -30,7 +30,7 @@
       const conf = PT.confronto();
 
       container.append(
-        GB.printHead(`Budget ${Y + 1}`, `Base consolidata: esercizio ${Y}`),
+        GB.printHead(`Budget ${Y + 1}`, `Base consolidata: esercizio ${GB.esercizioTxt(Y)}`),
         legend,
         h("div", { class: "tbl-wrap free" + (ro ? " ro" : "") }, table),
         conf.multi.el,

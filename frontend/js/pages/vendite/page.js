@@ -17,7 +17,7 @@
       const conf = P.confronto();
 
       container.append(
-        GB.printHead("Vendite — stagionalità", "Esercizi " + years.join(" · ")),
+        GB.printHead("Vendite — stagionalità", GB.eserciziTxt(years)),
         h(
           "div",
           { class: "note no-print" },
