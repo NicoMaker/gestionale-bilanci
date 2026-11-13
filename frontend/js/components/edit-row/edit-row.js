@@ -1,7 +1,7 @@
 /* Matita ✏️ di modifica e finestra «Modifica riga»: la stessa esperienza dell'elenco clienti, per ogni tabella con dati modificabili.
    GB.penBtn({ title, onclick })               → pulsante matita da mettere nell'ultima cella della riga
    GB.editRow({ title, intro, fields })        → Promise<{ [key]: valore } | null>
-     field: { key, label, type: "text" | "select" | "num", value, options: [{ v, label }], dec, placeholder, hint }
+     field: { key, label, type: "text" | "select" | "num" | "date", value, options: [{ v, label }], dec, placeholder, hint }
      i campi "num" (importi per anno, 12 mesi…) sono disposti a griglia; i valori numerici vuoti tornano come null. */
 (function () {
   const GB = window.GB;
@@ -49,6 +49,14 @@
           paintInput(el);
         });
         paintInput(el);
+      } else if (f.type === "date") {
+        el = h("input", {
+          type: "date",
+          class: "inp-data",
+          value: f.value ?? "",
+          min: f.min || null,
+          max: f.max || null,
+        });
       } else {
         el = h("input", {
           type: "text",
@@ -66,8 +74,9 @@
         f.hint ? h("div", { class: "hint" }, f.hint) : null,
       );
     };
-    const testo = fields.filter((f) => f.type !== "num").map(box);
-    const numeri = fields.filter((f) => f.type === "num").map(box);
+    const inGriglia = (f) => f.type === "num" || f.type === "date";
+    const testo = fields.filter((f) => !inGriglia(f)).map(box);
+    const numeri = fields.filter(inGriglia).map(box);
     const body = h(
       "div",
       null,

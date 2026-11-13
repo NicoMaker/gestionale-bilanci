@@ -195,6 +195,48 @@
     }
   };
 
+  /* Penna a fine riga d'intestazione: un solo form con la data di chiusura di tutti gli esercizi mostrati. */
+  GB.penDateChiusura = (years) =>
+    GB.penBtn({
+      title: "Modifica le date di chiusura di tutti gli esercizi",
+      onclick: () => GB.modificaDateChiusura(years),
+    });
+
+  GB.modificaDateChiusura = async (years) => {
+    const anni = years.filter((a) => S.anni.includes(a));
+    if (!anni.length) return;
+    const r = await GB.editRow({
+      title: "Modifica riga — Date di chiusura",
+      intro:
+        "Per ogni esercizio scrivi la data o sceglila dal calendario. Se resta vuota viene usato il 31/12.",
+      fields: anni.map((a) => ({
+        key: "y" + a,
+        label: "Esercizio " + a,
+        type: "date",
+        min: a + "-01-01",
+        max: a + "-12-31",
+        value: GB.dataChiusura(a),
+      })),
+    });
+    if (!r) return;
+    const mappa = {};
+    for (const a of anni) {
+      const v = (r["y" + a] || "").trim();
+      if (v && v.slice(0, 4) !== String(a)) {
+        GB.toast(`La data dell'esercizio ${a} deve essere nel ${a}`, "err");
+        return;
+      }
+      if ((v || a + "-12-31") !== GB.dataChiusura(a)) mappa[a] = v;
+    }
+    if (!Object.keys(mappa).length) return;
+    try {
+      await S.saveDateChiusura(mappa);
+      GB.toast("Date di chiusura salvate");
+    } catch (e) {
+      /* toast già mostrato */
+    }
+  };
+
   GB.aggiungiAnno = async () => {
     const anno =
       (S.anni.length ? Math.max(...S.anni) : new Date().getFullYear() - 1) + 1;

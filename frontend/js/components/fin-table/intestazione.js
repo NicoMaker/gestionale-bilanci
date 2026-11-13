@@ -39,7 +39,13 @@
         h("th", null, "%"),
       );
     });
-    hr.append(h("th", { class: "no-ro" }, ""));
+    hr.append(
+      h(
+        "th",
+        { class: "no-ro pen-cell" },
+        ro ? null : GB.penDateChiusura(years),
+      ),
+    );
     return hr;
   };
 })();

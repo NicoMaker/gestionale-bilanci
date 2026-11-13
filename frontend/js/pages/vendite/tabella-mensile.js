@@ -47,7 +47,11 @@
           h("th", null, "FT. MEDIO"),
           h("th", null, "STAGIO. %"),
           h("th", null, "PROGRESS. %"),
-          h("th", { class: "no-ro" }),
+          h(
+            "th",
+            { class: "no-ro pen-cell" },
+            ro ? null : GB.penDateChiusura(years),
+          ),
         ),
       ),
     );
