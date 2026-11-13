@@ -79,8 +79,12 @@
     );
   };
 
-  /* Finestra con il campo data. Restituisce {data} ("" = 31/12) oppure null se annullata. */
+  /* Finestra con il campo data: anno in grande (bloccato), data scrivibile o dal calendario, scorciatoie e anteprima.
+     Restituisce {data} ("" = 31/12) oppure null se annullata. */
   GB.chiediData = async ({ title, anno, valore, conferma }) => {
+    const penSvg = penna();
+    penSvg.setAttribute("width", "15");
+    penSvg.setAttribute("height", "15");
     const inp = h("input", {
       type: "date",
       value: valore || "",
@@ -89,30 +93,76 @@
       class: "inp-data",
       "aria-label": "Data di chiusura dell'esercizio " + anno,
     });
+    const anteprima = h("div", { class: "dc-preview" });
+    const scorciatoie = [
+      ["31/12", "-12-31"],
+      ["30/09", "-09-30"],
+      ["30/06", "-06-30"],
+      ["31/03", "-03-31"],
+    ];
+    const chips = scorciatoie.map(([lab, suf]) =>
+      h(
+        "button",
+        {
+          class: "dc-chip",
+          type: "button",
+          onclick: () => {
+            inp.value = anno + suf;
+            aggiorna();
+          },
+        },
+        lab,
+      ),
+    );
+    const aggiorna = () => {
+      const v = inp.value;
+      const iso = v || anno + "-12-31";
+      chips.forEach((c, i) =>
+        c.classList.toggle("on", iso === anno + scorciatoie[i][1]),
+      );
+      const d = new Date(iso + "T00:00:00");
+      anteprima.textContent = isNaN(d)
+        ? ""
+        : "L'esercizio chiude " +
+          d.toLocaleDateString("it-IT", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }) +
+          (v ? "" : " (predefinito)");
+    };
+    inp.addEventListener("input", aggiorna);
+    inp.addEventListener("change", aggiorna);
+    inp.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const ok = inp
+          .closest(".modal")
+          ?.querySelector(".modal-f .btn.primary");
+        if (ok) ok.click();
+      }
+    });
+    aggiorna();
     const ok = await GB.modal({
       title,
       body: h(
         "div",
-        null,
-        h("p", null, "Data di chiusura dell'esercizio " + anno + ":"),
+        { class: "dc" },
         h(
           "div",
-          { class: "data-chiusura-row" },
-          inp,
-          h(
-            "button",
-            {
-              class: "btn sm",
-              type: "button",
-              onclick: () => (inp.value = anno + "-12-31"),
-            },
-            "31/12",
-          ),
+          { class: "dc-hero" },
+          h("span", { class: "dc-kicker" }, "Esercizio"),
+          h("span", { class: "dc-year" }, String(anno)),
         ),
+        h("label", { class: "dc-label" }, "Data di chiusura ", penSvg),
+        h("div", { class: "dc-field" }, inp),
+        h("div", { class: "dc-chips" }, chips),
+        anteprima,
         h(
           "p",
-          { class: "small muted" },
-          `Se lasci il campo vuoto viene usato il 31/12/${anno}.`,
+          { class: "small muted dc-hint" },
+          `Scrivila o scegli dal calendario (solo giorni del ${anno}). Se resta vuota viene usato il 31/12/${anno}.`,
         ),
       ),
       buttons: [
