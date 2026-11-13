@@ -18,7 +18,10 @@
       const charts = PT.grafici(rows);
 
       container.append(
-        GB.printHead("Riepilogo cliente", "Esercizio di riferimento " + GB.esercizioTxt(Y)),
+        GB.printHead(
+          "Riepilogo cliente",
+          "Esercizio di riferimento " + GB.esercizioTxt(Y),
+        ),
         PT.schedaCliente(S),
         ...alerts,
         kpis,

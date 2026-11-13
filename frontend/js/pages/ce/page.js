@@ -21,10 +21,7 @@
         ro,
       );
       container.append(
-        GB.printHead(
-          "Conto Economico riclassificato",
-          GB.eserciziTxt(years),
-        ),
+        GB.printHead("Conto Economico riclassificato", GB.eserciziTxt(years)),
         GB.parts.ce.notaTipi(),
         ro
           ? ""

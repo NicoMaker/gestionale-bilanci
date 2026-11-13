@@ -5,7 +5,8 @@
   const { h } = GB;
   const S = GB.store;
 
-  const dataIt = (iso) => (iso ? String(iso).split("-").reverse().join("/") : "");
+  const dataIt = (iso) =>
+    iso ? String(iso).split("-").reverse().join("/") : "";
 
   // data di chiusura (AAAA-MM-GG) dell'esercizio del cliente selezionato; default 31/12
   GB.dataChiusura = (anno) =>
@@ -46,7 +47,10 @@
     if (!editable)
       return h(
         "span",
-        { class: "dt", title: "Data di chiusura dell'esercizio " + GB.dataChiusuraIt(anno) },
+        {
+          class: "dt",
+          title: "Data di chiusura dell'esercizio " + GB.dataChiusuraIt(anno),
+        },
         gm,
       );
     return h(
@@ -55,7 +59,10 @@
         class: "dt dt-edit",
         role: "button",
         tabindex: "0",
-        title: "Data di chiusura dell'esercizio " + GB.dataChiusuraIt(anno) + ": clic per modificarla",
+        title:
+          "Data di chiusura dell'esercizio " +
+          GB.dataChiusuraIt(anno) +
+          ": clic per modificarla",
         onclick: (e) => {
           e.stopPropagation();
           GB.modificaDataChiusura(anno);
@@ -139,7 +146,8 @@
   };
 
   GB.aggiungiAnno = async () => {
-    const anno = (S.anni.length ? Math.max(...S.anni) : new Date().getFullYear() - 1) + 1;
+    const anno =
+      (S.anni.length ? Math.max(...S.anni) : new Date().getFullYear() - 1) + 1;
     const r = await GB.chiediData({
       title: "Aggiungi esercizio " + anno,
       anno,

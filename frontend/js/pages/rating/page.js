@@ -17,10 +17,7 @@
       P.sezioni({ years, tb, span }, P.righe({ years, live, R, tb }));
       P.punteggio({ years, live, R, tb });
       container.append(
-        GB.printHead(
-          "Rating — indicatori creditizi",
-          GB.eserciziTxt(years),
-        ),
+        GB.printHead("Rating — indicatori creditizi", GB.eserciziTxt(years)),
         P.legenda(),
         h("div", { class: "tbl-wrap free" }, table),
       );

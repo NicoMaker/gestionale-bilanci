@@ -46,19 +46,17 @@
         const selY = h(
           "select",
           { onchange: (e) => S.setYear(e.target.value) },
-          [...S.anni]
-            .reverse()
-            .map((a) =>
-              h(
-                "option",
-                {
-                  value: a,
-                  selected: a === S.anno || null,
-                  title: "Chiusura " + GB.dataChiusuraIt(a),
-                },
-                `${a} — ${GB.dataChiusuraIt(a)}`,
-              ),
+          [...S.anni].reverse().map((a) =>
+            h(
+              "option",
+              {
+                value: a,
+                selected: a === S.anno || null,
+                title: "Chiusura " + GB.dataChiusuraIt(a),
+              },
+              `${a} — ${GB.dataChiusuraIt(a)}`,
             ),
+          ),
         );
         parts.push(
           h(

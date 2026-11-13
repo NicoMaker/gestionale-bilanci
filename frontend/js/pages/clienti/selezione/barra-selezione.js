@@ -13,8 +13,12 @@
     // anno proposto in automatico: l'anno successivo all'ultimo esercizio dei clienti selezionati (o di tutti se nessuno)
     const prossimoAnno = () => {
       const base = S.clienti.filter((c) => ids.has(c.id));
-      const anniTutti = (base.length ? base : S.clienti).flatMap((c) => c.anni || []);
-      return anniTutti.length ? Math.max(...anniTutti) + 1 : new Date().getFullYear();
+      const anniTutti = (base.length ? base : S.clienti).flatMap(
+        (c) => c.anni || [],
+      );
+      return anniTutti.length
+        ? Math.max(...anniTutti) + 1
+        : new Date().getFullYear();
     };
     const conteggio = h("span", { class: "sel-count" });
     const anno = h("input", {
@@ -36,7 +40,8 @@
       value: GB.clientiSelData || "",
       class: "sel-anno sel-data",
       "aria-label": "Data di chiusura dell'esercizio (gg/mm, vuota = 31/12)",
-      title: "Scrivi giorno e mese (es. 30/06): l'anno è quello indicato accanto. Vuota = 31/12",
+      title:
+        "Scrivi giorno e mese (es. 30/06): l'anno è quello indicato accanto. Vuota = 31/12",
     });
     const cal = h("input", {
       type: "date",
@@ -80,10 +85,18 @@
       else {
         const g = Number(m[1]);
         const mese = Number(m[2]);
-        const aa = m[3] ? (m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3])) : a;
+        const aa = m[3]
+          ? m[3].length === 2
+            ? 2000 + Number(m[3])
+            : Number(m[3])
+          : a;
         const d = new Date(Date.UTC(aa, mese - 1, g));
         if (aa !== a) errore = "La data deve essere nel " + a;
-        else if (d.getUTCFullYear() !== aa || d.getUTCMonth() !== mese - 1 || d.getUTCDate() !== g)
+        else if (
+          d.getUTCFullYear() !== aa ||
+          d.getUTCMonth() !== mese - 1 ||
+          d.getUTCDate() !== g
+        )
           errore = "Data inesistente";
         else
           return `${aa}-${String(mese).padStart(2, "0")}-${String(g).padStart(2, "0")}`;
