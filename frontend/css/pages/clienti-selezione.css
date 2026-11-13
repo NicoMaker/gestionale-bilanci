@@ -91,3 +91,39 @@ tr.line.selected td {
   border-color: var(--accent);
   box-shadow: var(--shadow-glow);
 }
+
+/* data di chiusura: gg/mm scritto a mano (anno = campo «Anno») + penna per il calendario */
+.sel-data-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.sel-data-wrap .sel-data {
+  width: 110px;
+  padding-right: 28px;
+}
+.sel-pen {
+  position: absolute;
+  right: 4px;
+  border: 0;
+  background: none;
+  padding: 2px 4px;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--t3);
+  cursor: pointer;
+}
+.sel-pen:hover {
+  color: var(--accent);
+}
+.sel-cal {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  border: 0;
+  padding: 0;
+}

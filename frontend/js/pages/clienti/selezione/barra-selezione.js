@@ -20,33 +20,88 @@
       "aria-label": "Anno dell'esercizio da creare",
       title: "Anno dell'esercizio da creare per i clienti selezionati",
     });
-    // data di chiusura dell'esercizio: se resta vuota viene usato il 31/12 dell'anno
+    // data di chiusura dell'esercizio: si scrive solo giorno e mese (gg/mm, l'anno è quello del campo «Anno»)
+    // oppure si sceglie dal calendario; se resta vuota viene usato il 31/12 dell'anno
     const data = h("input", {
-      type: "date",
+      type: "text",
+      inputmode: "numeric",
+      maxlength: 10,
+      placeholder: "31/12",
       value: GB.clientiSelData || "",
       class: "sel-anno sel-data",
-      "aria-label": "Data di chiusura dell'esercizio (vuota = 31/12)",
-      title: "Data di chiusura dell'esercizio. Se la lasci vuota viene usato il 31/12 dell'anno",
+      "aria-label": "Data di chiusura dell'esercizio (gg/mm, vuota = 31/12)",
+      title: "Scrivi giorno e mese (es. 30/06): l'anno è quello indicato accanto. Vuota = 31/12",
     });
-    // la data resta nell'anno scelto (se l'anno cambia e la data no, si riporta al 31/12 solo se serve)
-    const limitiData = () => {
+    const cal = h("input", {
+      type: "date",
+      class: "sel-cal",
+      tabindex: "-1",
+      "aria-hidden": "true",
+    });
+    const pen = h(
+      "button",
+      {
+        type: "button",
+        class: "sel-pen",
+        title: "Scegli la data dal calendario",
+        "aria-label": "Scegli la data dal calendario",
+        onclick: () => {
+          limitiData();
+          const iso = leggiData(false);
+          cal.value = iso || "";
+          try {
+            cal.showPicker();
+          } catch (_) {
+            data.focus();
+          }
+        },
+      },
+      "✎",
+    );
+    const annoValido = () => {
       const a = Number(anno.value);
-      if (Number.isInteger(a) && a >= 1990 && a <= 2100) {
-        data.min = a + "-01-01";
-        data.max = a + "-12-31";
-        if (data.value && data.value.slice(0, 4) !== String(a)) {
-          data.value = "";
-          GB.clientiSelData = "";
-        }
-      } else {
-        data.min = data.max = "";
+      return Number.isInteger(a) && a >= 1990 && a <= 2100 ? a : null;
+    };
+    /* Legge il campo: "gg/mm" (o "gg/mm/aaaa" dell'anno scelto) → AAAA-MM-GG; vuoto → ""; non valido → null (con avviso se avvisa). */
+    const leggiData = (avvisa) => {
+      const t = data.value.trim();
+      if (!t) return "";
+      const a = annoValido();
+      const m = t.match(/^(\d{1,2})[\/\-.](\d{1,2})(?:[\/\-.](\d{2,4}))?$/);
+      let errore = "";
+      if (!a) errore = "Indica prima un anno valido (1990–2100)";
+      else if (!m) errore = "Data non valida: scrivi giorno e mese, es. 30/06";
+      else {
+        const g = Number(m[1]);
+        const mese = Number(m[2]);
+        const aa = m[3] ? (m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3])) : a;
+        const d = new Date(Date.UTC(aa, mese - 1, g));
+        if (aa !== a) errore = "La data deve essere nel " + a;
+        else if (d.getUTCFullYear() !== aa || d.getUTCMonth() !== mese - 1 || d.getUTCDate() !== g)
+          errore = "Data inesistente";
+        else
+          return `${aa}-${String(mese).padStart(2, "0")}-${String(g).padStart(2, "0")}`;
       }
+      if (avvisa) GB.toast(errore, "err");
+      return null;
+    };
+    // il calendario si limita ai giorni dell'anno scelto
+    const limitiData = () => {
+      const a = annoValido();
+      cal.min = a ? a + "-01-01" : "";
+      cal.max = a ? a + "-12-31" : "";
     };
     anno.addEventListener("input", () => {
       GB.clientiSelAnno = anno.value;
       limitiData();
     });
     data.addEventListener("input", () => (GB.clientiSelData = data.value));
+    cal.addEventListener("change", () => {
+      if (!cal.value) return;
+      const [, mm, gg] = cal.value.split("-");
+      data.value = `${gg}/${mm}`;
+      GB.clientiSelData = data.value;
+    });
     limitiData();
 
     const bar = h(
@@ -59,15 +114,18 @@
         h("label", null, "Anno"),
         anno,
         h("label", null, "Data"),
-        data,
+        h("span", { class: "sel-data-wrap" }, data, pen, cal),
         h(
           "button",
           {
             class: "btn sm primary",
             title:
               "Crea l'esercizio di questo anno per tutti i selezionati (data vuota = 31/12)",
-            onclick: () =>
-              A.creaAnnoMultiplo([...ids], Number(anno.value), data.value),
+            onclick: () => {
+              const iso = leggiData(true);
+              if (iso === null) return;
+              A.creaAnnoMultiplo([...ids], Number(anno.value), iso);
+            },
           },
           "＋ Crea esercizio",
         ),
