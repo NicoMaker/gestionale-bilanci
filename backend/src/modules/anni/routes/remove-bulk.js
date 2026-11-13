@@ -54,9 +54,7 @@ router.post(
         senza_dati: senzaDati,
       });
 
-    db.tx(() =>
-      dettaglio.forEach((d) => eliminaEsercizio(c, d.anno, d.dati)),
-    );
+    db.tx(() => dettaglio.forEach((d) => eliminaEsercizio(c, d.anno, d.dati)));
     res.json({ ok: true, eliminati: anni.length, anni });
   }),
 );

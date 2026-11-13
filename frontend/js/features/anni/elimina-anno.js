@@ -75,10 +75,13 @@
     }
     let prev;
     try {
-      prev = await GB.api.post(`/clienti/${S.clienteId}/anni/elimina-multiplo`, {
-        anni,
-        anteprima: true,
-      });
+      prev = await GB.api.post(
+        `/clienti/${S.clienteId}/anni/elimina-multiplo`,
+        {
+          anni,
+          anteprima: true,
+        },
+      );
     } catch (e) {
       GB.toast(e.message, "err");
       return false;
@@ -130,7 +133,9 @@
       buttons: [
         { label: "Annulla", value: false },
         {
-          label: conDati ? "Sposta nel cestino" : `Elimina ${anni.length} esercizi`,
+          label: conDati
+            ? "Sposta nel cestino"
+            : `Elimina ${anni.length} esercizi`,
           kind: "danger",
           value: true,
         },

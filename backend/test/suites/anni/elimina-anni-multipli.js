@@ -72,10 +72,7 @@ module.exports = async function () {
     const prima = await anniDi(c.id);
     assert.equal((await api("POST", url(c.id), { anni: [] })).status, 400);
     assert.equal((await api("POST", url(c.id), {})).status, 400);
-    assert.equal(
-      (await api("POST", url(c.id), { anni: ["abc"] })).status,
-      400,
-    );
+    assert.equal((await api("POST", url(c.id), { anni: ["abc"] })).status, 400);
     // un anno inesistente: non viene eliminato nulla
     const inex = await api("POST", url(c.id), { anni: [prima[0], 1999] });
     assert.equal(inex.status, 404);
