@@ -119,6 +119,23 @@
                   " ",
                   h(
                     "button",
+                    {
+                      class: "btn sm",
+                      title:
+                        "Aggiungi più anni a questo cliente (gli anni che ha già non vengono toccati)",
+                      onclick: () =>
+                        GB.parts.studio.creaAnniTutti({ clienti: [c] }),
+                    },
+                    h(
+                      "span",
+                      { class: "btn-ico", "aria-hidden": "true" },
+                      "📅",
+                    ),
+                    "Anni",
+                  ),
+                  " ",
+                  h(
+                    "button",
                     { class: "btn sm danger", onclick: () => elimina(c) },
                     h(
                       "span",

@@ -19,7 +19,8 @@
   const dataIt = (iso) => iso.split("-").reverse().join("/");
 
   // annoA (facoltativo): ultimo anno di un intervallo; con annoA > anno si creano tutti gli esercizi da anno a annoA
-  GB.parts.clienti.azioni.creaAnnoMultiplo = async (ids, anno, data, annoA) => {
+  // apriDate: apre subito la tabella «Date diverse…» (pulsante dedicato nella barra), poi la finestra di conferma
+  GB.parts.clienti.azioni.creaAnnoMultiplo = async (ids, anno, data, annoA, apriDate) => {
     if (!ids.length) return;
     if (!Number.isInteger(anno) || anno < 1990 || anno > 2100) {
       GB.toast("Anno non valido (1990–2100)", "err");
@@ -54,7 +55,9 @@
     let ok;
     for (;;) {
       const nPers = Object.values(dateCl).reduce((n, m) => n + Object.keys(m).length, 0);
-      ok = await GB.modal({
+      ok = apriDate
+        ? ((apriDate = false), "date")
+        : await GB.modal({
         title: intervallo ? `Crea esercizi ${anno}–${annoA}` : "Crea esercizio " + anno,
         body: h(
           "div",

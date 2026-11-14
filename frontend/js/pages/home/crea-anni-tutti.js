@@ -16,8 +16,16 @@
       GB.toast("Non ci sono clienti", "err");
       return;
     }
-    const nClienti = `${ids.length} client${ids.length === 1 ? "e" : "i"}`;
-    const ultimo = Math.max(0, ...(st.anni_disponibili || []));
+    // un solo cliente (pulsante «＋ Anni» sulla riga): si vedono anche gli anni che ha già, che non vengono toccati
+    const unico = ids.length === 1 ? st.clienti[0] : null;
+    const presenti = new Set(unico ? unico.anni || [] : []);
+    const nClienti = unico
+      ? "«" + unico.ragione_sociale + "»"
+      : `${ids.length} client${ids.length === 1 ? "e" : "i"}`;
+    const anniDi = (x, y) => Array.from({ length: y - x + 1 }, (_, i) => x + i);
+    const ultimo = unico
+      ? Math.max(0, ...presenti)
+      : Math.max(0, ...(st.anni_disponibili || []));
     const prossimo = (ultimo || new Date().getFullYear() - 1) + 1;
     const da = h("input", { type: "number", min: 1990, max: 2100, value: prossimo });
     const a = h("input", { type: "number", min: 1990, max: 2100, value: prossimo });
@@ -49,6 +57,19 @@
     const aggiorna = () => {
       if (campo) reset.disabled = campo.vuoto();
       const { x, y } = valori();
+      if (unico && !errore()) {
+        const tutti = anniDi(x, y);
+        const nuovi = tutti.filter((n) => !presenti.has(n));
+        const gia = tutti.filter((n) => presenti.has(n));
+        let t = nuovi.length
+          ? `Verranno creati ${nuovi.length} esercizi: ${nuovi.join(", ")}.`
+          : "Tutti questi anni esistono già: non verrà creato nulla.";
+        if (gia.length && nuovi.length)
+          t += ` Già presenti (non modificati): ${gia.join(", ")}.`;
+        if (nPers()) t += ` Date diverse impostate: ${nPers()}.`;
+        anteprima.textContent = t;
+        return;
+      }
       anteprima.textContent =
         errore() ||
         (y === x
@@ -77,7 +98,9 @@
       h(
         "p",
         { class: "edit-intro" },
-        "Crea gli esercizi dall'anno iniziale a quello finale (compresi) per tutti i clienti. Se un cliente ha già un anno, lo tiene com'è e non viene ricreato.",
+        unico
+          ? `Crea gli esercizi dall'anno iniziale a quello finale (compresi) per ${nClienti}. Gli anni che ha già restano com'erano e non vengono ricreati.`
+          : "Crea gli esercizi dall'anno iniziale a quello finale (compresi) per tutti i clienti. Se un cliente ha già un anno, lo tiene com'è e non viene ricreato.",
       ),
       h(
         "div",
@@ -101,7 +124,9 @@
 
     for (;;) {
       const ok = await GB.modal({
-        title: "Crea anni per tutti i clienti",
+        title: unico
+          ? "Aggiungi più anni · " + unico.ragione_sociale
+          : "Crea anni per tutti i clienti",
         body,
         buttons: [
           { label: "Annulla", value: false },
@@ -117,7 +142,11 @@
       }
       if (ok === "date") {
         const { x, y } = valori();
-        const anniElenco = Array.from({ length: y - x + 1 }, (_, i) => x + i);
+        const anniElenco = anniDi(x, y).filter((n) => !presenti.has(n)); // gli anni già presenti non si toccano
+        if (!anniElenco.length) {
+          GB.toast("Indica prima un intervallo di anni ancora da creare", "err");
+          continue;
+        }
         if (ids.length * anniElenco.length > 150) {
           GB.toast(
             "Troppe combinazioni per la tabella (massimo 150 cliente/anno): riduci gli anni",
@@ -157,7 +186,9 @@
           r.creati
             ? `${r.creati} esercizi creati per ${nClienti}` +
                 (r.saltati ? ` · ${r.saltati} già presenti, lasciati com'erano` : "")
-            : "Nessun esercizio creato: tutti i clienti li avevano già",
+            : unico
+              ? "Nessun esercizio creato: gli anni indicati esistono già"
+              : "Nessun esercizio creato: tutti i clienti li avevano già",
         );
         if (dopo) dopo();
       } catch (e) {

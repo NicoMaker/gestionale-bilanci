@@ -170,13 +170,7 @@
   padding: 8px 0 !important;
 }
 
-/* barra «Crea esercizio» dei clienti: campo data + reset sulla seconda riga */
-.sel-field > .dcamp-riga {
-  grid-area: 2 / 2 / 3 / 3;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
+/* barra «Crea esercizio» dei clienti: la posizione del campo data è in css/pages/clienti-selezione.css */
 
 /* anno già visibile altrove (finestre di modifica): nel campo restano solo giorno e mese */
 .dcamp.senza-anno .dcamp-anno {

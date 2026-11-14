@@ -26,7 +26,7 @@
       min: 1990,
       max: 2100,
       value: GB.clientiSelAnno || prossimoAnno(),
-      class: "sel-anno",
+      class: "sel-anno sel-anno-da",
       "aria-label": "Anno dell'esercizio da creare",
       title: "Anno dell'esercizio da creare per i clienti selezionati",
     });
@@ -37,7 +37,7 @@
       max: 2100,
       value: GB.clientiSelAnnoA || "",
       placeholder: "—",
-      class: "sel-anno",
+      class: "sel-anno sel-anno-a",
       "aria-label": "Ultimo anno da creare (facoltativo)",
       title:
         "Facoltativo: se lo indichi si creano tutti gli esercizi dall'anno iniziale a questo (estremi inclusi)",
@@ -82,11 +82,11 @@
       h(
         "span",
         { class: "sel-field" },
-        h("label", null, "Anno"),
+        h("label", { class: "l-anno" }, "Anno"),
         anno,
-        h("label", null, "fino al"),
+        h("label", { class: "l-fino" }, "fino al"),
         annoA,
-        h("label", null, "Data"),
+        h("label", { class: "l-data" }, "Data"),
         h("span", { class: "dcamp-riga" }, campo.el, reset),
         h(
           "button",
@@ -107,6 +107,26 @@
           },
           "＋ Crea esercizio",
         ),
+      ),
+      h(
+        "button",
+        {
+          class: "btn sm",
+          title:
+            "Crea gli esercizi (un anno o da «Anno» a «fino al») scegliendo una data di chiusura diversa per ogni cliente e per ogni anno",
+          onclick: () => {
+            const iso = campo.get(true);
+            if (iso === null) return;
+            A.creaAnnoMultiplo(
+              [...ids],
+              Number(anno.value),
+              iso,
+              annoA.value === "" ? null : Number(annoA.value),
+              true, // apre subito la tabella delle date diverse
+            );
+          },
+        },
+        "📅 Date diverse…",
       ),
       h(
         "button",
