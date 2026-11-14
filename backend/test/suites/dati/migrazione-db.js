@@ -49,13 +49,24 @@ module.exports = async function () {
 
       const r = lettura(run());
       // dati originali conservati
-      assert.equal(r.parametri.find((p) => p.cliente_id === 1 && p.anno === 2020).peso_vendite, 2);
-      assert.equal(r.valori.length, 1, "riga orfana (voce inesistente) rimossa");
+      assert.equal(
+        r.parametri.find((p) => p.cliente_id === 1 && p.anno === 2020)
+          .peso_vendite,
+        2,
+      );
+      assert.equal(
+        r.valori.length,
+        1,
+        "riga orfana (voce inesistente) rimossa",
+      );
       assert.equal(r.valori[0].importo, 1234.5);
       // colonne mancanti aggiunte
-      for (const c of ["tipo", "ordine", "fissa", "codice"]) assert.ok(r.colVoci.includes(c), c);
+      for (const c of ["tipo", "ordine", "fissa", "codice"])
+        assert.ok(r.colVoci.includes(c), c);
       // date di chiusura create
-      assert.ok(r.parametri.every((p) => p.data_chiusura === `${p.anno}-12-31`));
+      assert.ok(
+        r.parametri.every((p) => p.data_chiusura === `${p.anno}-12-31`),
+      );
       // anno base riportato a un esercizio esistente; cliente senza esercizi riceve quello dell'anno base
       assert.equal(r.clienti.find((c) => c.id === 1).anno_base, 2020);
       assert.ok(r.parametri.some((p) => p.cliente_id === 2 && p.anno === 2019));
@@ -63,36 +74,54 @@ module.exports = async function () {
       // copia di sicurezza del file originale
       const copie = fs
         .readdirSync(os.tmpdir())
-        .filter((f) => f.startsWith(path.basename(file, ".db") + ".pre-migrazione-"));
+        .filter((f) =>
+          f.startsWith(path.basename(file, ".db") + ".pre-migrazione-"),
+        );
       assert.equal(copie.length, 1);
-      assert.ok(fs.readFileSync(path.join(os.tmpdir(), copie[0])).equals(prima));
+      assert.ok(
+        fs.readFileSync(path.join(os.tmpdir(), copie[0])).equals(prima),
+      );
       // seconda apertura: nessuna nuova migrazione né nuova copia
       const r2 = lettura(run());
       assert.deepEqual(r2.parametri, r.parametri);
       assert.equal(
-        fs.readdirSync(os.tmpdir()).filter((f) => f.startsWith(path.basename(file, ".db") + ".pre-migrazione-")).length,
+        fs
+          .readdirSync(os.tmpdir())
+          .filter((f) =>
+            f.startsWith(path.basename(file, ".db") + ".pre-migrazione-"),
+          ).length,
         1,
       );
-      for (const f of [file, ...copie.map((c) => path.join(os.tmpdir(), c))]) fs.rmSync(f, { force: true });
+      for (const f of [file, ...copie.map((c) => path.join(os.tmpdir(), c))])
+        fs.rmSync(f, { force: true });
     },
   );
 
-  await t("file che non è un database: errore chiaro e file intatto", async () => {
-    const file = path.join(os.tmpdir(), `gb-rotto-${Date.now()}.db`);
-    fs.writeFileSync(file, "questo non è sqlite, ma contiene dati importanti");
-    const prima = fs.readFileSync(file);
-    let msg = "";
-    try {
-      execFileSync(
-        process.execPath,
-        ["-e", `require(${JSON.stringify(path.join(__dirname, "../../../src/core/db"))}).init().catch((e)=>{console.error(e.message);process.exit(3)})`],
-        { env: { ...process.env, DB_PATH: file }, stdio: "pipe" },
+  await t(
+    "file che non è un database: errore chiaro e file intatto",
+    async () => {
+      const file = path.join(os.tmpdir(), `gb-rotto-${Date.now()}.db`);
+      fs.writeFileSync(
+        file,
+        "questo non è sqlite, ma contiene dati importanti",
       );
-    } catch (e) {
-      msg = String(e.stderr);
-    }
-    assert.match(msg, /non è un database SQLite leggibile/);
-    assert.ok(fs.readFileSync(file).equals(prima), "file non modificato");
-    fs.rmSync(file, { force: true });
-  });
+      const prima = fs.readFileSync(file);
+      let msg = "";
+      try {
+        execFileSync(
+          process.execPath,
+          [
+            "-e",
+            `require(${JSON.stringify(path.join(__dirname, "../../../src/core/db"))}).init().catch((e)=>{console.error(e.message);process.exit(3)})`,
+          ],
+          { env: { ...process.env, DB_PATH: file }, stdio: "pipe" },
+        );
+      } catch (e) {
+        msg = String(e.stderr);
+      }
+      assert.match(msg, /non è un database SQLite leggibile/);
+      assert.ok(fs.readFileSync(file).equals(prima), "file non modificato");
+      fs.rmSync(file, { force: true });
+    },
+  );
 };

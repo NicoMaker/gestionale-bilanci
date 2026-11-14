@@ -21,7 +21,10 @@ module.exports = async function () {
     assert.equal(r.status, 400);
     assert.match(r.body.error, /esercizi già creati/);
     assert.equal((await api("GET", `/clienti/${c.id}`)).body.anno_base, 2032);
-    assert.equal((await api("PUT", `/clienti/${c.id}`, { anno_base: "x" })).status, 400);
+    assert.equal(
+      (await api("PUT", `/clienti/${c.id}`, { anno_base: "x" })).status,
+      400,
+    );
     // senza anno_base nel body: resta com'è
     r = await api("PUT", `/clienti/${c.id}`, { note: "ciao" });
     assert.equal(r.body.anno_base, 2032);

@@ -73,16 +73,14 @@ const MIGRAZIONI = [
   /* 2 — riparazione dei dati esistenti: righe orfane, date incoerenti, anno base non presente tra gli esercizi */
   (db) => {
     // righe orfane (possibili nei file creati quando le chiavi esterne non erano attive)
-    db.exec(
-      "DELETE FROM valori WHERE voce_id NOT IN (SELECT id FROM voci)",
-    );
+    db.exec("DELETE FROM valori WHERE voce_id NOT IN (SELECT id FROM voci)");
     db.exec(
       "DELETE FROM budget_var WHERE voce_id NOT IN (SELECT id FROM voci)",
     );
+    db.exec("DELETE FROM cashflow WHERE voce_id NOT IN (SELECT id FROM voci)");
     db.exec(
-      "DELETE FROM cashflow WHERE voce_id NOT IN (SELECT id FROM voci)",
+      "DELETE FROM voci WHERE cliente_id NOT IN (SELECT id FROM clienti)",
     );
-    db.exec("DELETE FROM voci WHERE cliente_id NOT IN (SELECT id FROM clienti)");
     db.exec(
       "DELETE FROM vendite WHERE cliente_id NOT IN (SELECT id FROM clienti)",
     );
