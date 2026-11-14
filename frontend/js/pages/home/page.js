@@ -323,6 +323,16 @@
           { class: "card-h" },
           h("h3", null, "Tutti i clienti"),
           h(
+            "button",
+            {
+              class: "btn sm primary no-print",
+              title:
+                "Crea gli esercizi di uno o più anni per tutti i clienti (chi ha già un anno lo tiene com'è)",
+              onclick: () => GB.parts.studio.creaAnniTutti(st, ricarica),
+            },
+            "＋ Crea anni per tutti i clienti",
+          ),
+          h(
             "span",
             { class: "small muted no-print" },
             "clicca sulle intestazioni per ordinare · " +

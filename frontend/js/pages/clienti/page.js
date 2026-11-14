@@ -13,6 +13,16 @@
       const head = PT.barra({
         nuovo: PT.azioni.nuovo,
         demoClienti: PT.azioni.demoClienti,
+        // stesso pulsante della Panoramica: crea più anni per TUTTI i clienti (anche con date diverse)
+        creaAnni: S.clienti.length
+          ? () =>
+              GB.parts.studio.creaAnniTutti({
+                clienti: S.clienti,
+                anni_disponibili: [
+                  ...new Set(S.clienti.flatMap((c) => c.anni || [])),
+                ],
+              })
+          : null,
       });
 
       if (!S.clienti.length) {

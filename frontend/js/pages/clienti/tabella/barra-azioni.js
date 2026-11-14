@@ -3,7 +3,7 @@
   const GB = window.GB;
   const { h, fmt } = GB;
 
-  GB.parts.clienti.barra = function ({ nuovo, demoClienti }) {
+  GB.parts.clienti.barra = function ({ nuovo, demoClienti, creaAnni }) {
     return h(
       "div",
       {
@@ -16,6 +16,18 @@
         },
       },
       h("button", { class: "btn primary", onclick: nuovo }, "＋ Nuovo cliente"),
+      creaAnni
+        ? h(
+            "button",
+            {
+              class: "btn",
+              onclick: creaAnni,
+              title:
+                "Crea gli esercizi di uno o più anni per tutti i clienti (data comune o date diverse; chi ha già un anno lo tiene com'è)",
+            },
+            "📅 Crea anni per tutti",
+          )
+        : null,
       h(
         "button",
         {

@@ -41,13 +41,16 @@
             r.rating || "n.d.",
           ),
           // la descrizione della classe è già nella legenda sopra la tabella (e nel suggerimento sul badge): qui solo i casi senza classe
-          r.rating
-            ? null
-            : h(
-                "div",
-                { class: "small muted" },
-                r.vuoto ? "nessun dato" : "sotto CCC",
-              ),
+          // (replaceChildren, a differenza di h(), trasformerebbe un null nel testo "null": si toglie prima)
+          ...(r.rating
+            ? []
+            : [
+                h(
+                  "div",
+                  { class: "small muted" },
+                  r.vuoto ? "nessun dato" : "sotto CCC",
+                ),
+              ]),
         );
       });
     });
