@@ -1,4 +1,5 @@
-/* Form «Nuovo cliente» / «Modifica cliente»: ragione sociale, P.IVA (solo cifre, 11), anno impostato, note. Restituisce i dati o null. */
+/* Form «Nuovo cliente» / «Modifica cliente»: ragione sociale, P.IVA (solo cifre, 11), anno impostato, note. Restituisce i dati o null.
+   In modifica l'anno base si sceglie tra gli esercizi già creati del cliente. */
 (function () {
   const GB = window.GB;
   const { h, fmt } = GB;
@@ -7,6 +8,10 @@
 
   GB.parts.clienti.form = async function (c) {
     const nuovo = !c;
+    // in modifica: solo gli esercizi già creati (l'anno base attuale c'è sempre, anche se per qualche motivo non fosse nell'elenco)
+    const anniCreati = nuovo
+      ? []
+      : [...new Set([...(c.anni || []), c.anno_base])].sort((a, b) => b - a);
     const f = {
       rs: h("input", {
         value: c ? c.ragione_sociale : "",
@@ -20,13 +25,24 @@
         maxlength: 11,
         autocomplete: "off",
       }),
-      anno: h("input", {
-        type: "number",
-        value: c ? c.anno_base : new Date().getFullYear() - 1,
-        min: 1990,
-        max: 2100,
-        disabled: !nuovo || null,
-      }),
+      anno: nuovo
+        ? h("input", {
+            type: "number",
+            value: new Date().getFullYear() - 1,
+            min: 1990,
+            max: 2100,
+          })
+        : h(
+            "select",
+            { "aria-label": "Anno base del cliente" },
+            anniCreati.map((a) =>
+              h(
+                "option",
+                { value: a, selected: a === c.anno_base || null },
+                String(a),
+              ),
+            ),
+          ),
       note: h(
         "textarea",
         { rows: 3, placeholder: "Note interne…" },
@@ -59,15 +75,21 @@
         h(
           "div",
           { class: "field" },
-          h("label", null, "Anno impostato (ultimo esercizio chiuso)"),
+          h(
+            "label",
+            null,
+            nuovo
+              ? "Anno impostato (ultimo esercizio chiuso)"
+              : "Anno base (tra gli esercizi creati)",
+          ),
           f.anno,
-          nuovo
-            ? h(
-                "div",
-                { class: "hint" },
-                "Gli esercizi vengono creati in automatico dall'anno impostato fino all'ultimo anno chiuso e si aggiornano da soli ogni anno. Il budget è quello dell'anno successivo.",
-              )
-            : null,
+          h(
+            "div",
+            { class: "hint" },
+            nuovo
+              ? "Gli esercizi vengono creati in automatico dall'anno impostato fino all'ultimo anno chiuso e si aggiornano da soli ogni anno. Il budget è quello dell'anno successivo."
+              : "Puoi scegliere solo uno degli esercizi già creati per questo cliente. Per averne altri usa «＋» (anche più anni insieme) nella barra in alto.",
+          ),
         ),
       ),
       h("div", { class: "field" }, h("label", null, "Note"), f.note),
@@ -103,7 +125,7 @@
         partita_iva: piva,
         note: f.note.value,
       };
-      if (nuovo) payload.anno_base = anno;
+      payload.anno_base = anno; // in modifica è uno degli esercizi creati (controllato anche dal server)
       return payload;
     }
   };

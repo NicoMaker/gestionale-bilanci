@@ -96,6 +96,60 @@
   color: var(--accent);
   margin-right: 2px;
 }
+/* legenda del rating: etichette colorate pulite (nessun puntino/elenco), stesse tinte del badge */
+.legend-chips {
+  gap: 6px 8px;
+  align-items: center;
+}
+.legend-line .lg-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--b1);
+  background: var(--s2);
+  color: var(--t1);
+  list-style: none;
+}
+.legend-line .lg-chip b {
+  margin: 0;
+  font-weight: 700;
+}
+.lg-chip.r-AAA,
+.lg-chip.r-AA {
+  background: var(--green-d);
+  border-color: var(--green-b);
+}
+.lg-chip.r-AAA b,
+.lg-chip.r-AA b {
+  color: var(--green);
+}
+.lg-chip.r-A,
+.lg-chip.r-BBB {
+  background: var(--cyan-d);
+  border-color: var(--cyan-b);
+}
+.lg-chip.r-A b,
+.lg-chip.r-BBB b {
+  color: var(--cyan);
+}
+.lg-chip.r-BB {
+  background: var(--yellow-d);
+  border-color: var(--yellow-b);
+}
+.lg-chip.r-BB b {
+  color: var(--yellow);
+}
+.lg-chip.r-B,
+.lg-chip.r-CCC {
+  background: var(--red-d);
+  border-color: var(--red-b);
+}
+.lg-chip.r-B b,
+.lg-chip.r-CCC b {
+  color: var(--red);
+}
 .print-head {
   display: none;
 }

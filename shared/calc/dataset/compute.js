@@ -32,9 +32,10 @@
   } = C;
 
   function compute(ds, Y) {
-    const years = [Y - 2, Y - 1, Y]; // finestra usata da vendite/budget
-    // tutti gli esercizi da mostrare: quelli con dati + almeno i 3 fino a Y (così un cliente nuovo può compilare anche gli anni precedenti)
-    const tutti = [...new Set([...anni(ds), ...years])].sort((a, b) => a - b);
+    const years = vendite(ds, Y).years; // finestra usata da vendite/budget: Y e i due anni precedenti, solo se esistono
+    // tutti gli esercizi da mostrare: SOLO quelli del cliente (un cliente 2026 non vede 2025 e 2024 se non li ha creati)
+    const tutti = anni(ds);
+    if (!tutti.includes(Y)) tutti.push(Y), tutti.sort((a, b) => a - b);
     const out = { Y, years, tutti, anni: {} };
     for (const a of tutti) out.anni[a] = yearData(ds, a);
     out.vend = vendite(ds, Y);

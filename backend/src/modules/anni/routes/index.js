@@ -1,9 +1,10 @@
-/* Esercizi (anni) di un cliente: aggiunta (singola e multipla), data di chiusura, conteggio dati, eliminazione (singola e multipla). */
+/* Esercizi (anni) di un cliente: aggiunta (singola, più anni insieme, più clienti), data di chiusura, conteggio dati, eliminazione (singola e multipla). */
 const express = require("express");
 
 const router = express.Router();
 
 router.use(require("./create"));
+router.use(require("./create-multiplo"));
 router.use(require("./create-bulk"));
 router.use(require("./put-data-chiusura"));
 router.use(require("./dati"));

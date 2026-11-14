@@ -40,7 +40,23 @@
       },
       (ds.par && ds.par[anno]) || {},
     );
+  /* true se il cliente ha quell'esercizio (riga parametri, vendite o importi inseriti) */
+  const haAnno = (ds, anno) =>
+    !!(ds.par && ds.par[anno]) ||
+    !!(ds.vend && ds.vend[anno]) ||
+    Object.values(ds.val || {}).some((o) => o && o[anno] !== undefined);
   const round8 = (x) => Math.round(x * 1e8) / 1e8;
 
-  return { n, div, up, round8, indexVoci, vociSez, valore, sumSez, par };
+  return {
+    n,
+    div,
+    up,
+    round8,
+    indexVoci,
+    vociSez,
+    valore,
+    sumSez,
+    par,
+    haAnno,
+  };
 });

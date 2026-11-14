@@ -40,11 +40,14 @@
             },
             r.rating || "n.d.",
           ),
-          h(
-            "div",
-            { class: "small muted" },
-            r.rating ? r.rating_desc : r.vuoto ? "nessun dato" : "sotto CCC",
-          ),
+          // la descrizione della classe è già nella legenda sopra la tabella (e nel suggerimento sul badge): qui solo i casi senza classe
+          r.rating
+            ? null
+            : h(
+                "div",
+                { class: "small muted" },
+                r.vuoto ? "nessun dato" : "sotto CCC",
+              ),
         );
       });
     });

@@ -21,6 +21,21 @@
       S.emit("context");
       return r.anno;
     },
+    // crea più esercizi in un colpo (da…a inclusi; giornoMese «GG/MM» uguale per tutti, vuoto = 31/12); chi c'è già resta com'è
+    // date (facoltativo): {anno: "AAAA-MM-GG"} per le chiusure diverse dalla data comune
+    async addAnni(da, a, giornoMese, date) {
+      const body = { da, a };
+      if (giornoMese) body.giorno_mese = giornoMese;
+      if (date && Object.keys(date).length) body.date = date;
+      const r = await S._save(
+        api.post(`/clienti/${S.clienteId}/anni/multiplo`, body),
+      );
+      const ultimo = r.creati.length
+        ? r.creati[r.creati.length - 1]
+        : r.anni[r.anni.length - 1];
+      await S.select(S.clienteId, ultimo); // ricarica il dataset con i nuovi esercizi
+      return r;
+    },
     // cambia la data di chiusura di un esercizio (vuota = 31/12); ricalcola e ridisegna tutte le pagine
     async saveDataChiusura(anno, data) {
       const r = await S._save(

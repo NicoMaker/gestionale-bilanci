@@ -1,47 +1,36 @@
-/* POST /anni/bulk — crea l'esercizio di un anno per più clienti (salta chi ce l'ha già).
-   data_chiusura (facoltativa): se manca l'esercizio chiude il 31/12 dell'anno. */
+/* POST /anni/bulk — crea gli esercizi di uno o più anni per più clienti (salta chi li ha già).
+   body: { cliente_ids: [..], anno }  oppure  { cliente_ids, anni: [2022, 2023] }  oppure  { cliente_ids, da: 2020, a: 2024 }
+   Data di chiusura: data_chiusura (un solo anno) oppure giorno_mese «GG/MM» (stessa per tutti); date {anno: data} (per anno);
+   date_clienti {idCliente: {anno: data}} (per singolo cliente e anno). Senza indicazioni l'esercizio chiude il 31/12. */
 const express = require("express");
-const db = require("../../../core/db");
-const { HttpError, wrap } = require("../../../core/http");
-const { toIds, toYear, toDataChiusura } = require("../../../core/validators");
+const { wrap } = require("../../../core/http");
+const { toIds, toAnni, toDateEsercizi } = require("../../../core/validators");
 const { getCliente } = require("../../clienti/service");
+const { creaEsercizi } = require("../service/crea-esercizi");
 
 const router = express.Router();
 
 router.post(
   "/anni/bulk",
   wrap((req, res) => {
-    const anno = toYear(req.body.anno);
-    if (anno < 1990 || anno > 2100)
-      throw new HttpError(400, "Anno non valido (1990–2100)");
-    const dataChiusura = toDataChiusura(req.body.data_chiusura, anno);
+    const anni = toAnni(req.body);
+    const dataPer = toDateEsercizi(req.body, anni);
     const clienti = toIds(req.body.cliente_ids).map(getCliente); // 404 se uno non esiste
-    const dettaglio = db.tx(() =>
-      clienti.map((c) => {
-        const gia = db.one(
-          "SELECT 1 AS x FROM parametri_anno WHERE cliente_id=? AND anno=?",
-          [c.id, anno],
-        );
-        if (!gia)
-          db.run(
-            "INSERT INTO parametri_anno (cliente_id, anno, data_chiusura) VALUES (?,?,?)",
-            [c.id, anno, dataChiusura],
-          );
-        return {
-          id: c.id,
-          ragione_sociale: c.ragione_sociale,
-          creato: !gia,
-        };
-      }),
-    );
-    const creati = dettaglio.filter((d) => d.creato).length;
-    res.status(201).json({
-      anno,
-      data_chiusura: dataChiusura,
-      creati,
-      saltati: dettaglio.length - creati,
+    const dettaglio = creaEsercizi(clienti, anni, dataPer);
+    const creati = dettaglio.reduce((n, d) => n + d.creati.length, 0);
+    const date = Object.fromEntries(anni.map((a) => [a, dataPer(a)]));
+    const out = {
+      anni,
+      date,
+      creati, // esercizi creati in totale (cliente × anno)
+      saltati: clienti.length * anni.length - creati,
       dettaglio,
-    });
+    };
+    if (anni.length === 1) {
+      out.anno = anni[0]; // risposta di sempre per un anno solo
+      out.data_chiusura = date[anni[0]];
+    }
+    res.status(201).json(out);
   }),
 );
 

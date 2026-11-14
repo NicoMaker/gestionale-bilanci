@@ -1,5 +1,11 @@
+%% Schema del database SQLite (backend/db/gestionale.db).
+%% Versione dello schema: PRAGMA user_version (vedi backend/src/core/db/migrazioni.js). Un file vecchio si aggiorna da solo
+%% all'avvio (copia di sicurezza gestionale.pre-migrazione-*.db prima di modificarlo): non serve eliminarlo.
+%% Regole sugli esercizi: clienti.anno_base e' sempre uno degli anni presenti in parametri_anno del cliente;
+%% parametri_anno.data_chiusura e' la data di chiusura dell'esercizio (31/12 se non indicata, comunque dentro l'anno).
+%% Ogni cliente ha almeno un esercizio; in tutte le liste compaiono solo gli anni che il cliente ha davvero.
 erDiagram
-    clienti ||--o{ parametri_anno : "ha parametri per anno"
+    clienti ||--o{ parametri_anno : "ha un esercizio per anno"
     clienti ||--o{ voci : "ha righe di conto"
     clienti ||--o{ vendite : "ha vendite mensili"
     voci ||--o{ valori : "importo per anno"

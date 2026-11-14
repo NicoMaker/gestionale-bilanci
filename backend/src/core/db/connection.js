@@ -3,8 +3,8 @@
 const fs = require("fs");
 const path = require("path");
 const initSqlJs = require("sql.js");
-const { SCHEMA } = require("./schema");
-const { migra } = require("./migrazioni");
+const { TABELLE, INDICI } = require("./schema");
+const { migra, daMigrare, versione, VERSIONE } = require("./migrazioni");
 
 const DB_DIR =
   process.env.DB_DIR || path.join(__dirname, "..", "..", "..", "db");
@@ -16,18 +16,48 @@ let saveTimer = null;
 const getDb = () => db;
 const dbPath = () => DB_PATH;
 
+/* Copia di sicurezza del file prima di aggiornarlo (si tengono le ultime 3). Se la copia fallisce non si procede. */
+function backupPrimaDiMigrare() {
+  const base = path.basename(DB_PATH, path.extname(DB_PATH));
+  const nome = `${base}.pre-migrazione-${new Date().toISOString().replace(/[:.]/g, "-")}.db`;
+  const dir = path.dirname(DB_PATH);
+  fs.copyFileSync(DB_PATH, path.join(dir, nome));
+  fs.readdirSync(dir)
+    .filter((f) => f.startsWith(base + ".pre-migrazione-"))
+    .sort()
+    .slice(0, -3)
+    .forEach((f) => fs.rmSync(path.join(dir, f), { force: true }));
+  return nome;
+}
+
 async function init() {
   const SQL = await initSqlJs();
   fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-  if (fs.existsSync(DB_PATH)) {
-    db = new SQL.Database(fs.readFileSync(DB_PATH));
+  const esisteva = fs.existsSync(DB_PATH);
+  if (esisteva) {
+    try {
+      db = new SQL.Database(fs.readFileSync(DB_PATH));
+      db.exec("SELECT COUNT(*) FROM sqlite_master"); // fallisce se il file non è un database valido
+    } catch (e) {
+      throw new Error(
+        `Il file ${DB_PATH} non è un database SQLite leggibile (${e.message}). Il file non è stato modificato.`,
+      );
+    }
     console.log("✅ Database caricato:", DB_PATH);
   } else {
     db = new SQL.Database();
     console.log("🆕 Nuovo database:", DB_PATH);
   }
-  db.exec(SCHEMA);
-  migra(db); // aggiorna i database creati con versioni precedenti
+  // 1) tabelle mancanti  2) colonne mancanti e riparazione dati (migrazioni)  3) indici
+  db.exec(TABELLE);
+  if (esisteva && daMigrare(db)) {
+    const copia = backupPrimaDiMigrare();
+    console.log(
+      `🔧 Aggiornamento del database (versione ${versione(db)} → ${VERSIONE}), copia di sicurezza: ${copia}`,
+    );
+  }
+  migra(db);
+  db.exec(INDICI);
   db.exec("PRAGMA foreign_keys = ON;");
   flush();
   return db;

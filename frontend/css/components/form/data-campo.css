@@ -186,3 +186,33 @@
   flex: 1 1 auto;
   width: auto;
 }
+
+/* tabella «date diverse» (cliente × anno) */
+.date-matrice-wrap {
+  max-height: 60vh;
+  overflow: auto;
+}
+.date-matrice {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.date-matrice th,
+.date-matrice td {
+  padding: 4px 8px;
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: middle;
+}
+.date-matrice thead th {
+  position: sticky;
+  top: 0;
+  background: var(--s1, var(--bg));
+  z-index: 1;
+}
+.date-matrice td.l,
+.date-matrice th.l {
+  min-width: 140px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

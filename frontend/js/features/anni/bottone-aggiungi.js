@@ -15,4 +15,16 @@
       },
       "＋ Aggiungi anno",
     );
+
+  // pulsante "più anni": crea in un colpo gli esercizi da un anno a un altro
+  GB.addAnniBtn = () =>
+    h(
+      "button",
+      {
+        class: "btn sm",
+        title: "Aggiunge più esercizi in un colpo (da un anno a un altro)",
+        onclick: () => GB.aggiungiAnniMultipli(),
+      },
+      "＋ Più anni",
+    );
 })();

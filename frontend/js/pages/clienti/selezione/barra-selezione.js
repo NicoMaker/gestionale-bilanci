@@ -30,6 +30,21 @@
       "aria-label": "Anno dell'esercizio da creare",
       title: "Anno dell'esercizio da creare per i clienti selezionati",
     });
+    // «fino al»: facoltativo; se indicato si creano in un colpo tutti gli esercizi dall'anno al «fino al» (estremi inclusi)
+    const annoA = h("input", {
+      type: "number",
+      min: 1990,
+      max: 2100,
+      value: GB.clientiSelAnnoA || "",
+      placeholder: "—",
+      class: "sel-anno",
+      "aria-label": "Ultimo anno da creare (facoltativo)",
+      title:
+        "Facoltativo: se lo indichi si creano tutti gli esercizi dall'anno iniziale a questo (estremi inclusi)",
+    });
+    annoA.addEventListener("input", () => {
+      GB.clientiSelAnnoA = annoA.value;
+    });
     const annoValido = () => {
       const a = Number(anno.value);
       return Number.isInteger(a) && a >= 1990 && a <= 2100 ? a : null;
@@ -69,6 +84,8 @@
         { class: "sel-field" },
         h("label", null, "Anno"),
         anno,
+        h("label", null, "fino al"),
+        annoA,
         h("label", null, "Data"),
         h("span", { class: "dcamp-riga" }, campo.el, reset),
         h(
@@ -76,11 +93,16 @@
           {
             class: "btn sm primary",
             title:
-              "Crea l'esercizio di questo anno per tutti i selezionati (data vuota = 31/12)",
+              "Crea l'esercizio di questo anno (o di tutti gli anni fino al «fino al») per tutti i selezionati (data vuota = 31/12)",
             onclick: () => {
               const iso = campo.get(true);
               if (iso === null) return;
-              A.creaAnnoMultiplo([...ids], Number(anno.value), iso);
+              A.creaAnnoMultiplo(
+                [...ids],
+                Number(anno.value),
+                iso,
+                annoA.value === "" ? null : Number(annoA.value),
+              );
             },
           },
           "＋ Crea esercizio",

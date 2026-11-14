@@ -21,6 +21,9 @@ const SUITES = [
   "clienti/elimina-demo",
   "anni/esercizi-automatici",
   "anni/crea-multiplo",
+  "anni/crea-piu-anni",
+  "clienti/anno-base",
+  "dati/migrazione-db",
   "anni/elimina-anni-multipli",
   "clienti/elimina-multiplo",
 ];

@@ -81,6 +81,15 @@
             h(
               "button",
               {
+                class: "btn sm icon",
+                title: "Aggiungi più anni in un colpo (da un anno a un altro)",
+                onclick: () => GB.aggiungiAnniMultipli(),
+              },
+              "＋＋",
+            ),
+            h(
+              "button",
+              {
                 class: "btn sm icon danger",
                 title: "Elimina l'anno selezionato",
                 onclick: () => GB.eliminaAnno(),

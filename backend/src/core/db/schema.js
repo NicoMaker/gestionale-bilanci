@@ -1,5 +1,7 @@
-/* Schema delle tabelle SQLite (clienti, parametri_anno, voci, valori, budget_var, vendite, cashflow, cestino). */
-const SCHEMA = `
+/* Schema delle tabelle SQLite (clienti, parametri_anno, voci, valori, budget_var, vendite, cashflow, cestino).
+   Le tabelle e gli indici sono separati: sui database di versioni precedenti si creano prima le tabelle mancanti,
+   poi si aggiungono le colonne mancanti (migrazioni) e solo dopo gli indici, che possono usare le colonne nuove. */
+const TABELLE = `
 PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS clienti (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,7 +38,6 @@ CREATE TABLE IF NOT EXISTS voci (
   fissa INTEGER DEFAULT 0,       -- 1 = riga non eliminabile
   FOREIGN KEY (cliente_id) REFERENCES clienti(id) ON DELETE CASCADE
 );
-CREATE INDEX IF NOT EXISTS idx_voci_cliente ON voci(cliente_id, ambito, sezione, ordine);
 CREATE TABLE IF NOT EXISTS valori (
   voce_id INTEGER NOT NULL,
   anno INTEGER NOT NULL,
@@ -79,7 +80,13 @@ CREATE TABLE IF NOT EXISTS cestino (
   data_eliminazione TEXT NOT NULL,
   scade_il TEXT NOT NULL         -- dopo questa data viene eliminata definitivamente (15 giorni)
 );
+`;
+
+const INDICI = `
+CREATE INDEX IF NOT EXISTS idx_voci_cliente ON voci(cliente_id, ambito, sezione, ordine);
 CREATE INDEX IF NOT EXISTS idx_cestino_scadenza ON cestino(scade_il);
 `;
 
-module.exports = { SCHEMA };
+const SCHEMA = TABELLE + INDICI;
+
+module.exports = { SCHEMA, TABELLE, INDICI };

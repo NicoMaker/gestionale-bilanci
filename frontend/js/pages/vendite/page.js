@@ -21,7 +21,7 @@
         h(
           "div",
           { class: "note no-print" },
-          "Inserisci i ricavi mensili degli ultimi tre esercizi. Il fattore medio è la media ponderata con i pesi indicati; la stagionalità (%) distribuisce il fatturato annuo sui mesi ed è usata per costruire il grafico del punto di pareggio.",
+          "Inserisci i ricavi mensili dell'anno di riferimento e dei due precedenti (solo gli esercizi che il cliente ha creato). Il fattore medio è la media ponderata con i pesi indicati; la stagionalità (%) distribuisce il fatturato annuo sui mesi ed è usata per costruire il grafico del punto di pareggio.",
         ),
         h("div", { class: "tbl-wrap free" + (ro ? " ro" : "") }, table),
         h(

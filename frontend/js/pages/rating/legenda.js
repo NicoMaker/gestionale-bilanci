@@ -6,17 +6,20 @@
   GB.parts.rating.legenda = function () {
     return h(
       "div",
-      { class: "legend-line" },
-      h("span", { class: "muted" }, "Legenda rating: "),
+      { class: "legend-line legend-chips" },
+      h("span", { class: "muted" }, "Classi di rating: "),
       Object.entries(window.Calc.RATING_LABEL).map(([k, v]) =>
         h(
           "span",
-          { class: "lg" },
+          { class: "lg lg-chip r-" + k },
           h("b", null, k),
-          " " +
+          h(
+            "span",
+            null,
             String(v)
               .replace(/^Rischio /, "")
               .toLowerCase(),
+          ),
         ),
       ),
     );

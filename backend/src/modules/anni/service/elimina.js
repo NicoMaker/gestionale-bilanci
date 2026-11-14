@@ -43,6 +43,19 @@ function eliminaEsercizio(c, anno, dAnno) {
     c.id,
     anno,
   ]);
+  riallineaAnnoBase(c.id);
 }
 
-module.exports = { anniCliente, eliminaEsercizio };
+/* L'anno base deve restare uno degli esercizi del cliente: se è stato eliminato diventa il primo esercizio rimasto. */
+function riallineaAnnoBase(clienteId) {
+  const c = db.one("SELECT anno_base FROM clienti WHERE id=?", [clienteId]);
+  if (!c) return;
+  const anni = [...anniCliente(clienteId)];
+  if (!anni.length || anni.includes(c.anno_base)) return;
+  db.run("UPDATE clienti SET anno_base=? WHERE id=?", [
+    Math.min(...anni),
+    clienteId,
+  ]);
+}
+
+module.exports = { anniCliente, eliminaEsercizio, riallineaAnnoBase };
