@@ -30,7 +30,8 @@
       kpi(
         `Ricavi ${Y}`,
         fmt.eur(cur.ce.ricavi),
-        delta(cur.ce.ricavi, prev.ce.ricavi),
+        // con un solo esercizio non c'è l'anno precedente: nessun confronto, ma la scheda si vede
+        prev ? delta(cur.ce.ricavi, prev.ce.ricavi) : "",
       ),
       kpi(
         "EBITDA",
