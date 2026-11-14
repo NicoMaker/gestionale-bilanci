@@ -3,12 +3,14 @@ const path = require("path");
 const express = require("express");
 const { SHARED_DIR, FRONTEND_DIR, ROOT } = require("./config");
 const api = require("./modules");
+const realtime = require("./core/realtime");
 
 function createApp() {
   const app = express();
   app.use(express.json({ limit: "1mb" }));
 
-  app.use("/api", api);
+  // dopo ogni modifica riuscita avvisa gli altri browser collegati (socket.io)
+  app.use("/api", realtime.middleware, api);
 
   // Guida del programma: il PDF sta nella radice del progetto (fuori da
   // frontend/), quindi lo servo con una route dedicata. Va PRIMA dei file

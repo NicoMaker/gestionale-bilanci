@@ -26,6 +26,8 @@ const SUITES = [
   "dati/migrazione-db",
   "anni/elimina-anni-multipli",
   "clienti/elimina-multiplo",
+  "clienti/un-solo-dato",
+  "dati/tempo-reale",
 ];
 
 (async () => {

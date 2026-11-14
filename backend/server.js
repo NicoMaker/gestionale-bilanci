@@ -4,6 +4,7 @@ const { PORT } = require("./src/config");
 const { createApp } = require("./src/app");
 const cestino = require("./src/modules/cestino/service");
 const { getLocalIP, getPublicIP } = require("./src/core/network");
+const realtime = require("./src/core/realtime");
 
 /* banner = true solo all'avvio da riga di comando (nei test non si interroga la rete). */
 async function start({ banner = false } = {}) {
@@ -42,6 +43,9 @@ async function start({ banner = false } = {}) {
     console.log(`📍 Localhost:   http://localhost:${PORT}`);
     console.log(`\n--------------------------------------`);
   });
+
+  // socket.io sullo stesso server e sulla stessa porta: i browser si aggiornano a vicenda
+  realtime.attach(server);
 
   const chiudi = () => {
     try {

@@ -18,6 +18,10 @@
   "dependencies": {
     "express": "^4.21.2",
     "nodemon": "^3.1.14",
+    "socket.io": "^4.8.4",
     "sql.js": "^1.13.0"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
   }
 }

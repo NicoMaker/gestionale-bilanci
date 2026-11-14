@@ -6,13 +6,18 @@ const { wrap } = require("../../../core/http");
 const { toYear } = require("../../../core/validators");
 const Calc = require("../../../../../shared/calc");
 const { loadRaw } = require("../../dataset/service");
+const { datiCliente } = require("../../clienti/service");
 
 const router = express.Router();
 
-/* Ultimo esercizio che contiene davvero dei numeri (non vuoto). */
-function ultimaRiga(rows) {
+/* Esercizio "con dati": basta UN solo valore inserito (bilancio, vendite, cash flow, variazione di budget o parametro),
+   anche se attivo e ricavi sono ancora a zero. Il calcolo del rating da solo (attivo e ricavi = 0) non basta a dirlo vuoto. */
+const haDati = (r, conDati) => conDati.has(r.anno) || !r.vuoto || !!r.ricavi;
+
+/* Ultimo esercizio che contiene davvero dei dati. */
+function ultimaRiga(rows, conDati) {
   for (let i = rows.length - 1; i >= 0; i--)
-    if (!rows[i].vuoto || rows[i].ricavi) return rows[i];
+    if (haDati(rows[i], conDati)) return rows[i];
   return rows.length ? rows[rows.length - 1] : null;
 }
 
@@ -45,11 +50,15 @@ router.get(
 
     for (const c of clienti) {
       let rows = [];
+      const conDati = new Set(); // anni in cui il cliente ha inserito almeno un dato
       const chiusure = {}; // anno -> data di chiusura dell'esercizio
       try {
         const raw = loadRaw(c.id);
         raw.parametri.forEach((p) => (chiusure[p.anno] = p.data_chiusura));
         rows = Calc.riepilogo(Calc.buildDs(raw));
+        datiCliente(c.id).anni.forEach(
+          (a) => a.totale > 0 && conDati.add(a.anno),
+        );
       } catch (e) {
         rows = [];
       }
@@ -57,7 +66,7 @@ router.get(
       rows.forEach((r) => anniDisponibili.add(r.anno));
       const u = annoSel
         ? rows.find((r) => r.anno === annoSel)
-        : ultimaRiga(rows);
+        : ultimaRiga(rows, conDati);
       const riga = {
         id: c.id,
         ragione_sociale: c.ragione_sociale,
@@ -71,10 +80,10 @@ router.get(
         attivo: u ? u.attivo : 0,
         pn: u ? u.pn : 0,
         rating: u ? u.rating : null,
-        vuoto: u ? !!u.vuoto : true,
+        vuoto: u ? !haDati(u, conDati) : true,
         quadra: u ? Math.abs(u.check || 0) < 1 : true,
       };
-      if (u && !u.vuoto) {
+      if (u && !riga.vuoto) {
         tot.clienti_con_dati++;
         tot.ricavi += riga.ricavi || 0;
         tot.ebitda += riga.ebitda || 0;
