@@ -43,7 +43,7 @@
      Accetta cifre di fila (3006), separatori / . - o spazio, una data completa (30/06/2025 o 2025-06-30: l'anno viene ignorato,
      vale sempre quello dell'esercizio). Il «/» si aggiunge da solo dopo il giorno. */
   const formatta = (raw, cancellando) => {
-    let v = String(raw || "").trim();
+    const v = String(raw || "").trim();
     const iso = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
     if (iso) return `${due(iso[3])}/${due(iso[2])}`;
     const sep = v.match(/^(\d{1,2})[\/.\-\s]+(\d{0,2})/);

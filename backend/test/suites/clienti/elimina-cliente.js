@@ -36,7 +36,7 @@ module.exports = async function () {
       const d = await api("GET", `/clienti/${c.id}/dati`);
       assert.equal(d.body.ha_dati, true);
       assert.equal(d.body.totale, 1);
-      let r = await api("DELETE", `/clienti/${c.id}`);
+      const r = await api("DELETE", `/clienti/${c.id}`);
       assert.equal(r.status, 409);
       assert.equal(r.body.richiede_conferma, true);
       assert.equal(

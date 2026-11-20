@@ -29,7 +29,7 @@
      Il cursore resta sulla stessa cifra anche dopo la riformattazione. */
   function liveFormat(el, ev) {
     const raw = el.value;
-    let caret = el.selectionStart == null ? raw.length : el.selectionStart;
+    const caret = el.selectionStart == null ? raw.length : el.selectionStart;
     const neg = /^\s*[-−(]/.test(raw);
     let txt = raw,
       before = raw.slice(0, caret);
@@ -66,8 +66,8 @@
           : first + 1 + b.slice(first + 1).replace(/,/g, "").length;
     }
     const hasDec = t.indexOf(",") !== -1;
-    let [ip, dp] = t.split(",");
-    ip = ip.replace(/^0+(?=\d)/, "");
+    const [ipRaw, dp] = t.split(",");
+    const ip = ipRaw.replace(/^0+(?=\d)/, "");
     let out = (neg ? "-" : "") + group(ip) + (hasDec ? "," + (dp || "") : "");
     if (out === "-" && !ip) out = "-";
     if (out !== raw) {
