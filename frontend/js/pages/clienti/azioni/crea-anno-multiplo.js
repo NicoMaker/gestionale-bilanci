@@ -90,11 +90,12 @@
           h(
             "p",
             { class: "small muted" },
-            "Con «Date diverse…» puoi scegliere una data di chiusura diversa per ogni cliente e per ogni anno.",
+            "Con «Date a gruppi…» scrivi una data una volta sola per più anni; con «Date diverse…» scegli una data per ogni cliente e per ogni anno.",
           ),
         ),
         buttons: [
           { label: "Annulla", value: false },
+          ...(intervallo ? [{ label: "Date a gruppi…", value: "gruppi" }] : []),
           { label: "Date diverse…", value: "date" },
           {
             label: intervallo ? "Crea esercizi" : "Crea esercizio",
@@ -103,6 +104,11 @@
           },
         ],
       });
+      if (ok === "gruppi") {
+        const r = await GB.chiediDateGruppi({ anni: anniElenco, iniziali: dateCl[ids[0]] || {} });
+        if (r) dateCl = GB.espandiDateGruppi(r, ids, anniElenco, dateCl);
+        continue;
+      }
       if (ok !== "date") break;
       if (ids.length * anniElenco.length > 150) {
         GB.toast("Troppe combinazioni per la tabella (massimo 150 cliente/anno): riduci i clienti o gli anni", "err");

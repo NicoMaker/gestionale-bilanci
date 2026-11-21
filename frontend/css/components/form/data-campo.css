@@ -210,3 +210,41 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* «date a gruppi»: più anni con la stessa data, scritta una volta sola */
+.dg-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  max-height: 55vh;
+  overflow: auto;
+}
+.dg-gruppo {
+  border: 1px solid var(--b1);
+  border-radius: var(--radius);
+  background: var(--s1);
+  padding: 10px 12px;
+}
+.dg-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.dg-az {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 6px;
+}
+.dg-chips {
+  margin: 10px 0 0;
+}
+.dg-chip.altro {
+  opacity: 0.55;
+  border-style: dashed;
+}
+.dg-chip sup {
+  margin-left: 3px;
+  font-size: 9px;
+}

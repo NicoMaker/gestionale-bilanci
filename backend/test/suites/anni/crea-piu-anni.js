@@ -199,4 +199,36 @@ module.exports = async function () {
       for (const c of [a, b]) await api("DELETE", `/clienti/${c.id}`);
     },
   );
+  await t(
+    "date a gruppi: 2 date scritte per 4 anni, in una sola richiesta; gli anni esistenti non cambiano",
+    async () => {
+      const c = await nuovo("Date Gruppi Srl", 2030);
+      await api("POST", `/clienti/${c.id}/anni`, { anno: 2033, data_chiusura: "2033-05-05" });
+      // gruppo 1: 2031 e 2032 → 02/01 · gruppo 2: 2033 (già presente), 2034 e 2035 → 07/01 (29/02 non bisestile → 28/02)
+      const r = await api("POST", `/clienti/${c.id}/anni/multiplo`, {
+        da: 2031,
+        a: 2035,
+        date: {
+          2031: "2031-01-02",
+          2032: "2032-01-02",
+          2033: "2033-01-07",
+          2034: "2034-01-07",
+          2035: "2035-01-07",
+        },
+      });
+      assert.equal(r.status, 201);
+      assert.deepEqual(r.body.creati, [2031, 2032, 2034, 2035]);
+      assert.deepEqual(r.body.saltati, [2033]);
+      const p = Object.fromEntries((await parametri(c.id)).map((x) => [x.anno, x.data_chiusura]));
+      assert.deepEqual(p, {
+        2030: "2030-12-31",
+        2031: "2031-01-02",
+        2032: "2032-01-02",
+        2033: "2033-05-05", // già presente: resta com'era
+        2034: "2034-01-07",
+        2035: "2035-01-07",
+      });
+      await api("DELETE", `/clienti/${c.id}`);
+    },
+  );
 };

@@ -130,6 +130,7 @@
         body,
         buttons: [
           { label: "Annulla", value: false },
+          { label: "Date a gruppi…", value: "gruppi" },
           { label: "Date diverse…", value: "date" },
           { label: "Crea esercizi", kind: "primary", value: true },
         ],
@@ -138,6 +139,22 @@
       const err = errore();
       if (err) {
         GB.toast(err.replace(/\.$/, ""), "err");
+        continue;
+      }
+      if (ok === "gruppi") {
+        const { x, y } = valori();
+        const anniElenco = anniDi(x, y).filter((n) => !presenti.has(n));
+        if (!anniElenco.length) {
+          GB.toast("Indica prima un intervallo di anni ancora da creare", "err");
+          continue;
+        }
+        // stessa data per gli anni dello stesso gruppo, uguale per tutti i clienti (poi affinabile con «Date diverse…»)
+        const r = await GB.chiediDateGruppi({
+          anni: anniElenco,
+          iniziali: dateCl[ids[0]] || {},
+        });
+        if (r) dateCl = GB.espandiDateGruppi(r, ids, anniElenco, dateCl);
+        aggiorna();
         continue;
       }
       if (ok === "date") {

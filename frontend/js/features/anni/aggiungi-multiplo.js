@@ -106,11 +106,27 @@
         body,
         buttons: [
           { label: "Annulla", value: false },
+          { label: "Date a gruppi…", value: "gruppi" },
           { label: "Date diverse…", value: "date" },
           { label: "Crea esercizi", kind: "primary", value: true },
         ],
       });
       if (!ok) return null;
+      if (ok === "gruppi") {
+        const nuovi = nuoviAnni();
+        if (!nuovi.length) {
+          GB.toast("Indica prima un intervallo di anni ancora da creare", "err");
+          continue;
+        }
+        const r = await GB.chiediDateGruppi({ anni: nuovi, iniziali: dateAnno });
+        if (r) {
+          const resto = {};
+          for (const [n, d] of Object.entries(dateAnno)) if (!nuovi.includes(Number(n))) resto[n] = d;
+          dateAnno = { ...resto, ...r };
+        }
+        aggiorna();
+        continue;
+      }
       if (ok === "date") {
         const nuovi = nuoviAnni();
         if (!nuovi.length) {
