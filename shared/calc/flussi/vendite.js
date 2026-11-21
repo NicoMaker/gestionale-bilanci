@@ -25,7 +25,9 @@
     const tot = v.map((col) => col.reduce((s, x) => s + x, 0));
     const wavg = (vals) =>
       sw ? vals.reduce((s, x, i) => s + x * w[i], 0) / sw : 0;
-    const ft = Array.from({ length: 12 }, (_, m) => wavg(v.map((col) => col[m])));
+    const ft = Array.from({ length: 12 }, (_, m) =>
+      wavg(v.map((col) => col[m])),
+    );
     const ftTot = wavg(tot);
     const stag = ft.map((x) => (ftTot ? round8((x / ftTot) * 100) : 0));
     let acc = 0;

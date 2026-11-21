@@ -52,7 +52,8 @@
                 { class: "btn sm", onclick: allinea },
                 "↤ Allinea “Risultato d'esercizio” all'utile del C.E.",
               ),
-              GB.addAnnoBtn(), GB.addAnniBtn(),
+              GB.addAnnoBtn(),
+              GB.addAnniBtn(),
             ),
         tbl.el,
       );

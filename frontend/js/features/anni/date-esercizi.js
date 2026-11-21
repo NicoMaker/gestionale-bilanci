@@ -9,7 +9,11 @@
   GB.chiediDateEsercizi = async ({ righe, anni, iniziali }) => {
     const campi = {}; // campi[id][anno] = campoData
     const tab = h("table", { class: "date-matrice" });
-    const testa = h("tr", null, h("th", { class: "l" }, righe.length > 1 ? "Cliente" : "Esercizio"));
+    const testa = h(
+      "tr",
+      null,
+      h("th", { class: "l" }, righe.length > 1 ? "Cliente" : "Esercizio"),
+    );
     anni.forEach((a) => {
       const copia =
         righe.length > 1
@@ -56,7 +60,10 @@
     );
     for (;;) {
       const ok = await GB.modal({
-        title: righe.length > 1 ? "Date di chiusura per cliente e anno" : "Date di chiusura per anno",
+        title:
+          righe.length > 1
+            ? "Date di chiusura per cliente e anno"
+            : "Date di chiusura per anno",
         body,
         wide: true,
         buttons: [

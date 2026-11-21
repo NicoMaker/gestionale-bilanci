@@ -27,8 +27,18 @@
       ? Math.max(0, ...presenti)
       : Math.max(0, ...(st.anni_disponibili || []));
     const prossimo = (ultimo || new Date().getFullYear() - 1) + 1;
-    const da = h("input", { type: "number", min: 1990, max: 2100, value: prossimo });
-    const a = h("input", { type: "number", min: 1990, max: 2100, value: prossimo });
+    const da = h("input", {
+      type: "number",
+      min: 1990,
+      max: 2100,
+      value: prossimo,
+    });
+    const a = h("input", {
+      type: "number",
+      min: 1990,
+      max: 2100,
+      value: prossimo,
+    });
     const anteprima = h("div", { class: "dc-preview" });
     let campo;
     let dateCl = {}; // date diverse {idCliente: {anno: "AAAA-MM-GG"}} (da «Date diverse…»)
@@ -42,7 +52,8 @@
       if (!annoOk(x) || !annoOk(y)) return "Indica anni tra 1990 e 2100.";
       if (y < x)
         return "L'anno finale deve essere uguale o successivo a quello iniziale.";
-      if (y - x + 1 > MAX_ANNI) return `Al massimo ${MAX_ANNI} anni alla volta.`;
+      if (y - x + 1 > MAX_ANNI)
+        return `Al massimo ${MAX_ANNI} anni alla volta.`;
       return null;
     };
     const reset = GB.resetDataBtn({
@@ -76,7 +87,9 @@
           ? `Verrà creato l'esercizio ${x} per ${nClienti}.`
           : `Verranno creati gli esercizi dal ${x} al ${y} (${y - x + 1} anni) per ${nClienti}.`) +
           " A chi ha già un anno non cambia nulla." +
-          (nPers() ? ` Date diverse impostate: ${nPers()} (cliente/anno).` : "");
+          (nPers()
+            ? ` Date diverse impostate: ${nPers()} (cliente/anno).`
+            : "");
     };
     campo = GB.campoData({
       anno: annoOk(Number(da.value)) ? Number(da.value) : prossimo,
@@ -145,7 +158,10 @@
         const { x, y } = valori();
         const anniElenco = anniDi(x, y).filter((n) => !presenti.has(n));
         if (!anniElenco.length) {
-          GB.toast("Indica prima un intervallo di anni ancora da creare", "err");
+          GB.toast(
+            "Indica prima un intervallo di anni ancora da creare",
+            "err",
+          );
           continue;
         }
         // stessa data per gli anni dello stesso gruppo, uguale per tutti i clienti (poi affinabile con «Date diverse…»)
@@ -161,7 +177,10 @@
         const { x, y } = valori();
         const anniElenco = anniDi(x, y).filter((n) => !presenti.has(n)); // gli anni già presenti non si toccano
         if (!anniElenco.length) {
-          GB.toast("Indica prima un intervallo di anni ancora da creare", "err");
+          GB.toast(
+            "Indica prima un intervallo di anni ancora da creare",
+            "err",
+          );
           continue;
         }
         if (ids.length * anniElenco.length > 150) {
@@ -202,7 +221,9 @@
         GB.toast(
           r.creati
             ? `${r.creati} esercizi creati per ${nClienti}` +
-                (r.saltati ? ` · ${r.saltati} già presenti, lasciati com'erano` : "")
+                (r.saltati
+                  ? ` · ${r.saltati} già presenti, lasciati com'erano`
+                  : "")
             : unico
               ? "Nessun esercizio creato: gli anni indicati esistono già"
               : "Nessun esercizio creato: tutti i clienti li avevano già",

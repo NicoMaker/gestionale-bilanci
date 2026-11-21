@@ -20,7 +20,13 @@
 
   // annoA (facoltativo): ultimo anno di un intervallo; con annoA > anno si creano tutti gli esercizi da anno a annoA
   // apriDate: apre subito la tabella «Date diverse…» (pulsante dedicato nella barra), poi la finestra di conferma
-  GB.parts.clienti.azioni.creaAnnoMultiplo = async (ids, anno, data, annoA, apriDate) => {
+  GB.parts.clienti.azioni.creaAnnoMultiplo = async (
+    ids,
+    anno,
+    data,
+    annoA,
+    apriDate,
+  ) => {
     if (!ids.length) return;
     if (!Number.isInteger(anno) || anno < 1990 || anno > 2100) {
       GB.toast("Anno non valido (1990–2100)", "err");
@@ -33,7 +39,10 @@
         return;
       }
       if (annoA < anno) {
-        GB.toast("L'anno finale deve essere successivo a quello iniziale", "err");
+        GB.toast(
+          "L'anno finale deve essere successivo a quello iniziale",
+          "err",
+        );
         return;
       }
       if (annoA - anno + 1 > 60) {
@@ -54,64 +63,81 @@
     let dateCl = {}; // date diverse {idCliente: {anno: data}} (da «Date diverse…»)
     let ok;
     for (;;) {
-      const nPers = Object.values(dateCl).reduce((n, m) => n + Object.keys(m).length, 0);
+      const nPers = Object.values(dateCl).reduce(
+        (n, m) => n + Object.keys(m).length,
+        0,
+      );
       ok = apriDate
         ? ((apriDate = false), "date")
         : await GB.modal({
-        title: intervallo ? `Crea esercizi ${anno}–${annoA}` : "Crea esercizio " + anno,
-        body: h(
-          "div",
-          null,
-          h(
-            "p",
-            null,
-            intervallo
-              ? `Creare gli esercizi dal ${anno} al ${annoA} (${quanti} anni) per ${nClienti}?`
-              : `Creare l'esercizio ${anno} per ${nClienti}?`,
-          ),
-          h(
-            "p",
-            null,
-            intervallo ? "Chiusura comune: " : "Data di chiusura: ",
-            h("strong", null, intervallo ? giornoMese : dataIt(chiusura)),
-            data ? "" : " (31/12 in automatico)",
-          ),
-          nPers
-            ? h("p", null, `Date diverse impostate: ${nPers} (cliente/anno).`)
-            : null,
-          h("p", { class: "small muted" }, nomi(ids)),
-          h(
-            "p",
-            { class: "small muted" },
-            intervallo
-              ? "Gli anni che un cliente ha già non vengono modificati."
-              : "I clienti che hanno già questo esercizio non vengono modificati.",
-          ),
-          h(
-            "p",
-            { class: "small muted" },
-            "Con «Date a gruppi…» scrivi una data una volta sola per più anni; con «Date diverse…» scegli una data per ogni cliente e per ogni anno.",
-          ),
-        ),
-        buttons: [
-          { label: "Annulla", value: false },
-          ...(intervallo ? [{ label: "Date a gruppi…", value: "gruppi" }] : []),
-          { label: "Date diverse…", value: "date" },
-          {
-            label: intervallo ? "Crea esercizi" : "Crea esercizio",
-            kind: "primary",
-            value: true,
-          },
-        ],
-      });
+            title: intervallo
+              ? `Crea esercizi ${anno}–${annoA}`
+              : "Crea esercizio " + anno,
+            body: h(
+              "div",
+              null,
+              h(
+                "p",
+                null,
+                intervallo
+                  ? `Creare gli esercizi dal ${anno} al ${annoA} (${quanti} anni) per ${nClienti}?`
+                  : `Creare l'esercizio ${anno} per ${nClienti}?`,
+              ),
+              h(
+                "p",
+                null,
+                intervallo ? "Chiusura comune: " : "Data di chiusura: ",
+                h("strong", null, intervallo ? giornoMese : dataIt(chiusura)),
+                data ? "" : " (31/12 in automatico)",
+              ),
+              nPers
+                ? h(
+                    "p",
+                    null,
+                    `Date diverse impostate: ${nPers} (cliente/anno).`,
+                  )
+                : null,
+              h("p", { class: "small muted" }, nomi(ids)),
+              h(
+                "p",
+                { class: "small muted" },
+                intervallo
+                  ? "Gli anni che un cliente ha già non vengono modificati."
+                  : "I clienti che hanno già questo esercizio non vengono modificati.",
+              ),
+              h(
+                "p",
+                { class: "small muted" },
+                "Con «Date a gruppi…» scrivi una data una volta sola per più anni; con «Date diverse…» scegli una data per ogni cliente e per ogni anno.",
+              ),
+            ),
+            buttons: [
+              { label: "Annulla", value: false },
+              ...(intervallo
+                ? [{ label: "Date a gruppi…", value: "gruppi" }]
+                : []),
+              { label: "Date diverse…", value: "date" },
+              {
+                label: intervallo ? "Crea esercizi" : "Crea esercizio",
+                kind: "primary",
+                value: true,
+              },
+            ],
+          });
       if (ok === "gruppi") {
-        const r = await GB.chiediDateGruppi({ anni: anniElenco, iniziali: dateCl[ids[0]] || {} });
+        const r = await GB.chiediDateGruppi({
+          anni: anniElenco,
+          iniziali: dateCl[ids[0]] || {},
+        });
         if (r) dateCl = GB.espandiDateGruppi(r, ids, anniElenco, dateCl);
         continue;
       }
       if (ok !== "date") break;
       if (ids.length * anniElenco.length > 150) {
-        GB.toast("Troppe combinazioni per la tabella (massimo 150 cliente/anno): riduci i clienti o gli anni", "err");
+        GB.toast(
+          "Troppe combinazioni per la tabella (massimo 150 cliente/anno): riduci i clienti o gli anni",
+          "err",
+        );
         continue;
       }
       const r = await GB.chiediDateEsercizi({
@@ -127,7 +153,12 @@
     if (!ok) return;
     try {
       const body = intervallo
-        ? { cliente_ids: ids, da: anno, a: annoA, giorno_mese: data ? giornoMese : undefined }
+        ? {
+            cliente_ids: ids,
+            da: anno,
+            a: annoA,
+            giorno_mese: data ? giornoMese : undefined,
+          }
         : { cliente_ids: ids, anno, data_chiusura: data || undefined };
       if (Object.keys(dateCl).length) body.date_clienti = dateCl;
       const r = await GB.api.post("/anni/bulk", body);

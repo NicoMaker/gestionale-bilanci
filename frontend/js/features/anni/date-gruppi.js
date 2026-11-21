@@ -59,12 +59,15 @@
       const parti = [];
       gruppi.forEach((g) => {
         const t = g.campo.testo();
-        if (g.anni.size && t) parti.push(`${[...g.anni].sort().join(", ")} → ${t}`);
+        if (g.anni.size && t)
+          parti.push(`${[...g.anni].sort().join(", ")} → ${t}`);
       });
       const fuori = elenco.filter((a) => !gruppi.some((g) => g.anni.has(a)));
       riepilogo.textContent = parti.length
         ? parti.join("  ·  ") +
-          (fuori.length ? `  ·  Senza gruppo (data comune o 31/12): ${fuori.join(", ")}` : "")
+          (fuori.length
+            ? `  ·  Senza gruppo (data comune o 31/12): ${fuori.join(", ")}`
+            : "")
         : "Scegli gli anni di ogni gruppo e scrivi la data (gg/mm) una volta sola.";
     };
 

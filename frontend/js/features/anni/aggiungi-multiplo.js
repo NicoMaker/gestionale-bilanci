@@ -16,16 +16,30 @@
       ...S.anni,
       ...Object.keys((S.ds && S.ds.par) || {}).map(Number),
     ]);
-    const prossimo = (presenti.size ? Math.max(...presenti) : new Date().getFullYear() - 1) + 1;
-    const da = h("input", { type: "number", min: 1990, max: 2100, value: prossimo });
-    const a = h("input", { type: "number", min: 1990, max: 2100, value: prossimo + 2 });
+    const prossimo =
+      (presenti.size ? Math.max(...presenti) : new Date().getFullYear() - 1) +
+      1;
+    const da = h("input", {
+      type: "number",
+      min: 1990,
+      max: 2100,
+      value: prossimo,
+    });
+    const a = h("input", {
+      type: "number",
+      min: 1990,
+      max: 2100,
+      value: prossimo + 2,
+    });
     const anteprima = h("div", { class: "dc-preview" });
     let campo;
     let dateAnno = {}; // chiusure diverse anno per anno (da «Date diverse…»)
     const nuoviAnni = () => {
       const { x, y } = valori();
       if (!annoOk(x) || !annoOk(y) || y < x || y - x + 1 > MAX_ANNI) return [];
-      return Array.from({ length: y - x + 1 }, (_, i) => x + i).filter((n) => !presenti.has(n));
+      return Array.from({ length: y - x + 1 }, (_, i) => x + i).filter(
+        (n) => !presenti.has(n),
+      );
     };
     const reset = GB.resetDataBtn({
       title: "Reimposta: la data di chiusura torna al 31/12 (automatica)",
@@ -44,8 +58,11 @@
       if (campo) reset.disabled = campo.vuoto();
       let testo = "";
       if (!annoOk(x) || !annoOk(y)) testo = "Indica anni tra 1990 e 2100.";
-      else if (y < x) testo = "L'anno finale deve essere uguale o successivo a quello iniziale.";
-      else if (y - x + 1 > MAX_ANNI) testo = `Al massimo ${MAX_ANNI} anni alla volta.`;
+      else if (y < x)
+        testo =
+          "L'anno finale deve essere uguale o successivo a quello iniziale.";
+      else if (y - x + 1 > MAX_ANNI)
+        testo = `Al massimo ${MAX_ANNI} anni alla volta.`;
       else {
         const tutti = Array.from({ length: y - x + 1 }, (_, i) => x + i);
         const nuovi = tutti.filter((n) => !presenti.has(n));
@@ -53,7 +70,8 @@
         testo = nuovi.length
           ? `Verranno creati ${nuovi.length} esercizi: ${nuovi.join(", ")}.`
           : "Tutti questi anni esistono già: non verrà creato nulla.";
-        if (gia.length && nuovi.length) testo += ` Già presenti (non modificati): ${gia.join(", ")}.`;
+        if (gia.length && nuovi.length)
+          testo += ` Già presenti (non modificati): ${gia.join(", ")}.`;
         const diverse = nuovi.filter((n) => dateAnno[n]).length;
         if (diverse) testo += ` Date diverse impostate: ${diverse}.`;
       }
@@ -115,13 +133,20 @@
       if (ok === "gruppi") {
         const nuovi = nuoviAnni();
         if (!nuovi.length) {
-          GB.toast("Indica prima un intervallo di anni ancora da creare", "err");
+          GB.toast(
+            "Indica prima un intervallo di anni ancora da creare",
+            "err",
+          );
           continue;
         }
-        const r = await GB.chiediDateGruppi({ anni: nuovi, iniziali: dateAnno });
+        const r = await GB.chiediDateGruppi({
+          anni: nuovi,
+          iniziali: dateAnno,
+        });
         if (r) {
           const resto = {};
-          for (const [n, d] of Object.entries(dateAnno)) if (!nuovi.includes(Number(n))) resto[n] = d;
+          for (const [n, d] of Object.entries(dateAnno))
+            if (!nuovi.includes(Number(n))) resto[n] = d;
           dateAnno = { ...resto, ...r };
         }
         aggiorna();
@@ -130,7 +155,10 @@
       if (ok === "date") {
         const nuovi = nuoviAnni();
         if (!nuovi.length) {
-          GB.toast("Indica prima un intervallo di anni ancora da creare", "err");
+          GB.toast(
+            "Indica prima un intervallo di anni ancora da creare",
+            "err",
+          );
           continue;
         }
         const r = await GB.chiediDateEsercizi({
@@ -145,8 +173,10 @@
       const { x, y } = valori();
       let err = null;
       if (!annoOk(x) || !annoOk(y)) err = "Indica anni tra 1990 e 2100";
-      else if (y < x) err = "L'anno finale deve essere uguale o successivo a quello iniziale";
-      else if (y - x + 1 > MAX_ANNI) err = `Al massimo ${MAX_ANNI} anni alla volta`;
+      else if (y < x)
+        err = "L'anno finale deve essere uguale o successivo a quello iniziale";
+      else if (y - x + 1 > MAX_ANNI)
+        err = `Al massimo ${MAX_ANNI} anni alla volta`;
       if (err) {
         GB.toast(err, "err");
         continue;
@@ -155,7 +185,12 @@
       if (iso === null) continue;
       const date = {};
       for (const n of nuoviAnni()) if (dateAnno[n]) date[n] = dateAnno[n];
-      return { da: x, a: y, data: iso ? iso.slice(8) + "/" + iso.slice(5, 7) : "", date };
+      return {
+        da: x,
+        a: y,
+        data: iso ? iso.slice(8) + "/" + iso.slice(5, 7) : "",
+        date,
+      };
     }
   };
 
@@ -168,7 +203,9 @@
       GB.toast(
         out.creati.length
           ? `${out.creati.length} esercizi creati (${out.creati.join(", ")})` +
-              (out.saltati.length ? ` · ${out.saltati.length} già presenti` : "")
+              (out.saltati.length
+                ? ` · ${out.saltati.length} già presenti`
+                : "")
           : "Nessun esercizio creato: gli anni indicati esistono già",
       );
     } catch (e) {

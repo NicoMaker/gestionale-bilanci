@@ -28,7 +28,8 @@
           : h(
               "div",
               { class: "no-print", style: { marginBottom: "12px" } },
-              GB.addAnnoBtn(), GB.addAnniBtn(),
+              GB.addAnnoBtn(),
+              GB.addAnniBtn(),
             ),
         tbl.el,
       );
